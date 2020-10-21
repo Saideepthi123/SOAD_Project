@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.com/ASE-Group-23/ASE-1-Project.svg?branch=master)](https://travis-ci.com/ASE-Group-23/ASE-1-Project)
 
 ## Cloning the project  
-* Run command `git clone https://github.com/ASE-Group-23/ASE-1-Project.git` and change into the project folder
+* Run command `https://github.com/vitthal-inani/SOAD_Project.git` and change into the project folder
 * Create a virtual environment `env` in the repository (use virtualenv, etc)
 * Install the requirements
 * Activate virtual environment
