@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Tourism',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
-AUTH_USER_MODEL = 'Tourism.User'
+AUTH_USER_MODEL = 'Tourism.UserData'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
