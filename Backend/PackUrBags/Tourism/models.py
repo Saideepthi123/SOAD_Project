@@ -39,7 +39,7 @@ class UserData(AbstractBaseUser):
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=200, unique=True)
     phone_number = models.CharField(max_length=10, unique=True)
-    profile_pic = models.ImageField(default='no_image.png')
+    profile_pic = models.ImageField(default='no_image.png', upload_to='user_profile_pics/')
     dob = models.DateField(default=datetime.today)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
