@@ -19,7 +19,7 @@ def registration_view(request):
             return redirect('home')
     else:
         form = RegistrationForm()
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'user_register.html', {'form': form})
 
 
 def logout_view(request):
@@ -47,4 +47,4 @@ def login_view(request):
     else:
         form = AccountAuthenticationForm()
 
-    return render(request, "login.html", {'login_form': form})
+    return render(request, "user_login.html", {'login_form': form})

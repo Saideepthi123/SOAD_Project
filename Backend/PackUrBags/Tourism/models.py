@@ -9,6 +9,8 @@ class UserAccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
         if not email:
             raise ValueError('Users must have an email address')
+        if not username:
+            raise ValueError('Users must have an username')
 
         user = self.model(
             email=self.normalize_email(email),
@@ -93,8 +95,8 @@ class Booking(models.Model):
         guide = GuideData.objects.get(email=self.guide_email)
         return guide
 
-    def __int__(self):
-        return self.booking_id
+    def __str__(self):
+        return str(self.booking_id)
 
 
 class Monument(models.Model):
@@ -135,7 +137,13 @@ class Payment(models.Model):
     booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name="p_booking_id")
     user_email = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="p_user_email")
     guide_email = models.ForeignKey(GuideData, on_delete=models.CASCADE, related_name="p_guide_email")
-    mode_of_payment = models.CharField(max_length=20)
+    payment_modes = (
+        ('1', 'Debit/Credit card'),
+        ('2', 'UPI'),
+        ('3', 'Cash'),
+        ('4', 'Net banking'),
+    )
+    mode_of_payment = models.CharField(choices=payment_modes, default='2', max_length=1)
     timestamp = models.DateTimeField(verbose_name='Booked at ', auto_now=True)
 
     def get_user_data(self):
@@ -150,59 +158,29 @@ class Payment(models.Model):
         return self.payment_id
 
 
-# class UserTravelHistory(models.Model):
-#     modes = (
-#         (1, 'Bus'),
-#         (2, 'Flight'),
-#         (3, 'Train'),
-#         (4, 'Cab'),
-#         (5, 'Ship')
-#     )
-#     user_email = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="ut_user_email")
-#     mode_of_travel = models.IntegerField(choices=modes, default=1)
-#     travel_amount = models.IntegerField()
-#
-#     class Meta:
-#         abstract = True
-#
-#     def __str__(self):
-#         return f'{self.user_email}\'s travel history'
-#
-#
-# class UserFoodHistory(models.Model):
-#     user_email = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="uf_user_email")
-#     restaurant = models.CharField(max_length=100)
-#     food_amount = models.IntegerField()
-#
-#     class Meta:
-#         abstract = True
-#
-#     def __str__(self):
-#         return f'{self.user_email}\'s food history'
-#
-#
-# class UserStayHistory(models.Model):
-#     user_email = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="us_user_email")
-#     lodge = models.CharField(max_length=100)
-#     stay_amount = models.IntegerField()
-#
-#     class Meta:
-#         abstract = True
-#
-#     def __str__(self):
-#         return f'{self.user_email}\'s stay history'
-#
-#
-# class UserHistory(models.Model):
-#     user_email = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="u_user_email")
-#     mode_of_payment = models.CharField(max_length=20)
-#     timestamp = models.DateTimeField(verbose_name='Booked at ', auto_now=True)
-#     travel_history = models.ForeignKey(UserTravelHistory, on_delete=models.CASCADE)
-#     food_history = models.ForeignKey(UserFoodHistory, on_delete=models.CASCADE)
-#     stay_history = models.ForeignKey(UserStayHistory, on_delete=models.CASCADE)
-#     travel = UserTravelHistory.objects.filter(email=user_email)
-#     food = UserFoodHistory.objects.filter(email=user_email)
-#     stay = UserStayHistory.objects.filter(email=user_email)
-#
-#     def __str__(self):
-#         return f'{self.user_email}\'s history'
+class UserHistory(models.Model):
+    user_email = models.ForeignKey(UserData, on_delete=models.CASCADE, related_name="u_user_email")
+    payment_modes = (
+        ('1', 'Debit/Credit card'),
+        ('2', 'UPI'),
+        ('3', 'Cash'),
+        ('4', 'Net banking'),
+    )
+    mode_of_payment = models.CharField(choices=payment_modes, default='2', max_length=1)
+    timestamp = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name="u_timestamp")
+    modes = (
+        (1, 'Bus'),
+        (2, 'Flight'),
+        (3, 'Train'),
+        (4, 'Cab'),
+        (5, 'Ship'),
+    )
+    mode_of_travel = models.IntegerField(choices=modes, default=1)
+    travel_amount = models.IntegerField()
+    restaurant = models.CharField(max_length=100)
+    food_amount = models.IntegerField()
+    lodge = models.CharField(max_length=100)
+    stay_amount = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.user_email}\'s history {self.pk}'
