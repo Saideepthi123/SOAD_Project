@@ -7,6 +7,37 @@ from rest_framework.permissions import IsAuthenticated
 from Tourism.models import UserData
 from .serializers import UserDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
+# from rest_framework.authtoken.models import Token
+# from rest_framework.authtoken.views import ObtainAuthToken
+from knox.models import AuthToken 
+
+# for user in UserData.objects.all():
+#     AuthToken.objects.get_or_create(user=user)
+
+
+@api_view(['POST'])
+def customer_login(request):
+    data = request.data
+    try:
+        username = data['username']
+        password = data['password']
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = UserData.objects.get(username=username, password=password)
+    except:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        user_token = AuthToken.objects.get(user=user)
+    except:
+        user_token = AuthToken.objects.create(user=user)[1]
+    # print(user_token)
+    return Response({
+            'token': user_token,
+            'user_id': user.user_id,
+        })
 
 
 @api_view(http_method_names=['GET','POST',])

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = ('user_id','email','first_name','last_name','username','phone_number')
+        fields = ('user_id','email','password','first_name','last_name','username','phone_number')
         # 'dob', 'date_joined', , 'is_admin', 'last_login', 'is_staff', 'is_active')
 
     def create(self, validated_data):
@@ -22,6 +22,7 @@ class UserDataSerializer(serializers.ModelSerializer):
         instance.phone_number = validated_data.get('phone_number', instance.phone_number)
         # instance.profile_pic = validated_data.get('profile_pic', instance.profile_pic)
         instance.username = validated_data.get('username ', instance.username )
+        instance.password = validated_data.get('password', instance.password )
         print(instance.username)
         instance.email = validated_data.get('email', instance.email)
         # instance.dob = validated_data.get('dob', instance.dob)
