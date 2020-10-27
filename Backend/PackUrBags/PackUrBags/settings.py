@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Tourism',
+    'tourism',
+    'authentication',
     'rest_framework',
 ]
 
@@ -70,7 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
-AUTH_USER_MODEL = 'Tourism.UserData'
+AUTH_USER_MODEL = 'authentication.UserData'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -78,7 +79,7 @@ AUTH_USER_MODEL = 'Tourism.UserData'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'PackUrBags',
+        'NAME': 'PackUrBagsDB',
         'CLIENT': {
             'host': 'mongodb+srv://soad:subu@cluster0.rllki.mongodb.net/PackUrBags?retryWrites=true&w=majority',
             'username': 'soad',
@@ -89,6 +90,7 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
