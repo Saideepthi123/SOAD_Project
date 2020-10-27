@@ -11,7 +11,7 @@ class AccountAdmin(UserAdmin):
     form = UserDataChangeForm
     fieldsets = (
         (None, {'fields': ('password', 'email', 'username', 'first_name', 'last_name', 'phone_number', 'profile_pic', 'dob', )}),
-        ('Permissions', {'fields': ('is_admin', 'is_staff', 'is_active')}),
+        ('Permissions', {'fields': ('is_verified', 'is_admin', 'is_staff', 'is_active')}),
     )
     add_fieldsets = (
         (None, {

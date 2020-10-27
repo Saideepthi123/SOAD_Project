@@ -9,6 +9,7 @@ urlpatterns = [
     path('register/', views.registration_view, name="register"),
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
+    path('email-verify/', views.verify_email, name="email-verify"),
     path('api/', include('Tourism.api.urls')),
 ]
 
