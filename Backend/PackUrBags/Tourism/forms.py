@@ -1,7 +1,21 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, authenticate
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, authenticate
 from Tourism.models import UserData
 YEARS = [x for x in range(1940, 2021)]
+
+
+class UserDataCreationForm(UserCreationForm):
+
+    class Meta(UserCreationForm):
+        model = UserData
+        fields = ('email', )
+
+
+class UserDataChangeForm(UserChangeForm):
+
+    class Meta:
+        model = UserData
+        fields = ('email', )
 
 
 class RegistrationForm(UserCreationForm):
