@@ -17,7 +17,7 @@ class AccountAdmin(UserAdmin):
             'fields': ('email', 'username', 'first_name', 'last_name', 'phone_number', 'dob', 'password1', 'password2',)}
          ),
     )
-    list_display = ('email', 'username', 'is_admin', 'is_staff',)
+    list_display = ('email', 'username', 'is_admin', 'is_staff', 'last_login', )
     search_fields = ('email', 'username',)
     filter_horizontal = ()
     list_filter = ()
