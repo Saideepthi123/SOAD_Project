@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from guide.models import GuideData
 from .serializers import GuideDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
+from test.test_import import data
 
 
 @api_view(http_method_names=['GET', 'POST', ])
@@ -65,10 +66,19 @@ def guide_detail_view_put(request, slug, hdata):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
 def guide_detail_view_delete(request, slug, hdata):
     delresult = hdata.delete()
     data = {'message': 'error during deletion'}
     if delresult[0] == 1:
         data = {'message': 'successfully deleted'}
     return Response(data)
+
+
+@api_view(http_method_names=['GET'])
+def guide_for_a_place(request):
+    place = request.GET['place']
+    print(place)
+    hdata = GuideData.objects.get(place=2)
+    print(hdata)
+    serializer = GuideDataSerializer(hdata, many=True)
+    return Response(data = serializer.data)

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'authentication',
     'rest_framework',
     'guide',
+    'monuments',
     # 'rest_framework.authtoken',
     'knox',
 ]
