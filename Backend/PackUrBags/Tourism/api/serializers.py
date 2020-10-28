@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Tourism.models import UserData
+from authentication.models import UserData
 from rest_framework.response import Response
 
 
@@ -27,3 +27,4 @@ class UserDataSerializer(serializers.ModelSerializer):
         instance.save()
         print(validated_data.get('username', instance.username))
         return super().update(instance, validated_data)
+

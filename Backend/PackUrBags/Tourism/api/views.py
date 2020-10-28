@@ -1,18 +1,14 @@
 from rest_framework import status
 from rest_framework.response import Response
 from django.http.response import JsonResponse
-from rest_framework.parsers import JSONParser 
+from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from Tourism.models import UserData
+from authentication.models import UserData
 from .serializers import UserDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
-# from rest_framework.authtoken.models import Token
-# from rest_framework.authtoken.views import ObtainAuthToken
 from knox.models import AuthToken 
 
-# for user in UserData.objects.all():
-#     AuthToken.objects.get_or_create(user=user)
 
 
 @api_view(['POST'])
@@ -40,7 +36,7 @@ def customer_login(request):
         })
 
 
-@api_view(http_method_names=['GET','POST',])
+@api_view(http_method_names=['GET', 'POST', ])
 # @permission_classes([IsAuthenticated])
 def user_list_view(request):
     if request.method == 'GET':
@@ -48,10 +44,11 @@ def user_list_view(request):
     elif request.method == 'POST':
         return user_list_view_post(request)
 
+
 def user_list_view_get(request):
     try:
         data = UserData.objects.all()
-        serializer = UserDataSerializer(data,many=True)
+        serializer = UserDataSerializer(data, many=True)
         return Response(data=serializer.data)
     except ObjectDoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -67,10 +64,11 @@ def user_list_view_post(request):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(http_method_names=['GET','PUT','DELETE'])
+
+@api_view(http_method_names=['GET', 'PUT', 'DELETE'])
 def user_detail_view(request, slug):
     try:
-        hdata = UserData.objects.get(user_id = slug)
+        hdata = UserData.objects.get(user_id=slug)
         if request.method == 'GET':
             return user_detail_view_get(request, slug, hdata)
         elif request.method == 'PUT':
@@ -80,9 +78,11 @@ def user_detail_view(request, slug):
     except ObjectDoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 def user_detail_view_get(request, slug, hdata):
     serializer = UserDataSerializer(hdata)
     return Response(serializer.data)
+
 
 def user_detail_view_put(request, slug, hdata):
     serializer = UserDataSerializer(hdata, data=request.data)
@@ -93,43 +93,10 @@ def user_detail_view_put(request, slug, hdata):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 def user_detail_view_delete(request, slug, hdata):
     delresult = hdata.delete()
     data = {'message': 'error during deletion'}
     if delresult[0] == 1:
-        data = {'message' : 'succesfully deleted'}
+        data = {'message': 'succesfully deleted'}
     return Response(data)
-
-
-# @api_view(http_method_names=['GET','PUT','DELETE'])
-# def guide_detail_view(request, slug):
-#     try:
-#         hdata = GuideData.objects.get(guide_id = slug)
-#         if request.method == 'GET':
-#             return user_detail_view_get(request, slug, hdata)
-#         elif request.method == 'PUT':
-#             return user_detail_view_put(request, slug, hdata)
-#         elif request.method == 'DELETE':
-#             return user_detail_view_delete(request, slug, hdata)
-#     except ObjectDoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-
-# def guide_detail_view_get(request, slug, hdata):
-#     serializer = GuideDataSerializer(hdata)
-#     return Response(serializer.data)
-
-# def guide_detail_view_put(request, slug, hdata):
-#     serializer = GuideDataSerializer(hdata, data=request.data)
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(serializer.data)
-#     else:
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-# def guide_detail_view_delete(request, slug, hdata):
-#     delresult = hdata.delete()
-#     data = {'message': 'error during deletion'}
-#     if delresult[0] == 1:
-#         data = {'message' : 'succesfully deleted'}
-#     return Response(data)
-
