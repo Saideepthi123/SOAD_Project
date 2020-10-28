@@ -7,7 +7,7 @@ from authentication.models import UserData
 from authentication.api.utils import Util
 from rest_framework import generics, status
 from rest_framework.response import Response
-from authentication.api.serializers import RegisterSerializer, LoginSerializer
+from authentication.api.serializers import RegisterSerializer, LoginSerializer, ResetPaswordEmailRequestSerializer
 
 
 # Create your views here.
@@ -66,3 +66,16 @@ class LoginAPIView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class RequestPasswordResetEmail(generics.GenericAPIView):
+    serializer_class = ResetPaswordEmailRequestSerializer
+
+    def post(self,request):
+        data={'request':request,'data':request.data}
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'success':'We Have sent you a link to reset password'},status=status.HTTP_200_OK)
+
+class PasswordTokenCheckAPI(generics.GenericAPIView):
+    def get(self,request,uidb64,token):
+        pass
