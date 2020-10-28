@@ -7,12 +7,13 @@ from authentication.models import UserData
 from authentication.api.utils import Util
 from rest_framework import generics, status
 from rest_framework.response import Response
-from authentication.api.serializers import RegisterSerializer,  LoginSerializer
+from authentication.api.serializers import RegisterSerializer, LoginSerializer
+
+
 # Create your views here.
 
 
 class RegisterView(generics.GenericAPIView):
-
     serializer_class = RegisterSerializer
 
     def post(self, request):
@@ -57,7 +58,6 @@ class VerifyEmail(generics.GenericAPIView):
 
 
 class LoginAPIView(generics.GenericAPIView):
-
     serializer_class = LoginSerializer
 
     def post(self, request):
@@ -65,4 +65,4 @@ class LoginAPIView(generics.GenericAPIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
 
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)

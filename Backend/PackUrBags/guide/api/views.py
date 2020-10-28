@@ -66,6 +66,7 @@ def guide_detail_view_put(request, slug, hdata):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 def guide_detail_view_delete(request, slug, hdata):
     delresult = hdata.delete()
     data = {'message': 'error during deletion'}
@@ -77,8 +78,6 @@ def guide_detail_view_delete(request, slug, hdata):
 @api_view(http_method_names=['GET'])
 def guide_for_a_place(request):
     place = request.GET['place']
-    print(place)
-    hdata = GuideData.objects.get(place=2)
-    print(hdata)
+    hdata = GuideData.objects.filter(place=place)
     serializer = GuideDataSerializer(hdata, many=True)
-    return Response(data = serializer.data)
+    return Response(data=serializer.data)
