@@ -2,10 +2,13 @@ from rest_framework import serializers
 from guide.models import GuideData 
 from rest_framework.response import Response
 
+
 class GuideDataSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = GuideData
         fields = ('guide_id', 'email', 'first_name', 'last_name', 'username', 'phone_number')
+
     def create(self, validated_data):
         try:
             p = GuideData.objects.create(**validated_data)

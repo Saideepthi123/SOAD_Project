@@ -4,10 +4,10 @@ from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework_simplejwt.tokens import RefreshToken
 from authentication.models import UserData
-from authentication.utils import Util
+from authentication.api.utils import Util
 from rest_framework import generics, status
 from rest_framework.response import Response
-from authentication.serializers import RegisterSerializer
+from authentication.api.serializers import RegisterSerializer
 # Create your views here.
 
 
@@ -45,10 +45,6 @@ class VerifyEmail(generics.GenericAPIView):
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
-                context = {
-                    'user': user,
-                    'status': 'successfully verified'
-                }
                 email_body = 'Your email was successfully verified. Thanks for registering.'
                 message = {'email_body': email_body, 'email_subject': 'Welcome to PackUrBags',
                            'to_email': (user.email,)}
