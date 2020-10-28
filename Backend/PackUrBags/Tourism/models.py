@@ -1,5 +1,4 @@
 from djongo import models
-from datetime import datetime
 from authentication.models import UserData
 from guide.models import GuideData
 # Create your models here.

@@ -1,9 +1,8 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from authentication.api.views import RegisterView, VerifyEmail
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/auth/', include('authentication.api.urls')),
-    path('api/guide/', include('guide.api.urls')),
-    path('api/user/', include('tourism.api.urls')),
+    path('register/', RegisterView.as_view(), name="register"),
+    path('email-verify/', VerifyEmail.as_view(), name="email-verify"),
 ]
