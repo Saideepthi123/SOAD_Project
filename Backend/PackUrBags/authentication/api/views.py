@@ -7,7 +7,7 @@ from authentication.models import UserData
 from authentication.api.utils import Util
 from rest_framework import generics, status
 from rest_framework.response import Response
-from authentication.api.serializers import RegisterSerializer
+from authentication.api.serializers import RegisterSerializer,  LoginSerializer
 # Create your views here.
 
 
@@ -54,3 +54,15 @@ class VerifyEmail(generics.GenericAPIView):
             return Response({'error': 'Activation link expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError:
             return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginAPIView(generics.GenericAPIView):
+
+    serializer_class = LoginSerializer
+
+    def post(self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data,status=status.HTTP_200_OK)
