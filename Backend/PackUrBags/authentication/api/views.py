@@ -1,13 +1,14 @@
 import jwt
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth import login, authenticate
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework_simplejwt.tokens import RefreshToken
 from authentication.models import UserData
 from authentication.api.utils import Util
 from rest_framework import generics, status
 from rest_framework.response import Response
-from authentication.api.serializers import RegisterSerializer, LoginSerializer
+from authentication.api.serializers import RegisterSerializer, LoginSerializer, ResetPasswordEmailRequestSerializer
 
 
 # Create your views here.
@@ -58,11 +59,28 @@ class VerifyEmail(generics.GenericAPIView):
 
 
 class LoginAPIView(generics.GenericAPIView):
+
     serializer_class = LoginSerializer
 
     def post(self, request):
         user = request.data
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
+        account = authenticate(email=user['email'], password=user['password'])
+        login(request, account)
+        return Response({'success': 'Login successful'}, status=status.HTTP_200_OK)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class RequestPasswordResetEmail(generics.GenericAPIView):
+    serializer_class = ResetPasswordEmailRequestSerializer
+
+    def post(self, request):
+        data = {'request': request, 'data': request.data}
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'success': 'We Have sent you a link to reset password'}, status=status.HTTP_200_OK)
+
+
+class PasswordTokenCheckAPI(generics.GenericAPIView):
+    def get(self, request, uidb64, token):
+        pass
