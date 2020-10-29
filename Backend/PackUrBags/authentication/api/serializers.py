@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 
 
-
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=64, min_length=6, write_only=True)
 
@@ -51,7 +50,7 @@ class ResetPasswordEmailRequestSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=255, min_length=6, write_only=True)
 
     class Meta:
-        fields=['email','password']
+        fields = ['email', 'password']
 
     def validate(self, attrs):
         email = attrs.get('email', '')
@@ -62,8 +61,6 @@ class ResetPasswordEmailRequestSerializer(serializers.Serializer):
             raise AuthenticationFailed('Invalid credentials, try again')
 
         return attrs
-        
+
     def create(self, validated_data):
         return UserData.objects.create_user(**validated_data)
-
-    
