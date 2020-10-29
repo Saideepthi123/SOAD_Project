@@ -27,9 +27,6 @@ class Monument(models.Model):
         return self.monument_name
 
 
-
-
-
 class MonumentInfo(models.Model):
     monument_info_id = models.AutoField(primary_key=True)
     monument_name = models.ForeignKey(Monument, on_delete=models.CASCADE)
