@@ -5,6 +5,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from guide.models import GuideData
+from monuments.models import Monument
 from .serializers import GuideDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from test.test_import import data
@@ -59,7 +60,12 @@ class GuidePlace(APIView):
     def get(self, request):
         try:
             place = request.GET['place']
-            hdata = GuideData.objects.filter(place=place)
+            place_id = 0
+            for m in Monument.objects.all():
+                if m.monument_name == place:
+                    place_id = m.monument_id
+
+            hdata = GuideData.objects.filter(place=place_id)
             serializer = GuideDataSerializer(hdata, many=True)
             return Response(data=serializer.data)
         except ObjectDoesNotExist:
