@@ -60,10 +60,12 @@ class GuidePlace(APIView):
     def get(self, request):
         try:
             place = request.GET['place']
+            place = place.lower()
             place_id = 0
             for m in Monument.objects.all():
-                if m.monument_name == place:
+                if m.monument_name.lower() == place:
                     place_id = m.monument_id
+                    break
 
             hdata = GuideData.objects.filter(place=place_id)
             serializer = GuideDataSerializer(hdata, many=True)
