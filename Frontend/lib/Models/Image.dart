@@ -7,7 +7,7 @@ class BackImage with ChangeNotifier{
   String _metadata;
 
   Widget get currentimage => _currentimage;
-  List get cities => _cities;
+  List get cities => _cities; 
   String get cityname => _currname;
   String get metadata => _metadata;
 

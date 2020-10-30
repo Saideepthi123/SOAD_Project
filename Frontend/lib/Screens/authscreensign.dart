@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travel/Screens/HomePage.dart';
 
 class AuthScreenSign extends StatefulWidget {
   final Function signin;
@@ -69,7 +70,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                 ),
                 color: Colors.blue,
                 onPressed: () {
-                  print("Daba mat na");
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                 }),
           ),
           SizedBox(
