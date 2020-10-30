@@ -5,7 +5,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from tourism.models import UserData
+from authentication.models import UserData
 from .serializers import UserDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from test.test_import import data

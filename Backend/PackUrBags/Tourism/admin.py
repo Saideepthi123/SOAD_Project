@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tourism.models import (Booking, Payment, UserHistory, )
+from Tourism.models import (Booking, Payment, UserHistory, )
 
 
 admin.site.register(Booking)

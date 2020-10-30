@@ -2,17 +2,10 @@ from rest_framework import serializers
 from authentication.models import UserData
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import smart_str,force_str,smart_bytes,DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
-from authentication.api.utils import Util
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=64, min_length=6, write_only=True)
+    password = serializers.CharField(max_length=64, min_length=6, write_only=True, style={'input_type': 'password'})
 
     class Meta:
         model = UserData
@@ -21,7 +14,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         email = attrs.get('email', '')
         username = attrs.get('username', '')
-
         if not username.isalnum():
             raise serializers.ValidationError('The username should only consists of alphanumeric characters')
         return attrs
@@ -32,7 +24,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=255, min_length=6, write_only=True)
-    password = serializers.CharField(max_length=64, min_length=6, write_only=True)
+    password = serializers.CharField(max_length=64, min_length=6, write_only=True, style={'input_type': 'password'})
 
     class Meta:
         model = UserData
@@ -41,35 +33,42 @@ class LoginSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         email = attrs.get('email', '')
         password = attrs.get('password', '')
-
         user = authenticate(email=email, password=password)
-
-        if not user.is_active:
-            raise AuthenticationFailed('Account disabled')
-
+        if user:
+            if not user.is_active:
+                raise AuthenticationFailed('Account disabled')
         if not user:
             raise AuthenticationFailed('Invalid credentials, try again')
-
         return attrs
 
 
-class ResetPasswordEmailRequestSerializer(serializers.Serializer):
-    email = serializers.EmailField(min_length=5)
+class ResetPasswordEmailRequestSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(max_length=255, min_length=6, write_only=True)
 
     class Meta:
-        fields=['email']
+        model = UserData
+        fields = ['email', ]
 
-    def validate(self,attrs):
-            email = attrs['data'].ge('email','')
-            if UserData.objects.filter(email=email).exists():
-                user = UserData.objects.get(email=email)
-                uidb64 = urlsafe_base64_encode(user.id)
-                token = PasswordResetTokenGenerator().make_token(user)
-                current_site = get_current_site(request=attrs['data'].request).domain
-                relative_link = reverse('password-reset-confirm',kwargs={'uidb64':uidb64,'token':token})
-                absurl = 'http://' + current_site + relative_link 
-                email_body = 'Hi ' + user.username + ', click the link below to reset your password\n' + absurl
-                message = {'email_body': email_body, 'email_subject': 'Reset Password', 'to_email': (user.email,)}
-                Util.send_email(message)
-        
-            return super().validate(attrs)
+    def validate(self, attrs):
+        email = attrs.get('email', '')
+        user = UserData.objects.get(email=email)
+        if not user:
+            raise AuthenticationFailed('Email does not exist, please check again')
+        return attrs
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    password1 = serializers.CharField(label='Password', max_length=64, min_length=6, write_only=True, style={'input_type': 'password'})
+    password2 = serializers.CharField(label='Confirm password', max_length=64, min_length=6, write_only=True, style={'input_type': 'password'})
+
+    class Meta:
+        fields = ['password1', 'password2', ]
+
+    def validate(self, attrs):
+        password1 = attrs.get('password1', '')
+        password2 = attrs.get('password2', '')
+
+        if password1 == password2:
+            return attrs
+        elif password1 != password2:
+            raise serializers.ValidationError("Passwords don't match")
