@@ -37,10 +37,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'Tourism',
+    'authentication',
     'rest_framework',
-    'rest_framework.authtoken',
+    'guide',
+    'monuments',
+    # 'rest_framework.authtoken',
+    'knox',
 ]
+
+SITE_ID = 1
+SOCIALACCOUNT_QUERY_EMAIL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,7 +83,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
-AUTH_USER_MODEL = 'Tourism.UserData'
+AUTH_USER_MODEL = 'authentication.UserData'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -79,7 +91,7 @@ AUTH_USER_MODEL = 'Tourism.UserData'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'PackUrBags',
+        'NAME': 'PackUrBagsDB',
         'CLIENT': {
             'host': 'mongodb+srv://soad:subu@cluster0.rllki.mongodb.net/PackUrBags?retryWrites=true&w=majority',
             'username': 'soad',
@@ -87,6 +99,18 @@ DATABASES = {
             'authMechanism': 'SCRAM-SHA-1'
         }
     }
+}
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+REST_FRAMEWORK = {
+    'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 # Password validation
@@ -125,7 +149,15 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'tourism.packurbags@gmail.com'
+EMAIL_HOST_PASSWORD = 'packurbags@123'
