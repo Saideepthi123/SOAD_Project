@@ -4,8 +4,8 @@ matrix:
       python: 3.7
       before_script:
         - cd ./Backend/
-      install: 
         - pip install -r requirements.txt
+        - cd ./PackUrBags/
       script:
         - python manage.py test
     
