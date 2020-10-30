@@ -1,7 +1,7 @@
 import jwt
 from django.shortcuts import redirect
 from django.conf import settings
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login, logout
 from authentication.models import UserData
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -9,12 +9,11 @@ from authentication.api.serializers import RegisterSerializer, LoginSerializer, 
     ResetPasswordSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from authentication.api.utils import Util
-
 
 # Create your views here.
 
@@ -71,8 +70,17 @@ class LoginAPIView(generics.GenericAPIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         account = authenticate(email=user['email'], password=user['password'])
+        account.id = account.user_id
+        refresh = RefreshToken.for_user(account)
+        access = refresh.access_token
         login(request, account)
-        return Response({'success': 'Login successful'}, status=status.HTTP_200_OK)
+        return Response({'success': 'Login successful', 'refresh': str(refresh), 'access': str(access)}, status=status.HTTP_200_OK)
+
+
+class LogoutView(generics.GenericAPIView):
+    def get(self, request):
+        logout(request)
+        return Response({'success': 'Logout successful'}, status=status.HTTP_200_OK)
 
 
 class RequestPasswordResetEmail(generics.GenericAPIView):
