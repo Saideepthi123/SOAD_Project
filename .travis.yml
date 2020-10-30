@@ -3,9 +3,9 @@ matrix:
     - language: python
       python: 3.7
       before_script:
-        - cd ./Backend/
+        - cd ./Backend/PackUrBags/
+      install:
         - pip install -r requirements.txt
-        - cd ./PackUrBags/
       script:
         - python manage.py test
     
