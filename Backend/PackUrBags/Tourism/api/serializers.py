@@ -31,14 +31,14 @@ class BookingDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ('booking_id', 'user_email', 'guide_email', 'timestamp')
-        
+
     def create(self, validated_data):
         try:
             p = Booking.objects.create(**validated_data)
             return p
         except:
             return {'message': 'Error during creation'}
-    
+
     def update(self, instance, validated_data):
         instance.booking_id = validated_data.get('booking_id', instance.booking_id)
         instance.timestamp = validated_data.get('timestamp', instance.timestamp)
@@ -58,7 +58,7 @@ class PaymentDataSerializer(serializers.ModelSerializer):
             return p
         except:
             return {'message': 'Error during creation'}
-    
+
     def update(self, instance, validated_data):
         instance.payment_id = validated_data.get('payment_id', instance.payment_id)
         instance.mode_of_payment = validated_data.get('mode_of_payment', instance.mode_of_payment)
@@ -80,7 +80,7 @@ class UserHistoryDataSerializer(serializers.ModelSerializer):
             return p
         except:
             return {'message': 'Error during creation'}
-    
+
     def update(self, instance, validated_data):
         instance.travel_amount = validated_data.get('travel_amount', instance.travel_amount)
         instance.food_amount = validated_data.get('food_amount', instance.food_amount)

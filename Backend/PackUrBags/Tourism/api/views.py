@@ -1,4 +1,4 @@
-from knox.models import AuthToken 
+from knox.models import AuthToken
 from rest_framework import status
 from rest_framework.response import Response
 from django.http.response import JsonResponse
@@ -102,7 +102,7 @@ class BookingDetail(APIView):
         return Response(data)
 
 class BookingDetailUser(APIView):
-    
+
     def get(self, request, slug):
         try:
             hdata = Booking.objects.filter(user_email = slug)
@@ -110,7 +110,7 @@ class BookingDetailUser(APIView):
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
-    
+
 
 class BookingDetailGuide(APIView):
 
@@ -140,7 +140,7 @@ class PaymentList(APIView):
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 
 
@@ -160,7 +160,7 @@ class PaymentDetail(APIView):
         return Response(data)
 
 class PaymentDetailUser(APIView):
-    
+
     def get(self, request, slug):
         try:
             hdata = Payment.objects.filter(user_email = slug)
@@ -168,7 +168,7 @@ class PaymentDetailUser(APIView):
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
-    
+
 
 class PaymentDetailGuide(APIView):
 

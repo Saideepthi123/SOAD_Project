@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,14 +47,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'guide',
     'monuments',
-    # 'rest_framework.authtoken',
+    'rest_framework.authtoken',
     'knox',
 ]
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-}
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
@@ -97,7 +91,7 @@ AUTH_USER_MODEL = 'authentication.UserData'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'PackUrBagsDB',
+        'NAME': 'PackUrBags',
         'CLIENT': {
             'host': 'mongodb+srv://soad:subu@cluster0.rllki.mongodb.net/PackUrBags?retryWrites=true&w=majority',
             'username': 'soad',
@@ -114,9 +108,9 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ]
 }
 
 # Password validation
