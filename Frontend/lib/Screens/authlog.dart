@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel/Screens/SearchScreen.dart';
 
 class AuthScreenLogin extends StatefulWidget {
   final Function signin;
@@ -138,7 +139,7 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                       // _key.currentState.save();
                       // print(email);
                       // auth.signInWithEmailAndPassword(context, email, password).then((value) => globals.setUserData(value).then((value){
-                      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>CommonScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                       // }));
                     },
                     color: Color(0xffb8e6f5),
