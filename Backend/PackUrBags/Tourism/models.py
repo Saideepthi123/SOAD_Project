@@ -19,6 +19,7 @@ class Booking(models.Model):
         return guide
 
     def __str__(self):
+        print(self.booking_id)
         return str(self.booking_id)
 
 
