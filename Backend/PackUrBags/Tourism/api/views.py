@@ -1,15 +1,10 @@
-from knox.models import AuthToken
 from rest_framework import status
 from rest_framework.response import Response
-from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from authentication.models import UserData
 from Tourism.models import Booking, Payment, UserHistory
 from .serializers import UserDataSerializer, BookingDataSerializer, PaymentDataSerializer, UserHistoryDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
-from test.test_import import data
 from rest_framework.views import APIView
 
 
@@ -21,7 +16,6 @@ class UserList(APIView):
             return Response(data=serializer.data)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
 
     def post(self, request):
         User_data = JSONParser().parse(request)
@@ -65,6 +59,7 @@ class UserDetail(APIView):
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
 
+
 class BookingList(APIView):
 
     def get(self, request):
@@ -74,7 +69,6 @@ class BookingList(APIView):
             return Response(data=serializer.data)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
 
     def post(self, request):
         Booking_data = JSONParser().parse(request)
@@ -107,7 +101,6 @@ class BookingDetail(APIView):
                 return Response(status=status.HTTP_404_NOT_FOUND)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    	
 
     def delete(self, request, slug):
         try:
@@ -121,12 +114,13 @@ class BookingDetail(APIView):
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
 
+
 class BookingDetailUser(APIView):
 
     def get(self, request, slug):
         try:
-            hdata = Booking.objects.filter(user_email = slug)
-            serializer = BookingDataSerializer(hdata, many = True)
+            hdata = Booking.objects.filter(user_email=slug)
+            serializer = BookingDataSerializer(hdata, many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
@@ -136,11 +130,12 @@ class BookingDetailGuide(APIView):
 
     def get(self, request, slug):
         try:
-            hdata = Booking.objects.filter(guide_email = slug)
-            serializer = BookingDataSerializer(hdata, many = True)
+            hdata = Booking.objects.filter(guide_email=slug)
+            serializer = BookingDataSerializer(hdata, many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
+
 
 class PaymentList(APIView):
 
@@ -160,8 +155,6 @@ class PaymentList(APIView):
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 class PaymentDetail(APIView):
@@ -195,12 +188,13 @@ class PaymentDetail(APIView):
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class PaymentDetailUser(APIView):
 
     def get(self, request, slug):
         try:
-            hdata = Payment.objects.filter(user_email = slug)
-            serializer = PaymentDataSerializer(hdata, many = True)
+            hdata = Payment.objects.filter(user_email=slug)
+            serializer = PaymentDataSerializer(hdata, many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
@@ -210,8 +204,8 @@ class PaymentDetailGuide(APIView):
 
     def get(self, request, slug):
         try:
-            hdata = Payment.objects.filter(guide_email = slug)
-            serializer = PaymentDataSerializer(hdata, many = True)
+            hdata = Payment.objects.filter(guide_email=slug)
+            serializer = PaymentDataSerializer(hdata, many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
@@ -236,12 +230,13 @@ class UserHistoryList(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class PaymentDetailUser(APIView):
 
     def get(self, request, slug):
         try:
-            hdata = Payment.objects.filter(user_email = slug)
-            serializer = PaymentDataSerializer(hdata, many = True)
+            hdata = Payment.objects.filter(user_email=slug)
+            serializer = PaymentDataSerializer(hdata, many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
@@ -251,15 +246,15 @@ class PaymentDetailGuide(APIView):
 
     def get(self, request, slug):
         try:
-            hdata = Payment.objects.filter(guide_email = slug)
-            serializer = PaymentDataSerializer(hdata, many = True)
+            hdata = Payment.objects.filter(guide_email=slug)
+            serializer = PaymentDataSerializer(hdata, many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
 
 
 class UserHistoryList(APIView):
-    
+
     def get(self, request):
         try:
             data = UserHistory.objects.all()
@@ -309,12 +304,13 @@ class UserHistoryDetail(APIView):
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserHistoryDetailUser(APIView):
 
     def get(self, request, slug):
         try:
-            hdata = UserHistory.objects.filter(user_email = slug)
-            serializer = UserHistoryDataSerializer(hdata, many = True)
+            hdata = UserHistory.objects.filter(user_email=slug)
+            serializer = UserHistoryDataSerializer(hdata, many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)

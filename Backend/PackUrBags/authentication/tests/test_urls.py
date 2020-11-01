@@ -1,6 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from authentication.api.views import RegisterView, LoginAPIView, LogoutView, VerifyEmail, RequestPasswordResetEmail, PasswordTokenCheckAPI, PasswordReset
+from authentication.api.views import RegisterView, LoginAPIView, LogoutView, VerifyEmail, \
+    RequestPasswordResetEmail, PasswordTokenCheckAPI, PasswordReset, GoogleAuthentication, HomeView
 
 
 class TestUrls(SimpleTestCase):
@@ -21,7 +22,7 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(found.func.__name__, LogoutView.as_view().__name__)
 
     def test_email_verify_url_is_resolved(self):
-        path = reverse('email-verify')
+        path = reverse('email-verify', args=['some-uidb'])
         found = resolve(path)
         self.assertEqual(found.func.__name__, VerifyEmail.as_view().__name__)
 
@@ -39,3 +40,13 @@ class TestUrls(SimpleTestCase):
         path = reverse('reset-password', args=['1'])
         found = resolve(path)
         self.assertEqual(found.func.__name__, PasswordReset.as_view().__name__)
+
+    def test_google_authentication_url_is_resolved(self):
+        path = reverse('google-auth')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, GoogleAuthentication.as_view().__name__)
+
+    def test_google_auth_redirect_url_is_resolved(self):
+        path = reverse('google-redirect')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, HomeView.as_view().__name__)

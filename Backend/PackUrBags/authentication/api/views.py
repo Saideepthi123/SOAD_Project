@@ -17,6 +17,12 @@ from rest_framework.authentication import TokenAuthentication
 # Create your views here.
 
 
+class HomeView(generics.GenericAPIView):
+
+    def get(self, request):
+        return Response({'message': 'Welcome to PackUrBags'}, status=status.HTTP_200_OK)
+
+
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
@@ -135,3 +141,12 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
         except DjangoUnicodeDecodeError:
             return Response({'error': 'Token is not valid, please request a new one'},
                             status=status.HTTP_401_UNAUTHORIZED)
+
+
+class GoogleAuthentication(generics.GenericAPIView):
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/api/auth/accounts/google/login/?process=login')
+        else:
+            return Response({'error': 'You are already logged in from another account. Please logout first.'}, status=status.HTTP_400_BAD_REQUEST)

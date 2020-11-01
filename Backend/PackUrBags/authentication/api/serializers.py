@@ -9,13 +9,20 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserData
-        fields = ['email', 'username', 'password', ]
+        fields = ['email', 'username', 'first_name', 'last_name', 'phone_number', 'password', ]
 
     def validate(self, attrs):
         email = attrs.get('email', '')
         username = attrs.get('username', '')
+        username = username.lower()
+        phone_number = attrs.get('phone_number', '')
+        password = attrs.get('password', '')
+        if not phone_number.isnumeric():
+            raise serializers.ValidationError('The phone number should only consists of numbers')
         if not username.isalnum():
             raise serializers.ValidationError('The username should only consists of alphanumeric characters')
+        if len(password) < 6:
+            raise serializers.ValidationError('Make sure your password is at least 6 letters')
         return attrs
 
     def create(self, validated_data):

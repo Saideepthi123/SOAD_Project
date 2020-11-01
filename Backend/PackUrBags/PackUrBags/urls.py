@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from authentication.api.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,4 +23,5 @@ urlpatterns = [
     path('api/guide', include('guide.api.urls')),
     path('api/', include('Tourism.api.urls')),
     path('api/', include('monuments.api.urls')),
+    path('accounts/profile/', HomeView.as_view(), name="google-redirect"),
 ]
