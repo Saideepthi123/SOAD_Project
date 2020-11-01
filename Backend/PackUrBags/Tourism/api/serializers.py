@@ -35,6 +35,7 @@ class BookingDataSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         try:
             p = Booking.objects.create(**validated_data)
+            print(p)
             return p
         except:
             return {'message': 'Error during creation'}
