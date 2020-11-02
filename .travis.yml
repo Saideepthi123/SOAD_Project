@@ -26,7 +26,7 @@ matrix:
         - git clone https://github.com/flutter/flutter.git -b beta
         - ./flutter/bin/flutter doctor
       script:
-        - ./flutter/bin/flutter test
+        - ./flutter/bin/flutter build web
       cache:
         directories:
           - $HOME/.pub-cache
