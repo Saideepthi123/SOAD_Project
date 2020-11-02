@@ -1,7 +1,8 @@
 # SOAD_Project  PackUrBags
 
 
-[![Build Status](https://travis-ci.com/ASE-Group-23/ASE-1-Project.svg?branch=master)](https://travis-ci.com/ASE-Group-23/ASE-1-Project)
+
+[![Build Status](https://travis-ci.com/vitthal-inani/SOAD_Project.svg?branch=master)](https://travis-ci.com/github/vitthal-inani/SOAD_Project)
 
 ## Cloning the project  
 * Run command `https://github.com/vitthal-inani/SOAD_Project.git` and change into the project folder
