@@ -69,22 +69,28 @@ class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request):
-        user = request.data
-        serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
-        account = authenticate(email=user['email'], password=user['password'])
-        account.id = account.user_id
-        token = Token.objects.get(user=account)
-        login(request, account)
-        return Response({'success': 'Login successful', 'token': token.key}, status=status.HTTP_200_OK)
+        if request.session.session_key:
+            return Response({'error': 'Already another user is logged in'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            user = request.data
+            serializer = self.serializer_class(data=user)
+            serializer.is_valid(raise_exception=True)
+            account = authenticate(email=user['email'], password=user['password'])
+            account.id = account.user_id
+            token = Token.objects.get(user=account)
+            login(request, account)
+            return Response({'success': 'Login successful', 'token': token.key}, status=status.HTTP_200_OK)
 
 
 class LogoutView(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication, )
 
     def get(self, request):
-        logout(request)
-        return Response({'success': 'Logout successful'}, status=status.HTTP_200_OK)
+        if request.session.session_key:
+            logout(request)
+            return Response({'success': 'Logout successful'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': "You haven't logged in yet"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RequestPasswordResetEmail(generics.GenericAPIView):
@@ -146,7 +152,7 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
 class GoogleAuthentication(generics.GenericAPIView):
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('/api/auth/accounts/google/login/?process=login')
+        if request.session.session_key:
+            return Response({'error': 'You are already logged in. Please logout first.'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'error': 'You are already logged in from another account. Please logout first.'}, status=status.HTTP_400_BAD_REQUEST)
+            return redirect('/api/auth/accounts/google/login/?process=login')

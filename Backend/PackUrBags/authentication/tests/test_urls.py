@@ -47,6 +47,6 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(found.func.__name__, GoogleAuthentication.as_view().__name__)
 
     def test_google_auth_redirect_url_is_resolved(self):
-        path = reverse('google-redirect')
+        path = reverse('home')
         found = resolve(path)
         self.assertEqual(found.func.__name__, HomeView.as_view().__name__)
