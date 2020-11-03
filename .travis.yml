@@ -23,10 +23,11 @@ matrix:
             - fonts-droid-fallback
       before_script:
         - cd ./Frontend/
-        - git clone https://github.com/flutter/flutter.git -b beta
+        - git clone https://github.com/flutter/flutter.git -b master
+        - ./flutter/bin/flutter config --enable-web
         - ./flutter/bin/flutter doctor
       script:
-        - ./flutter/bin/flutter test
+        - ./flutter/bin/flutter build web
       cache:
         directories:
           - $HOME/.pub-cache
