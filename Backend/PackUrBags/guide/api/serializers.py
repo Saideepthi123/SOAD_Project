@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from guide.models import GuideData 
-from rest_framework.response import Response
+from guide.models import GuideData
 
 
 class GuideDataSerializer(serializers.ModelSerializer):

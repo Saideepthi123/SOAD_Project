@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'guide',
     'monuments',
-    # 'rest_framework.authtoken',
+    'rest_framework.authtoken',
     'knox',
 ]
 
@@ -91,7 +91,7 @@ AUTH_USER_MODEL = 'authentication.UserData'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'PackUrBagsDB',
+        'NAME': 'PackUrBags',
         'CLIENT': {
             'host': 'mongodb+srv://soad:subu@cluster0.rllki.mongodb.net/PackUrBags?retryWrites=true&w=majority',
             'username': 'soad',
@@ -108,6 +108,9 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ]
 }
 
 # Password validation
@@ -134,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 

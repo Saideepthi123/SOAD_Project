@@ -1,13 +1,16 @@
 from djongo import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from datetime import datetime
-
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 # Create your models here.
 
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
+    def create_user(self, email, username, first_name, last_name, phone_number, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         if not username:
@@ -18,15 +21,21 @@ class UserAccountManager(BaseUserManager):
         )
 
         user.username = username
+        user.first_name = first_name
+        user.last_name = last_name
+        user.phone_number = phone_number
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password):
+    def create_superuser(self, email, username, first_name, last_name, phone_number, password):
         user = self.create_user(
             email=self.normalize_email(email),
             username=username,
             password=password,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
         )
 
         user.is_admin = True
@@ -52,7 +61,7 @@ class UserData(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', ]
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone_number', ]
 
     objects = UserAccountManager()
 
@@ -66,3 +75,9 @@ class UserData(AbstractBaseUser):
     # Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
     def has_module_perms(self, app_label):
         return True
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender=settings.AUTH_USER_MODEL, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)

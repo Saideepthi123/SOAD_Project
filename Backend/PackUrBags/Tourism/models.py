@@ -44,8 +44,8 @@ class Payment(models.Model):
         booking = Booking.objects.get(booking_id=self.booking_id)
         return booking
 
-    def __int__(self):
-        return self.payment_id
+    def __str__(self):
+        return str(self.payment_id)
 
 
 class UserHistory(models.Model):
