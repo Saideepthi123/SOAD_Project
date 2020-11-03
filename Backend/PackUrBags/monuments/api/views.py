@@ -1,13 +1,9 @@
 from rest_framework import status
 from rest_framework.response import Response
-from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from monuments.models import Monument, MonumentInfo, City 
+from monuments.models import Monument, MonumentInfo, City
 from .serializers import MonumentDataSerializer, MonumentInfoDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
-from test.test_import import data
 from rest_framework.views import APIView
 from .serializers import CityDataSerializer, MonumentInfoDataSerializer
 
@@ -20,7 +16,6 @@ class MonumentList(APIView):
             return Response(data=serializer.data)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
 
     def post(self, request):
         Monument_data = JSONParser().parse(request)
@@ -58,6 +53,7 @@ class MonumentDetail(APIView):
             data = {'message': 'successfully deleted'}
         return Response(data)
 
+
 class MonumentInfoList(APIView):
     def get(self, request):
         try:
@@ -67,7 +63,6 @@ class MonumentInfoList(APIView):
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-
     def post(self, request):
         Monument_data = JSONParser().parse(request)
         serializer = MonumentInfoDataSerializer(data=Monument_data)
@@ -76,6 +71,7 @@ class MonumentInfoList(APIView):
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class MonumentInfoDetail(APIView):
     def get(self, request):
@@ -94,22 +90,27 @@ class MonumentInfoDetail(APIView):
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+
 class CityList(APIView):
     def get(self, request):
         try:
             data = City.objects.all()
             serializer = CityDataSerializer(data, many=True)
-            return Response(data=serializer.data)
+            data = serializer.data
+            for x in range(len(data)):
+                data[x]['city_id'] = City.objects.get(city_name=data[x]['city_name']).city_id
+            return Response(data)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
 
     def post(self, request):
         city_data = JSONParser().parse(request)
         serializer = CityDataSerializer(data=city_data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            data = serializer.data
+            data['city_id'] = City.objects.get(city_name=data['city_name']).city_id
+            return Response(data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -135,8 +136,7 @@ class CityDetail(APIView):
     def delete(self, request, slug):
         hdata = City.objects.get(city_id=slug)
         delresult = hdata.delete()
-        data = {'message': 'error during deletion'}
+        data = {'message': 'Error during deletion'}
         if delresult[0] == 1:
-            data = {'message': 'successfully deleted'}
+            data = {'message': 'Successfully deleted'}
         return Response(data)
-    	

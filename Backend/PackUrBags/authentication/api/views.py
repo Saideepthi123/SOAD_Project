@@ -17,6 +17,12 @@ from rest_framework.authentication import TokenAuthentication
 # Create your views here.
 
 
+class HomeView(generics.GenericAPIView):
+
+    def get(self, request):
+        return Response({'message': 'Welcome to PackUrBags'}, status=status.HTTP_200_OK)
+
+
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
@@ -63,22 +69,28 @@ class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request):
-        user = request.data
-        serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
-        account = authenticate(email=user['email'], password=user['password'])
-        account.id = account.user_id
-        token = Token.objects.get(user=account)
-        login(request, account)
-        return Response({'success': 'Login successful', 'token': token.key}, status=status.HTTP_200_OK)
+        if request.session.session_key:
+            return Response({'error': 'Already another user is logged in'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            user = request.data
+            serializer = self.serializer_class(data=user)
+            serializer.is_valid(raise_exception=True)
+            account = authenticate(email=user['email'], password=user['password'])
+            account.id = account.user_id
+            token = Token.objects.get(user=account)
+            login(request, account)
+            return Response({'success': 'Login successful', 'token': token.key}, status=status.HTTP_200_OK)
 
 
 class LogoutView(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication, )
 
     def get(self, request):
-        logout(request)
-        return Response({'success': 'Logout successful'}, status=status.HTTP_200_OK)
+        if request.session.session_key:
+            logout(request)
+            return Response({'success': 'Logout successful'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': "You haven't logged in yet"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RequestPasswordResetEmail(generics.GenericAPIView):
@@ -135,3 +147,12 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
         except DjangoUnicodeDecodeError:
             return Response({'error': 'Token is not valid, please request a new one'},
                             status=status.HTTP_401_UNAUTHORIZED)
+
+
+class GoogleAuthentication(generics.GenericAPIView):
+
+    def get(self, request):
+        if request.session.session_key:
+            return Response({'error': 'You are already logged in. Please logout first.'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return redirect('/api/auth/accounts/google/login/?process=login')

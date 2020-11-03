@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class City(models.Model):
@@ -11,7 +12,6 @@ class City(models.Model):
 
     def __str__(self):
         return self.city_name
-
 
 
 class Monument(models.Model):

@@ -26,8 +26,8 @@ class UserDataSerializer(serializers.ModelSerializer):
         instance.save()
         return super().update(instance, validated_data)
 
-class BookingDataSerializer(serializers.ModelSerializer):
 
+class BookingDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ('booking_id', 'user_email', 'guide_email', 'timestamp')
@@ -48,10 +48,11 @@ class BookingDataSerializer(serializers.ModelSerializer):
         instance.save()
         return super().update(instance, validated_data)
 
+
 class PaymentDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = ('payment_id', 'booking_id', 'user_email', 'guide_email', 'timestamp', 'mode_of_payment', )
+        fields = ('payment_id', 'booking_id', 'user_email', 'guide_email', 'timestamp', 'mode_of_payment',)
 
     def create(self, validated_data):
         try:
@@ -70,10 +71,14 @@ class PaymentDataSerializer(serializers.ModelSerializer):
         instance.save()
         return super().update(instance, validated_data)
 
+
 class UserHistoryDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserHistory
-        fields = ('user_email', 'mode_of_payment', 'timestamp', 'mode_of_travel', 'travel_amount', 'restaurant', 'food_amount', 'lodge', 'stay_amount',)
+        fields = (
+            'user_email', 'mode_of_payment', 'timestamp', 'mode_of_travel', 'travel_amount', 'restaurant',
+            'food_amount',
+            'lodge', 'stay_amount',)
 
     def create(self, validated_data):
         try:

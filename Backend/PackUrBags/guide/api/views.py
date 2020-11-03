@@ -1,18 +1,15 @@
 from rest_framework import status
 from rest_framework.response import Response
-from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from guide.models import GuideData
 from monuments.models import Monument
 from .serializers import GuideDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
-from test.test_import import data
 from rest_framework.views import APIView
 
 
 class GuideList(APIView):
+
     def get(self, request):
         try:
             data = GuideData.objects.all()
@@ -20,7 +17,6 @@ class GuideList(APIView):
             return Response(data=serializer.data)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
 
     def post(self, request):
         guide_data = JSONParser().parse(request)
@@ -33,6 +29,7 @@ class GuideList(APIView):
 
 
 class GuideDetail(APIView):
+
     def get(self, request, slug):
         hdata = GuideData.objects.get(guide_id=slug)
         serializer = GuideDataSerializer(hdata)
