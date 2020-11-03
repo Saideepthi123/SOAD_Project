@@ -1,10 +1,10 @@
-from django.test import SimpleTestCase
+from rest_framework.test import APITestCase
 from django.urls import reverse, resolve
 from authentication.api.views import RegisterView, LoginAPIView, LogoutView, VerifyEmail, \
     RequestPasswordResetEmail, PasswordTokenCheckAPI, PasswordReset, GoogleAuthentication, HomeView
 
 
-class TestUrls(SimpleTestCase):
+class TestAuthenticationUrls(APITestCase):
 
     def test_register_url_is_resolved(self):
         path = reverse('register')
