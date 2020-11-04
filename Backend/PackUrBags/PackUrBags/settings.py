@@ -48,8 +48,13 @@ INSTALLED_APPS = [
     'guide',
     'monuments',
     'rest_framework.authtoken',
-    'knox',
+    
 ]
+
+
+if DEBUG is True:
+    INSTALLED_APPS += ('corsheaders', )
+    CORS_ORIGIN_ALLOW_ALL = True
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
@@ -57,6 +62,7 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
