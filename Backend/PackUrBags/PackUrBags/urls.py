@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from authentication.api.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Tourism.urls'))
+    path('api/auth/', include('authentication.api.urls')),
+    path('api/guide', include('guide.api.urls')),
+    path('api/', include('Tourism.api.urls')),
+    path('api/', include('monuments.api.urls')),
+    path('accounts/profile/', HomeView.as_view(), name="home"),
 ]

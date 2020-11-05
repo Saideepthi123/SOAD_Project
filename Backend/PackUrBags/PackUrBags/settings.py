@@ -25,7 +25,7 @@ SECRET_KEY = '(bl0!sqfyegu$h*(o8fwle4tu-)12joyh2yy_))q5@@gyln@@6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,14 +37,32 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'Tourism',
+    'authentication',
     'rest_framework',
+    'guide',
+    'monuments',
     'rest_framework.authtoken',
+    
 ]
+
+
+if DEBUG is True:
+    INSTALLED_APPS += ('corsheaders', )
+    CORS_ORIGIN_ALLOW_ALL = True
+
+SITE_ID = 1
+SOCIALACCOUNT_QUERY_EMAIL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -71,7 +89,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
-AUTH_USER_MODEL = 'Tourism.UserData'
+AUTH_USER_MODEL = 'authentication.UserData'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -87,6 +105,18 @@ DATABASES = {
             'authMechanism': 'SCRAM-SHA-1'
         }
     }
+}
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+REST_FRAMEWORK = {
+    'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ]
 }
 
 # Password validation
@@ -113,7 +143,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -125,7 +155,15 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'tourism.packurbags@gmail.com'
+EMAIL_HOST_PASSWORD = 'packurbags@123'

@@ -7,7 +7,7 @@ class BackImage with ChangeNotifier{
   String _metadata;
 
   Widget get currentimage => _currentimage;
-  List get cities => _cities; 
+  List get cities => _cities;
   String get cityname => _currname;
   String get metadata => _metadata;
 
@@ -15,7 +15,7 @@ class BackImage with ChangeNotifier{
     _currentimage = Container(
       key: Key(image),
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage('img/Image'+image+".jpg"),fit: BoxFit.fill )
+        image: DecorationImage(image: AssetImage('./img/Image'+image+".jpg"),fit: BoxFit.fill )
       ),
     );
     notifyListeners();

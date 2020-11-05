@@ -147,7 +147,7 @@ class _HomeShelfState extends State<HomeShelf> {
                             child: Container(
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: AssetImage('img/CardImage' +
+                                      image: AssetImage('./img/CardImage' +
                                           change.cities[index] +
                                           '.jpg'),
                                       fit: BoxFit.fill)),

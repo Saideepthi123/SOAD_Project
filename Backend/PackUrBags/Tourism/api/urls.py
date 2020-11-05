@@ -1,9 +1,25 @@
-from django.urls import include, path
+from django.urls import path, include
 from . import views
-from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path('user',views.user_list_view, name="user_list_view"),
-    path('user/<slug:slug>',views.user_detail_view, name="user_detail_view"),
-    # path('api-token-auth/', obtain_auth_token, name='api_token_auth'),    
+    path('user', views.UserList.as_view(), name="UserList"),
+    path('user/<slug:slug>', views.UserDetail.as_view(), name="UserDetail"),
+    path('user/modify/<slug:slug>', views.UserDetail.as_view(), name="UserDetail"),
+    path('user/unregister/<slug:slug>', views.UserDetail.as_view(), name="UserDetail"),
+
+    path('booking/user/<slug:slug>', views.BookingDetailUser.as_view(), name="BookingDetailUser"),
+    path('booking/guide/<slug:slug>', views.BookingDetailGuide.as_view(), name="BookingDetailGuide"),
+    path('booking/<slug:slug>', views.BookingDetail.as_view(), name="BookingDetail"),
+    path('booking/cancel/<slug:slug>', views.BookingDetail.as_view(), name="BookingDetail"),
+    path('booking', views.BookingList.as_view(), name="BookingList"),
+
+    path('payment/user/<slug:slug>', views.PaymentDetailUser.as_view(), name="PaymentDetailUser"),
+    path('payment/guide/<slug:slug>', views.PaymentDetailGuide.as_view(), name="PaymentDetailGuide"),
+    path('payment/<slug:slug>', views.PaymentDetail.as_view(), name="PaymentDetail"),
+    path('payment/cancel/<slug:slug>', views.PaymentDetail.as_view(), name="PaymentDetail"),
+    path('payment', views.PaymentList.as_view(), name="PaymentList"),   
+
+    path('userhistory/user/<slug:slug>', views.UserHistoryDetailUser.as_view(), name="UserHistoryDetailUser"),
+    path('userhistory', views.UserHistoryList.as_view(), name="UserHistoryList"), 
+    path('userhistory/<slug:slug>', views.UserHistoryDetail.as_view(), name="UserHistoryDetail"),
 ]
