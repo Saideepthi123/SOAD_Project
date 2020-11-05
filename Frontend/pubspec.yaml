@@ -31,6 +31,7 @@ dependencies:
   provider:
   google_fonts:
   font_awesome_flutter:
+  http:
 
 dev_dependencies:
   flutter_test:

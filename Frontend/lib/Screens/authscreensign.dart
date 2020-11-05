@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:travel/APIcalls/Auth.dart';
+import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/HomePage.dart';
 import 'package:travel/Screens/SearchScreen.dart';
+import 'package:http/http.dart';
 
 class AuthScreenSign extends StatefulWidget {
   final Function signin;
@@ -18,6 +24,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
   String fullname = "";
   String email = "";
   String password = "";
+  String phone = "";
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(vertical: 25),
+            margin: EdgeInsets.symmetric(vertical: 5),
             alignment: Alignment.topLeft,
             child: RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -64,14 +71,16 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                     SizedBox(width: 40),
                     Text(
                       "Sign Up with Google",
-                      style: GoogleFonts.raleway(color: Colors.white,fontSize: 18),
+                      style: GoogleFonts.raleway(
+                          color: Colors.white, fontSize: 18),
                     ),
                     SizedBox(width: 40),
                   ],
                 ),
                 color: Colors.blue,
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomePage()));
                 }),
           ),
           SizedBox(
@@ -152,6 +161,29 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                           color: Colors.black, fontWeight: FontWeight.w500),
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
+                        hintText: "Phone Number",
+                        hintStyle: GoogleFonts.raleway(
+                            color: Colors.black, fontWeight: FontWeight.w500),
+                        border: InputBorder.none,
+                      ),
+                      onSaved: (val) => phone = val,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffE8E8E8),
+                    ),
+                    width: 460,
+                    child: TextFormField(
+                      style: GoogleFonts.raleway(
+                          color: Colors.black, fontWeight: FontWeight.w500),
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
                         hintText: "Email ID",
                         hintStyle: GoogleFonts.raleway(
                             color: Colors.black, fontWeight: FontWeight.w500),
@@ -188,11 +220,48 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                     height: _screenSize.height * 0.03,
                   ),
                   RaisedButton(
-                    onPressed: () async {
-                      // _key.currentState.save();
-                      // auth.registerWithEmailAndPassword(context, username,fullname, email, password).then((value) => globals.setUserData(value).then((value){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
-                      // }));
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            Widget center = CircularProgressIndicator();
+                            String text = "Making Account";
+                            return Dialog(
+                              child: Consumer<User>(
+                                builder: (context, user, child) {
+                                  return FutureBuilder(
+                                      future: AuthService.register(email, username, phone,
+                                          password, fullname),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          Response response = snapshot.data;
+                                          if (response.statusCode == 201) {
+
+                                              center = Icon(
+                                                Icons.check,
+                                                color: Colors.green,
+                                              );
+                                            Timer timer =
+                                                new Timer(Duration(seconds: 2), () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HomePage()));
+                                            });
+                                          }
+                                        }
+                                        return Column(
+                                          children: [
+                                            center,
+                                            Text(text),
+                                          ],
+                                        );
+                                      });
+                                }
+                              ),
+                            );
+                          });
                     },
                     color: Color(0xffb8e6f5),
                     child: Text(
