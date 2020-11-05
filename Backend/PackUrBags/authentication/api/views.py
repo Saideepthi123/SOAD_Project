@@ -44,6 +44,8 @@ class RegisterView(generics.GenericAPIView):
         message = {'email_body': email_body, 'email_subject': 'Verify your email', 'to_email': (user.email,)}
         Util.send_email(message)
         user_data['token'] = token.key
+        user_data['user_id'] = user.id
+        user_data['is_verified'] = user.is_verified
         return Response(user_data, status=status.HTTP_201_CREATED)
 
 
@@ -79,7 +81,10 @@ class LoginAPIView(generics.GenericAPIView):
             account.id = account.user_id
             token = Token.objects.get(user=account)
             login(request, account)
-            return Response({'success': 'Login successful', 'token': token.key}, status=status.HTTP_200_OK)
+            return Response({'success': 'Login successful', 'token': token.key, 'user_id': account.user_id,
+                             'username': account.username, 'email': account.email, 'first_name': account.first_name,
+                             'last_name': account.last_name, 'phone_number': account.phone_number,
+                             'is_verified': account.is_verified}, status=status.HTTP_200_OK)
 
 
 class LogoutView(generics.GenericAPIView):
