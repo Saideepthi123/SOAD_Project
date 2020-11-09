@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from requests.utils import default_headers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
 if DEBUG is True:
     INSTALLED_APPS += ('corsheaders', )
     CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_HEADERS = default_headers + ('http://localhost:55065')
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
