@@ -48,13 +48,15 @@ INSTALLED_APPS = [
     'guide',
     'monuments',
     'rest_framework.authtoken',
-    
+    'corsheaders',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
-if DEBUG is True:
-    INSTALLED_APPS += ('corsheaders', )
-    CORS_ORIGIN_ALLOW_ALL = True
+# if DEBUG is True:
+#     INSTALLED_APPS += ('corsheaders', )
+#     CORS_ORIGIN_ALLOW_ALL = True
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
