@@ -69,9 +69,6 @@ CORS_ALLOW_HEADERS = [
         'x-csrftoken',
         'x-requested-with',
     ]
-CORS_ALLOW_CREDENTIALS = True
-   
->>>>>>> 80d8ed681e468aaf8e01a05ed5e63970adc81d3d
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
