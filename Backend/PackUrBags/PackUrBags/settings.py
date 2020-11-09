@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from requests.utils import default_headers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,9 +55,23 @@ INSTALLED_APPS = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-# if DEBUG is True:
-#     INSTALLED_APPS += ('corsheaders', )
-#     CORS_ORIGIN_ALLOW_ALL = True
+
+INSTALLED_APPS += ('corsheaders', )
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = [
+        'accept',
+        'accept-encoding',
+        'authorization',
+        'content-type',
+        'dnt',
+        'origin',
+        'user-agent',
+        'x-csrftoken',
+        'x-requested-with',
+    ]
+CORS_ALLOW_CREDENTIALS = True
+   
+>>>>>>> 80d8ed681e468aaf8e01a05ed5e63970adc81d3d
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
