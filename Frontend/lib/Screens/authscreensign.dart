@@ -236,7 +236,6 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                                         if (snapshot.hasData) {
                                           Response response = snapshot.data;
                                           if (response.statusCode == 201) {
-
                                               center = Icon(
                                                 Icons.check,
                                                 color: Colors.green,
