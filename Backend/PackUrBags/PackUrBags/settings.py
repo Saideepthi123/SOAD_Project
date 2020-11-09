@@ -53,10 +53,10 @@ INSTALLED_APPS = [
 ]
 
 
-if DEBUG is True:
-    INSTALLED_APPS += ('corsheaders', )
-    CORS_ALLOW_ALL_ORIGINS = True
-    CORS_ALLOW_HEADERS = [
+
+INSTALLED_APPS += ('corsheaders', )
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = [
         'accept',
         'accept-encoding',
         'authorization',
@@ -67,7 +67,7 @@ if DEBUG is True:
         'x-csrftoken',
         'x-requested-with',
     ]
-    CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
    
 
 SITE_ID = 1
