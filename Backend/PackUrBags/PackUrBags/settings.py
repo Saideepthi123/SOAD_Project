@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from requests.utils import default_headers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,12 +48,16 @@ INSTALLED_APPS = [
     'guide',
     'monuments',
     'rest_framework.authtoken',
-    'corsheaders',
+
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_REPLACE_HTTPS_REFERER = True
+CORS_ALLOWED_ORIGINS = [
+    "https://packurbags.azurewebsites.net",
+    "http://127.0.0.1:8000",
+]
+
+if DEBUG is True:
+    INSTALLED_APPS += ('corsheaders', )
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
