@@ -48,13 +48,16 @@ INSTALLED_APPS = [
     'guide',
     'monuments',
     'rest_framework.authtoken',
-    
+
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://packurbags.azurewebsites.net",
+    "http://127.0.0.1:8000",
+]
 
 if DEBUG is True:
     INSTALLED_APPS += ('corsheaders', )
-    CORS_ORIGIN_ALLOW_ALL = True
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
