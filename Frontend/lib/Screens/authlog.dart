@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/HomePage.dart';
-import 'package:travel/Screens/SearchScreen.dart';
 
 class AuthScreenLogin extends StatefulWidget {
   final Function signin;
@@ -160,6 +159,7 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                                         if (snapshot.hasData) {
                                           Response response = snapshot.data;
                                           if (response.statusCode == 200) {
+                                            print(response.body);
                                             user.populateUserLogin(response.body);
                                             center = Icon(
                                               Icons.check,
