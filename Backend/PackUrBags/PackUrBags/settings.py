@@ -64,7 +64,8 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    '*'
+    "https://packurbags.azurewebsites.net",
+    "http://127.0.0.1:8000",
 ]
 CSRF_TRUSTED_ORIGINS = [
     '*',
