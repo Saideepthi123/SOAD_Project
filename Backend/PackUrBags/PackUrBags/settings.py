@@ -51,9 +51,23 @@ INSTALLED_APPS = [
 
 ]
 
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 CORS_ALLOWED_ORIGINS = [
-    "https://packurbags.azurewebsites.net",
-    "http://127.0.0.1:8000",
+    '*'
+]
+CSRF_TRUSTED_ORIGINS = [
+    '*',
 ]
 
 if DEBUG is True:
