@@ -4,7 +4,7 @@ import 'dart:html' as http;
 import 'package:http/http.dart';
 
 class AuthService{
-  static final url="https://packurbags.azurewebsites.net/api/";
+  static final url="https://cors-anywhere.herokuapp.com/https://packurbags.azurewebsites.net/api/";
 
   static Future<Response> register (String email,String username,String phone,String password,String firstname,) {
     final client = HttpClient();
