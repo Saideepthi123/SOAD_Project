@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/HomePage.dart';
+import 'package:travel/Screens/SearchScreen.dart';
 
 class AuthScreenLogin extends StatefulWidget {
   final Function signin;
@@ -78,6 +79,11 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                 color: Colors.blue,
                 onPressed: () {
                   print("Daba mat na");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              HomeScreen()));
                 }),
           ),
           SizedBox(
@@ -171,7 +177,7 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          HomePage()));
+                                                          HomeScreen()));
                                             });
                                           }
                                         }

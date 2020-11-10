@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/Models/Image.dart';
 import 'package:travel/Screens/exploreCity.dart';
+import 'package:travel/Tools/Global%20tools.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -107,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen>
     final notCol = Theme.of(context).accentColor.withOpacity(0.4);
     final _screensize = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: TopAppBar(context),
       body: Container(
         child: Row(
           children: [

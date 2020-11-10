@@ -248,7 +248,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          HomePage()));
+                                                          HomeScreen()));
                                             });
                                           }
                                         }

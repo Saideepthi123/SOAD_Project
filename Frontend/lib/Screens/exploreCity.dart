@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/Models/Image.dart';
+import 'package:travel/Tools/Global%20tools.dart';
 import 'package:travel/Tools/ImageShifter.dart';
 
 class ExploreWidget extends StatefulWidget {
@@ -35,7 +36,10 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                   ),
                   child: Stack(
                     children: [
-                      ImageShifter(),
+                      ImageShifter(
+                        xOffset: 0.0,
+                        yOffset: -1.0,
+                      ),
                       Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(left: 50),
@@ -91,40 +95,17 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                       Icon(Icons.account_circle)
                     ],
                   ),
-                  Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      height: 50,
-                      width: _screensize.width * 0.6 - 30,
-                      child: Row(
-                        children: [
-                          Icon(Icons.search),
-                          Container(
-                            width: _screensize.width * 0.45 - 30,
-                            child: TextField(
-                              autofillHints: [
-                                "Italy",
-                                "France",
-                                "Russia",
-                                "Japan"
-                              ],
-                              enableSuggestions: true,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                              onTap: () {},
-                              onChanged: (val) {
-                                // makeResults(val);
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                  SearchBar(
+                    width: _screensize.width*0.45 - 30,
+                    suggestions: [
+                        "Italy",
+                        "France",
+                        "Russia",
+                        "Japan"
+                    ],
+                    onChange: (val){
+                      print(val);
+                    },
                   ),
                   Padding(
                     padding: EdgeInsets.all(10),
@@ -132,24 +113,25 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                   Container(
                     width: _screensize.width * 0.48,
                     height: _screensize.height * 0.8,
+                    padding: EdgeInsets.all(10),
                     child: AnimatedList(
                         key: _key,
                         initialItemCount: change.cities.length,
                         itemBuilder: (context, index, animation) {
                           return SlideTransition(
                             position: animation.drive(myTween),
-                            child: InkWell(
-                              onTap: () {
-                                change.currimage(change.cities[index]);
-                                change.cityname = change.cities[index];
-                                print(change.cities);
-                              },
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                elevation: 20,
-                                color: Colors.blue,
-                                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              elevation: 20,
+                              color: Colors.blue,
+                              margin: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                              child: InkWell(
+                                onTap: () {
+                                  change.currimage(change.cities[index]);
+                                  change.cityname = change.cities[index];
+                                  print(change.cities);
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                       image: DecorationImage(

@@ -32,7 +32,10 @@ class MyApp extends StatelessWidget {
                 "A city is a large human settlement"),
             child: Stack(
               children: [
-                ImageShifter(),
+                ImageShifter(
+                  xOffset: -1.0,
+                  yOffset: 0.0,
+                ),
                 HomeShelf(),
               ],
             ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:travel/Screens/guidesTab.dart';
+import 'package:travel/Screens/visitTab.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 
 class CityPage extends StatefulWidget {
@@ -6,9 +8,18 @@ class CityPage extends StatefulWidget {
   _CityPageState createState() => _CityPageState();
 }
 
-class _CityPageState extends State<CityPage> {
+class _CityPageState extends State<CityPage> with SingleTickerProviderStateMixin{
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 5);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final _tabKey= UniqueKey();
     var _screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: TopAppBar(context),
@@ -33,19 +44,38 @@ class _CityPageState extends State<CityPage> {
             ),
             DefaultTabController(
               length: 5,
-              child: Container(
-                color: Colors.orangeAccent,
-                width: _screenSize.width * 0.6,
-                child: TabBar(
-                  indicatorColor: Colors.white,
-                  tabs: [
-                    Tab(text: "Visit"),
-                    Tab(text: "Guides"),
-                    Tab(text: "Food"),
-                    Tab(text: "Travel"),
-                    Tab(text: "Stay"),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  Container(
+                    color: Colors.orangeAccent,
+                    width: _screenSize.width * 0.6,
+                    child: TabBar(
+                      controller: _tabController,
+                      indicatorColor: Colors.white,
+                      tabs: [
+                        Tab(text: "Visit"),
+                        Tab(text: "Guides"),
+                        Tab(text: "Food"),
+                        Tab(text: "Travel"),
+                        Tab(text: "Stay"),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: _screenSize.height*0.8,
+                    width: _screenSize.width*0.6,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        VisitTab(),
+                        GuidesTab(),
+                        Icon(Icons.fastfood,size: 80,),
+                        Icon(Icons.emoji_transportation,size: 80,),
+                        Icon(Icons.hotel,size: 80,)
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
           ],
