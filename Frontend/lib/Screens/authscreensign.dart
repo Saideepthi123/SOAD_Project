@@ -221,6 +221,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      _key.currentState.save();
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -235,6 +236,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           Response response = snapshot.data;
+                                          print(response.body);
                                           if (response.statusCode == 201) {
                                               center = Icon(
                                                 Icons.check,
