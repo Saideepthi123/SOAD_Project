@@ -64,7 +64,7 @@ class SearchBar extends StatelessWidget {
           children: [
             Icon(Icons.search),
             Container(
-              width: width,
+              width: width*0.8,
               child: TextField(
                 autofillHints: suggestions,
                 enableSuggestions: true,

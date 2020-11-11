@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel/Models/City.dart';
+import 'package:travel/Screens/Monument.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 
 class VisitTab extends StatelessWidget {
@@ -40,43 +41,48 @@ class VisitTab extends StatelessWidget {
                 );
               },
               itemBuilder: (context,idx){
-                return Card(
-                  elevation: 10,
-                    child: Container(
-                      height: _screenSize.height*0.3,
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Image.network(monument.imageURL,fit: BoxFit.fill,
-                          loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null ?
-                                loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                    : null,
+                return InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MonumentPage()));
+                  },
+                  child: Card(
+                    elevation: 10,
+                      child: Container(
+                        height: _screenSize.height*0.3,
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Image.network(monument.imageURL,fit: BoxFit.fill,
+                            loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null ?
+                                  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                      : null,
+                                ),
+                              );
+                            },
+                          ),
+                          Flexible(
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Flexible(child: Text(monument.monumentName, overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 30),)),
+                                  Text("State: "+monument.state,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 20),),
+                                  Flexible(child: Text(monument.info,style: TextStyle(fontSize: 15),)),
+                                ],
                               ),
-                            );
-                          },
-                        ),
-                        Flexible(
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Flexible(child: Text(monument.monumentName, overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 30),)),
-                                Text("State: "+monument.state,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 20),),
-                                Flexible(child: Text(monument.info,style: TextStyle(fontSize: 15),)),
-                              ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      ),
                     ),
-                    ),
-                  );
+                );
               },
             ),
           )

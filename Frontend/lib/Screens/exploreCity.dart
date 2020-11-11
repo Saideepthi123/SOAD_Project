@@ -112,7 +112,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                   ),
                   Container(
                     width: _screensize.width * 0.48,
-                    height: _screensize.height * 0.8,
+                    height: _screensize.height * 0.7,
                     padding: EdgeInsets.all(10),
                     child: AnimatedList(
                         key: _key,

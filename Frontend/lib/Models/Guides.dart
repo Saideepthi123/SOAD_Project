@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class Guide{
   int guideID;
   String guideName;
@@ -18,5 +21,32 @@ class Guide{
       monumentNames: json["monumentNames"],
       imageURL: json["imageURL"],
     );
+  }
+}
+
+class BookGuide extends ChangeNotifier{
+  DateTime startDate=DateTime.now();
+  DateTime endDate=DateTime.now();
+  String type="Pay by hour";
+  int guideID;
+
+
+  updateGuide(int id){
+    guideID=id;
+  }
+
+  updateStartDate(DateTime sD){
+    startDate=sD;
+    notifyListeners();
+  }
+
+  updateEndDate(DateTime eD){
+    endDate=eD;
+    notifyListeners();
+  }
+
+  updateType(String type0){
+    type=type0;
+    notifyListeners();
   }
 }
