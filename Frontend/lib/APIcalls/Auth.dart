@@ -40,6 +40,10 @@ class AuthService {
         }));
   }
 
+  static Future<Response> googleAuth() {
+    return get(url + 'auth/google-auth');
+  }
+
   static Future<Response> logout() {
     return get(url + 'auth/logout');
   }

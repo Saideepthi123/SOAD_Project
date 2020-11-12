@@ -19,6 +19,7 @@ class _HomeShelfState extends State<HomeShelf> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize= MediaQuery.of(context).size;
     var change = Provider.of<BackImage>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -124,8 +125,8 @@ class _HomeShelfState extends State<HomeShelf> {
                 ),
               ),
               Container(
-                width: 900,
-                height: 300,
+                width: screenSize.width*0.5,
+                height: screenSize.height*0.45,
                 child: AnimatedList(
                     key: _key,
                     scrollDirection: Axis.horizontal,
@@ -152,8 +153,8 @@ class _HomeShelfState extends State<HomeShelf> {
                                           change.cities[index] +
                                           '.jpg'),
                                       fit: BoxFit.fill)),
-                              height: 300,
-                              width: 200,
+                              height: screenSize.height*0.45,
+                              width: screenSize.width*0.25,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

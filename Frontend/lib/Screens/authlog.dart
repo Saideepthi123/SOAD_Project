@@ -78,11 +78,8 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                 color: Colors.blue,
                 onPressed: () {
                   print("Daba mat na");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              HomeScreen()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                 }),
           ),
           SizedBox(
@@ -156,49 +153,52 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                             String text = "Logging you in";
                             return Dialog(
                               child: Consumer<User>(
-                                builder: (context, user, child) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        padding:EdgeInsets.symmetric(vertical: 35,horizontal: 15),
-                                        child: FutureBuilder(
-                                            future: AuthService.login(email,
-                                                password),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.hasData) {
-                                                http.Response response = snapshot.data;
-                                                if (response.statusCode == 200) {
-                                                  print(response.headers['set-cookie']);
-                                                  user.populateUserLogin(response.body);
-                                                  center = Icon(
-                                                    Icons.check,
-                                                    color: Colors.green,
-                                                  );
-                                                  text = "Login Succesfull";
-                                                  Timer timer =
-                                                  new Timer(Duration(seconds: 2), () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                HomeScreen()));
-                                                  });
-                                                }
+                                  builder: (context, user, child) {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 35, horizontal: 15),
+                                      child: FutureBuilder(
+                                          future: AuthService.login(
+                                              email, password),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              http.Response response =
+                                                  snapshot.data;
+                                              if (response.statusCode == 200) {
+                                                print(response
+                                                    .headers['set-cookie']);
+                                                user.populateUserLogin(
+                                                    response.body);
+                                                center = Icon(
+                                                  Icons.check,
+                                                  color: Colors.green,
+                                                );
+                                                text = "Login Succesful";
+                                                Timer timer = new Timer(
+                                                    Duration(seconds: 2), () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomeScreen()));
+                                                });
                                               }
-                                              return Column(
-                                                children: [
-                                                  center,
-                                                  Text(text),
-                                                ],
-                                              );
-                                            }),
-                                      ),
-                                    ],
-                                  );
-                                }
-                              ),
+                                            }
+                                            return Column(
+                                              children: [
+                                                center,
+                                                Text(text),
+                                              ],
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                );
+                              }),
                             );
                           });
                     },

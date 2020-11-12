@@ -79,8 +79,11 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                 ),
                 color: Colors.blue,
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                  AuthService.googleAuth().then((value){
+                    print(value.toString()+"google");
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => HomePage()));
+                  });
                 }),
           ),
           SizedBox(

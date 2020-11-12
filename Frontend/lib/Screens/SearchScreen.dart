@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen>
           children: [
             Container(
               width: _screensize.width * 0.15,
-              color: Theme.of(context).primaryColor.withOpacity(0.5),
+              color: Theme.of(context).backgroundColor,
               child: Column(
                 children: [
                   Spacer(
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen>
                           height: 40,
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeIn,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Theme.of(context).accentColor,
                           width: _selected[0]?4:0,
                         ),
                         Container(
@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen>
                           height: 40,
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeIn,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Theme.of(context).accentColor,
                           width: _selected[1]?4:0,
                         ),
                         Container(
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen>
                           height: 40,
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeIn,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Theme.of(context).accentColor,
                           width: _selected[2]?4:0,
                         ),
                         Container(
@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen>
                           height: 40,
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeIn,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Theme.of(context).accentColor,
                           width: _selected[3]?4:0,
                         ),
                         Container(

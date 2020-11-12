@@ -36,6 +36,7 @@ class Monument{
   factory Monument.fromJSON(Map<String,dynamic> json){
     return Monument(
       monumentName: json["monument_name"],
+      city: json["city_name"],
       state: json["state"],
       country: json["country"],
       cityID: json["city_id"],

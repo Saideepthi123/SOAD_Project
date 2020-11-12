@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/Models/User.dart';
 import 'Screens/LandingPage.dart';
@@ -18,6 +19,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<User>(create: (_) => User() ),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          primaryColor: Color(0xff577399),
+          accentColor: Color(0xffFE5F55),
+          primaryColorLight: Color(0xffBDD5EA),
+          primaryColorDark: Color(0xff495867),
+          backgroundColor: Color(0xffF7F7FF),
+          fontFamily: 'Raleway'
+        ),
         home: Scaffold(
           backgroundColor: Colors.black,
           body: ChangeNotifierProvider<BackImage>(

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Guides.dart';
 import 'package:travel/Tools/Global%20tools.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travel/Tools/GuideFilter.dart';
 
 class GuidesTab extends StatefulWidget {
@@ -88,16 +87,20 @@ class _GuidesTabState extends State<GuidesTab> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: 30),
                                   )),
-                                  // Text(
-                                  //   "State: " + monument.state,
-                                  //   overflow: TextOverflow.ellipsis,
-                                  //   style: TextStyle(fontSize: 20),
-                                  // ),
-                                  // Flexible(
-                                  //     child: Text(
-                                  //   monument.info,
-                                  //   style: TextStyle(fontSize: 15),
-                                  // )),
+                                  Row(
+                                    children: [
+                                  Text(
+                                  "Rating: " + guide.rating.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 20),
+                          ),
+
+                                      Icon(
+                                          Icons.star
+                                      ),
+                                    ],
+                                  )
+
                                 ],
                               ),
                             ),
