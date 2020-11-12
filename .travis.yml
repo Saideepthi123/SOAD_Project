@@ -7,7 +7,7 @@ matrix:
       install:
         - pip install -r ./Backend/PackUrBags/requirements.txt
       script:
-        - pytest
+        - pytest --import-mode=importlib
     
     - language: dart
       os:
