@@ -7,7 +7,6 @@ matrix:
       install:
         - pip install -r ./Backend/PackUrBags/requirements.txt
       script:
-        - python manage.py test
         - pytest
     
     - language: dart
