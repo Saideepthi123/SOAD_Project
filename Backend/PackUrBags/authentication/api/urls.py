@@ -3,7 +3,6 @@ from authentication.api.views import RegisterView, VerifyEmail, LoginAPIView, Pa
     RequestPasswordResetEmail, LogoutView, GoogleAuthentication
 
 urlpatterns = [
-    # path(''),
     path('accounts/', include('allauth.urls')),
     path('register/', RegisterView.as_view(), name="register"),
     path('login/', LoginAPIView.as_view(), name="login"),

@@ -20,7 +20,7 @@ class GuideList(APIView):
 
     def post(self, request):
         guide_data = JSONParser().parse(request)
-        serializer = GuideDataSerializer(data=guide_data)
+        serializer = GuideDataSerializer(data=guide_data, many=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -47,9 +47,9 @@ class GuideDetail(APIView):
     def delete(self, request, slug):
         hdata = GuideData.objects.get(guide_id=slug)
         delresult = hdata.delete()
-        data = {'message': 'error during deletion'}
+        data = {'message': 'Error during deletion'}
         if delresult[0] == 1:
-            data = {'message': 'successfully deleted'}
+            data = {'message': 'Successfully deleted'}
         return Response(data)
 
 

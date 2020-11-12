@@ -231,48 +231,6 @@ class UserHistoryList(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class PaymentDetailUser(APIView):
-
-    def get(self, request, slug):
-        try:
-            hdata = Payment.objects.filter(user_email=slug)
-            serializer = PaymentDataSerializer(hdata, many=True)
-            return Response(serializer.data)
-        except ObjectDoesNotExist:
-            return Response(status.HTTP_404_NOT_FOUND)
-
-
-class PaymentDetailGuide(APIView):
-
-    def get(self, request, slug):
-        try:
-            hdata = Payment.objects.filter(guide_email=slug)
-            serializer = PaymentDataSerializer(hdata, many=True)
-            return Response(serializer.data)
-        except ObjectDoesNotExist:
-            return Response(status.HTTP_404_NOT_FOUND)
-
-
-class UserHistoryList(APIView):
-
-    def get(self, request):
-        try:
-            data = UserHistory.objects.all()
-            serializer = UserHistoryDataSerializer(data, many=True)
-            return Response(data=serializer.data)
-        except ObjectDoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-    def post(self, request):
-        userhistory_data = JSONParser().parse(request)
-        serializer = UserHistoryDataSerializer(data=userhistory_data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 class UserHistoryDetail(APIView):
 
     def get(self, request, slug):

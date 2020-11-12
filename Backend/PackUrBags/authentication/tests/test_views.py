@@ -46,6 +46,7 @@ class TestAuthenticationViews(APITestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_login_view_post_no_data(self):
+        self.client.post(self.register_url, self.register_user_data, format="json")
         response = self.client.post(self.login_url)
         self.assertEqual(response.status_code, 400)
 
