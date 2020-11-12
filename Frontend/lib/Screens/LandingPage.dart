@@ -39,12 +39,13 @@ class _HomeShelfState extends State<HomeShelf> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FlatButton(
+                  RaisedButton(
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>LogIn()));
                     },
+                    color: Colors.transparent,
                     child: Text(
-                      "Option 1",
+                      "Log In / Sign Up",
                       style: GoogleFonts.lato(
                           color: Colors.white,
                           fontSize: 18,

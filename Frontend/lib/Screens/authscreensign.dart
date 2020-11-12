@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -230,35 +231,43 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                             return Dialog(
                               child: Consumer<User>(
                                 builder: (context, user, child) {
-                                  return FutureBuilder(
-                                      future: AuthService.register(email, username, phone,
-                                          password, fullname),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          Response response = snapshot.data;
-                                          print(response.body);
-                                          if (response.statusCode == 201) {
-                                              center = Icon(
-                                                Icons.check,
-                                                color: Colors.green,
-                                              );
-                                            Timer timer =
-                                                new Timer(Duration(seconds: 2), () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          HomeScreen()));
-                                            });
-                                          }
-                                        }
-                                        return Column(
-                                          children: [
-                                            center,
-                                            Text(text),
-                                          ],
-                                        );
-                                      });
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FutureBuilder(
+                                          future: AuthService.register(email, username, phone,
+                                              password, fullname),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              Response response = snapshot.data;
+                                              print(response.body);
+                                              if (response.statusCode == 201) {
+                                                user.populateUserRegister(response.body);
+                                                  center = Icon(
+                                                    Icons.check,
+                                                    color: Colors.green,
+                                                  );
+                                                  text = "Account Created !!";
+                                                Timer timer =
+                                                    new Timer(Duration(seconds: 2), () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomeScreen()));
+                                                });
+                                              }
+                                            }
+                                            return Column(
+                                              children: [
+                                                center,
+                                                Text(text),
+                                              ],
+                                            );
+                                          }),
+                                    ],
+                                  );
                                 }
                               ),
                             );

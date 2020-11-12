@@ -3,7 +3,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Models/User.dart';
@@ -157,36 +157,46 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                             return Dialog(
                               child: Consumer<User>(
                                 builder: (context, user, child) {
-                                  return FutureBuilder(
-                                      future: AuthService.login(email,
-                                          password),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          Response response = snapshot.data;
-                                          if (response.statusCode == 200) {
-                                            print(response.headers['set-cookie']);
-                                            user.populateUserLogin(response.body);
-                                            center = Icon(
-                                              Icons.check,
-                                              color: Colors.green,
-                                            );
-                                            Timer timer =
-                                            new Timer(Duration(seconds: 2), () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          HomeScreen()));
-                                            });
-                                          }
-                                        }
-                                        return Column(
-                                          children: [
-                                            center,
-                                            Text(text),
-                                          ],
-                                        );
-                                      });
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        padding:EdgeInsets.symmetric(vertical: 35,horizontal: 15),
+                                        child: FutureBuilder(
+                                            future: AuthService.login(email,
+                                                password),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.hasData) {
+                                                http.Response response = snapshot.data;
+                                                if (response.statusCode == 200) {
+                                                  print(response.headers['set-cookie']);
+                                                  user.populateUserLogin(response.body);
+                                                  center = Icon(
+                                                    Icons.check,
+                                                    color: Colors.green,
+                                                  );
+                                                  text = "Login Succesfull";
+                                                  Timer timer =
+                                                  new Timer(Duration(seconds: 2), () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                HomeScreen()));
+                                                  });
+                                                }
+                                              }
+                                              return Column(
+                                                children: [
+                                                  center,
+                                                  Text(text),
+                                                ],
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  );
                                 }
                               ),
                             );
