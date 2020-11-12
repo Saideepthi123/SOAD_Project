@@ -13,7 +13,6 @@ class AuthService {
     String password,
     String firstname,
   ) {
-    final client = HttpClient();
     return post(url + 'auth/register/',
         headers: <String, String>{
           'Content-Type': 'application/json',
