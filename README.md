@@ -3,6 +3,7 @@
 
 [![Build Status](https://travis-ci.com/vitthal-inani/SOAD_Project.svg?branch=master)](https://travis-ci.com/github/vitthal-inani/SOAD_Project)
 
+
 ## Cloning the project  
 * Run command `https://github.com/vitthal-inani/SOAD_Project.git` and change into the project folder
 * Create a virtual environment `env` in the repository (use virtualenv, etc)
