@@ -40,13 +40,13 @@ class _GuidesTabState extends State<GuidesTab> {
             ),
             //  cards
             Container(
-              height: _screenSize.height * 0.6,
+              height: _screenSize.height * 0.55,
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: 8,
                 separatorBuilder: (context, idx) {
                   return Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(8),
                   );
                 },
                 itemBuilder: (context, idx) {

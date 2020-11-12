@@ -9,7 +9,7 @@ class VisitTab extends StatelessWidget {
     "state": "Maharashtra",
     "country": "India",
     "city_id": "3",
-    "basic_info": "The Gateway of India is an arch-monument built in the early twentieth century in the city of Mumbai, in the Indian state of Maharashtra. It was erected to commemorate the landing in December 1911 at Apollo Bunder, Mumbai of King-Emperor George V and Queen-Empress Mary, the first British monarch to visit India.",
+    "basic_info": "The Gateway of India is an arch-monument built in the early twentieth century in the city of Mumbai, in the Indian state of Maharashtra.",
     "imageURL": "https://www.travelogyindia.com/images/mumbai/gateway-of-india-tipl-1.jpg"
   });
   @override

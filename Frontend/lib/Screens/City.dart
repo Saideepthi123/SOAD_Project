@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:travel/Screens/guidesTab.dart';
 import 'package:travel/Screens/visitTab.dart';
 import 'package:travel/Tools/Global%20tools.dart';
@@ -37,8 +39,13 @@ class _CityPageState extends State<CityPage> with SingleTickerProviderStateMixin
                         fit: BoxFit.fill)),
                 width: _screenSize.width * 0.4,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text("City Name"), Text("City Info")],
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [Text("City Name",style: GoogleFonts.raleway(
+                    fontSize: 30,color: Colors.white
+                  ),), Text("City Info",style: GoogleFonts.raleway(
+                      fontSize: 30,color: Colors.white
+                  ),),
+                  Padding(padding: EdgeInsets.all(20),)],
                 ),
               ),
             ),

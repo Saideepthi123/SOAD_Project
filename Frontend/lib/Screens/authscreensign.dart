@@ -32,7 +32,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
     final _key = GlobalKey<FormState>();
     return Container(
       padding: EdgeInsets.symmetric(
-          vertical: _screenSize.width * 0.05,
+          vertical: _screenSize.width * 0.02,
           horizontal: _screenSize.height * 0.15),
       child: Column(
         children: [

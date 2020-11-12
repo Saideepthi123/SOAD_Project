@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Screens/City.dart';
+import 'package:travel/Screens/SearchScreen.dart';
 import 'package:travel/Screens/loginSign.dart';
 import '../Screens/HomePage.dart';
 
@@ -14,7 +15,7 @@ class TopAppBar extends AppBar {
         icon: Icon(FontAwesomeIcons.plane),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
         },
       );
 

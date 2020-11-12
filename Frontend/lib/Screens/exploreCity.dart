@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/Models/Image.dart';
+import 'package:travel/Screens/City.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 import 'package:travel/Tools/ImageShifter.dart';
 
@@ -36,9 +37,14 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                   ),
                   child: Stack(
                     children: [
-                      ImageShifter(
-                        xOffset: 0.0,
-                        yOffset: -1.0,
+                      InkWell(
+                        child: ImageShifter(
+                          xOffset: 0.0,
+                          yOffset: -1.0,
+                        ),
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => CityPage()));
+                        },
                       ),
                       Container(
                         alignment: Alignment.center,
@@ -58,6 +64,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                           child: Container(
                             key: Key(change.cityname),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
                                   change.cityname,
@@ -71,7 +78,10 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                                       color: Colors.white,
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500),
-                                  overflow: TextOverflow.ellipsis,)
+                                  overflow: TextOverflow.ellipsis,),
+                                Padding(
+                                  padding: EdgeInsets.all(20),
+                                )
                               ],
                             ),
                           ),
@@ -85,16 +95,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               padding: EdgeInsets.all(10),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text("Username"),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                      ),
-                      Icon(Icons.account_circle)
-                    ],
-                  ),
                   SearchBar(
                     width: _screensize.width*0.45 - 30,
                     suggestions: [
@@ -138,7 +138,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                                           image: AssetImage('img/CardImage' +
                                               change.cities[index] +
                                               '.jpg'),
-                                          fit: BoxFit.fill)),
+                                          fit: BoxFit.cover)),
                                   height: 300,
                                   width: 200,
                                   child: Column(

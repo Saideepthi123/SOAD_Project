@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen>
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('img/ImageDelhi.jpg'),
-                        fit: BoxFit.fill)),
+                        fit: BoxFit.cover)),
               ),
               "Delhi",
               "A city is a large human settlement"),

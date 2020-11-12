@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<User>(create: (_) => User() ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Color(0xff577399),
           accentColor: Color(0xffFE5F55),
