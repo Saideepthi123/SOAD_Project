@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import smart_bytes
-from authentication.models import UserData
+from .__init__ import UserData
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
