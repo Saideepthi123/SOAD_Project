@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel/Models/City.dart';
-import 'package:travel/Screens/Monument.dart';
-import 'package:travel/Tools/Global%20tools.dart';
 
 class MonumentInfoTab extends StatelessWidget {
   Monument monument = Monument.fromJSON({

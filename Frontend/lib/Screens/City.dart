@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:travel/Screens/guidesTab.dart';
 import 'package:travel/Screens/visitTab.dart';
 import 'package:travel/Tools/Global%20tools.dart';

@@ -44,7 +44,7 @@ class _HomeShelfState extends State<HomeShelf> {
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>LogIn()));
                     },
-                    color: Colors.transparent,
+                    color: Colors.grey,
                     child: Text(
                       "Log In or Sign Up",
                       style: GoogleFonts.lato(
@@ -148,13 +148,14 @@ class _HomeShelfState extends State<HomeShelf> {
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             child: Container(
                               decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(
                                       image: AssetImage('./img/CardImage' +
                                           change.cities[index] +
                                           '.jpg'),
                                       fit: BoxFit.cover)),
                               height: screenSize.height*0.45,
-                              width: screenSize.width*0.25,
+                              width: screenSize.width*0.15,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

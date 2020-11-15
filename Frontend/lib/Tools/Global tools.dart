@@ -4,7 +4,6 @@ import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Screens/City.dart';
 import 'package:travel/Screens/SearchScreen.dart';
 import 'package:travel/Screens/loginSign.dart';
-import '../Screens/HomePage.dart';
 
 class TopAppBar extends AppBar {
   BuildContext context;

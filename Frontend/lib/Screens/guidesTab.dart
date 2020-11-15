@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Guides.dart';
-import 'package:travel/Tools/Global%20tools.dart';
 import 'package:travel/Tools/GuideFilter.dart';
 
 class GuidesTab extends StatefulWidget {

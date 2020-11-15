@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'authscreensign.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,7 +27,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
       end: Color(0xfffcc340),
     ).animate(_controller)
       ..addListener(() {
-        if (_controller.value > 0.5 )
+        if (_controller.value > 0.5)
           setState(() {
             change = false;
           });
@@ -55,7 +57,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
               horizontal: _screenSize.width * 0.05,
               vertical: _screenSize.width * 0.03),
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
           child: Stack(
             children: [
               Container(
@@ -69,65 +71,72 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                       child: Container(
                         alignment: Alignment.topCenter,
                         padding:
-                        EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 50),
                         width: _screenSize.width * 0.3,
-                        height: _screenSize.height * 0.94,
-                        color: _animation.value,
+                        height: _screenSize.height * 0.88,
+                        decoration: BoxDecoration(
+                            color: _animation.value,
+                            borderRadius: BorderRadius.horizontal(
+                                left:
+                                    !signin ? Radius.circular(60) : Radius.zero,
+                                right: signin
+                                    ? Radius.circular(60)
+                                    : Radius.zero)),
                         child: (change)
                             ? Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Login",
-                              style: GoogleFonts.raleway(
-                                  color: Color(0xff3498DB),
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 36),
-                            ),
-                            Text(
-                              "To meet people around the globe",
-                              style: GoogleFonts.raleway(
-                                  color: Color(0xff3498DB),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 36),
-                            ),
-                            Image.asset(
-                              'img/air.png',
-                              width: _screenSize.width * 0.25,
-                              fit: BoxFit.contain,
-                            )
-                          ],
-                        )
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Login",
+                                    style: GoogleFonts.raleway(
+                                        color: Color(0xff3498DB),
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 36),
+                                  ),
+                                  Text(
+                                    "To meet people around the globe",
+                                    style: GoogleFonts.raleway(
+                                        color: Color(0xff3498DB),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 36),
+                                  ),
+                                  Image.asset(
+                                    'img/air.png',
+                                    width: _screenSize.width * 0.25,
+                                    fit: BoxFit.contain,
+                                  )
+                                ],
+                              )
                             : Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Sign Up",
-                              style: GoogleFonts.raleway(
-                                  color: Color(0xff3498DB),
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 36),
-                            ),
-                            Text(
-                              "To connect with people around the globe",
-                              style: GoogleFonts.raleway(
-                                  color: Color(0xff3498DB),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 36),
-                            ),
-                            Image.asset(
-                              'img/scooter.png',
-                              width: _screenSize.width * 0.25,
-                              fit: BoxFit.contain,
-                            )
-                          ],
-                        ),
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Sign Up",
+                                    style: GoogleFonts.raleway(
+                                        color: Color(0xff3498DB),
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 36),
+                                  ),
+                                  Text(
+                                    "To connect with people around the globe",
+                                    style: GoogleFonts.raleway(
+                                        color: Color(0xff3498DB),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 36),
+                                  ),
+                                  Image.asset(
+                                    'img/scooter.png',
+                                    width: _screenSize.width * 0.25,
+                                    fit: BoxFit.contain,
+                                  )
+                                ],
+                              ),
                       ),
                     ),
                   ],

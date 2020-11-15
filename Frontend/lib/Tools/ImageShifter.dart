@@ -6,6 +6,7 @@ import 'package:travel/Models/Image.dart';
 class ImageShifter extends StatelessWidget {
   double xOffset;
   double yOffset;
+
   ImageShifter({this.xOffset,this.yOffset});
   @override
   Widget build(BuildContext context) {
