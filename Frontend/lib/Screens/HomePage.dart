@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travel/Tools/Global%20tools.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,16 +11,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(   
-        leading: IconButton(
-          icon: Icon(FontAwesomeIcons.plane),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
-          },
-        ),
+      appBar:TopAppBar(context),
+      body: Container(
       ),
-      body: Container(),
     );
   }
 }

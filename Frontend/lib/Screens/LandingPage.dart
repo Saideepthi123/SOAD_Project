@@ -19,6 +19,7 @@ class _HomeShelfState extends State<HomeShelf> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize= MediaQuery.of(context).size;
     var change = Provider.of<BackImage>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -39,38 +40,39 @@ class _HomeShelfState extends State<HomeShelf> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FlatButton(
+                  RaisedButton(
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>LogIn()));
                     },
+                    color: Colors.transparent,
                     child: Text(
-                      "Option 1",
+                      "Log In or Sign Up",
                       style: GoogleFonts.lato(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.w300),
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Option 2",
-                    style: GoogleFonts.lato(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Option 3",
-                    style: GoogleFonts.lato(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300),
-                  ),
+                  // SizedBox(
+                  //   width: 10,
+                  // ),
+                  // Text(
+                  //   "Option 2",
+                  //   style: GoogleFonts.lato(
+                  //       color: Colors.white,
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.w300),
+                  // ),
+                  // SizedBox(
+                  //   width: 10,
+                  // ),
+                  // Text(
+                  //   "Option 3",
+                  //   style: GoogleFonts.lato(
+                  //       color: Colors.white,
+                  //       fontSize: 18,
+                  //       fontWeight: FontWeight.w300),
+                  // ),
                 ],
               ),
               IconButton(
@@ -123,8 +125,8 @@ class _HomeShelfState extends State<HomeShelf> {
                 ),
               ),
               Container(
-                width: 900,
-                height: 300,
+                width: screenSize.width*0.5,
+                height: screenSize.height*0.45,
                 child: AnimatedList(
                     key: _key,
                     scrollDirection: Axis.horizontal,
@@ -141,8 +143,8 @@ class _HomeShelfState extends State<HomeShelf> {
                           child: Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
-                            elevation: 20,
-                            color: Colors.blue,
+                            elevation: 30,
+                            color: Colors.white,
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             child: Container(
                               decoration: BoxDecoration(
@@ -150,9 +152,9 @@ class _HomeShelfState extends State<HomeShelf> {
                                       image: AssetImage('./img/CardImage' +
                                           change.cities[index] +
                                           '.jpg'),
-                                      fit: BoxFit.fill)),
-                              height: 300,
-                              width: 200,
+                                      fit: BoxFit.cover)),
+                              height: screenSize.height*0.45,
+                              width: screenSize.width*0.25,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [

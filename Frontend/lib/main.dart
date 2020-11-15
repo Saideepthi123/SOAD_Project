@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:travel/Models/User.dart';
 import 'Screens/LandingPage.dart';
 import 'Tools/ImageShifter.dart';
 import 'Models/Image.dart';
@@ -12,24 +14,41 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body: ChangeNotifierProvider<BackImage>(
-          create: (_) => BackImage(
-              Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('img/ImageDelhi.jpg'),
-                        fit: BoxFit.fill)),
-              ),
-              "Delhi",
-              "A city is a large human settlement"),
-          child: Stack(
-            children: [
-              ImageShifter(),
-              HomeShelf(),
-            ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<User>(create: (_) => User() ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: Color(0xff577399),
+          accentColor: Color(0xffFE5F55),
+          primaryColorLight: Color(0xffBDD5EA),
+          primaryColorDark: Color(0xff495867),
+          backgroundColor: Color(0xffF7F7FF),
+          fontFamily: 'Raleway'
+        ),
+        home: Scaffold(
+          backgroundColor: Colors.black,
+          body: ChangeNotifierProvider<BackImage>(
+            create: (_) => BackImage(
+                Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('img/ImageDelhi.jpg'),
+                          fit: BoxFit.fill)),
+                ),
+                "Delhi",
+                "A city is a large human settlement"),
+            child: Stack(
+              children: [
+                ImageShifter(
+                  xOffset: -1.0,
+                  yOffset: 0.0,
+                ),
+                HomeShelf(),
+              ],
+            ),
           ),
         ),
       ),
