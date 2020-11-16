@@ -1,4 +1,3 @@
-import pytest
 from rest_framework.test import APITestCase
 from django.urls import reverse, resolve
 from authentication.api.views import RegisterView, LoginAPIView, LogoutView, VerifyEmail, \
@@ -12,12 +11,7 @@ from django.test import TestCase
 from authentication.models import UserData
 
 
-pytestmark = pytest.mark.django_db
-
-
-@pytest.mark.django_db
 class UserTest(TestCase):
-    pytestmark = pytest.mark.django_db
 
     def setUp(self):
         self.username = "packurbags"
@@ -55,7 +49,6 @@ class UserTest(TestCase):
 
 
 class TestAuthenticationUrls(APITestCase):
-    pytestmark = pytest.mark.django_db
 
     def test_register_url_is_resolved(self):
         path = reverse('register')
@@ -104,7 +97,6 @@ class TestAuthenticationUrls(APITestCase):
 
 
 class TestAuthenticationViews(APITestCase):
-    pytestmark = pytest.mark.django_db
 
     def setUp(self):
         self.register_url = reverse('register')
