@@ -3,6 +3,7 @@
     <words>
       <w>authtoken</w>
       <w>cors</w>
+      <w>corsheaders</w>
       <w>socialaccount</w>
       <w>uidb</w>
     </words>

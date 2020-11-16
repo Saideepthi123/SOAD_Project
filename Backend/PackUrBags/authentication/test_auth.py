@@ -1,10 +1,99 @@
 from rest_framework.test import APITestCase
-from django.urls import reverse
+from django.urls import reverse, resolve
+from authentication.api.views import RegisterView, LoginAPIView, LogoutView, VerifyEmail, \
+    RequestPasswordResetEmail, PasswordTokenCheckAPI, PasswordReset, GoogleAuthentication, HomeView
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import smart_bytes
-from authentication.models import UserData
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.auth import authenticate
+from django.test import TestCase
+from authentication.models import UserData
+
+
+class UserTest(TestCase):
+
+    def setUp(self):
+        self.username = "packurbags"
+        self.password = "packurbags"
+        self.email = "packurbags@packurbags.com"
+        self.first_name = "packurbags"
+        self.last_name = "tourism"
+        self.phone_number = "8888888888"
+
+        self.user = UserData.objects.create_user(
+            username=self.username,
+            email=self.email,
+            password=self.password,
+            first_name=self.first_name,
+            last_name=self.last_name,
+            phone_number=self.phone_number
+        )
+        self.user.save()
+
+    def test_correct(self):
+        user = authenticate(username="packurbags", password="packurbags")
+        self.assertTrue((user is not None) and user.is_authenticated)
+
+    def test_wrong_username(self):
+        user = authenticate(username="testpackurbags", password="packurbags")
+        self.assertFalse((user is not None) and user.is_authenticated)
+
+    def test_wrong_password(self):
+        user = authenticate(username="testuser", password="pass")
+        self.assertFalse((user is not None) and user.is_authenticated)
+
+    def test_user_permission(self):
+        self.assertTrue(self.user.is_active)
+        self.assertFalse(self.user.is_staff)
+
+
+class TestAuthenticationUrls(APITestCase):
+
+    def test_register_url_is_resolved(self):
+        path = reverse('register')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, RegisterView.as_view().__name__)
+
+    def test_login_url_is_resolved(self):
+        path = reverse('login')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, LoginAPIView.as_view().__name__)
+
+    def test_logout_url_is_resolved(self):
+        path = reverse('logout')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, LogoutView.as_view().__name__)
+
+    def test_email_verify_url_is_resolved(self):
+        path = reverse('email-verify', args=['some-uidb'])
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, VerifyEmail.as_view().__name__)
+
+    def test_request_reset_email_url_is_resolved(self):
+        path = reverse('request-reset-email')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, RequestPasswordResetEmail.as_view().__name__)
+
+    def test_password_reset_confirm_url_is_resolved(self):
+        path = reverse('password-reset-confirm', args=['some-uidb', 'some-token'])
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, PasswordTokenCheckAPI.as_view().__name__)
+
+    def test_reset_password_url_is_resolved(self):
+        path = reverse('reset-password', args=['1'])
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, PasswordReset.as_view().__name__)
+
+    def test_google_authentication_url_is_resolved(self):
+        path = reverse('google-auth')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, GoogleAuthentication.as_view().__name__)
+
+    def test_google_auth_redirect_url_is_resolved(self):
+        path = reverse('home')
+        found = resolve(path)
+        self.assertEqual(found.func.__name__, HomeView.as_view().__name__)
 
 
 class TestAuthenticationViews(APITestCase):
