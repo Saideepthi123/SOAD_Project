@@ -6,10 +6,12 @@ from monuments.models import Monument
 from .serializers import GuideDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
-
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class GuideList(APIView):
-
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             data = GuideData.objects.all()
@@ -29,7 +31,8 @@ class GuideList(APIView):
 
 
 class GuideDetail(APIView):
-
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request, slug):
         hdata = GuideData.objects.get(guide_id=slug)
         serializer = GuideDataSerializer(hdata)
@@ -54,6 +57,8 @@ class GuideDetail(APIView):
 
 
 class GuidePlace(APIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             place = request.GET['place']

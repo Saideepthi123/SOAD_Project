@@ -15,6 +15,10 @@ class BackImage with ChangeNotifier{
     _currentimage = Container(
       key: Key(image),
       decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
         image: DecorationImage(image: AssetImage('./img/Image'+image+".jpg"),fit: BoxFit.fill )
       ),
     );

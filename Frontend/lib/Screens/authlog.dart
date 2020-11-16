@@ -1,6 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:travel/APIcalls/Auth.dart';
+import 'package:travel/Models/User.dart';
+import 'package:travel/Screens/SearchScreen.dart';
 
 class AuthScreenLogin extends StatefulWidget {
   final Function signin;
@@ -71,6 +77,8 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                 color: Colors.blue,
                 onPressed: () {
                   print("Daba mat na");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                 }),
           ),
           SizedBox(
@@ -135,11 +143,63 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                   ),
                   RaisedButton(
                     onPressed: () async {
-                      // _key.currentState.save();
-                      // print(email);
-                      // auth.signInWithEmailAndPassword(context, email, password).then((value) => globals.setUserData(value).then((value){
-                      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>CommonScreen()));
-                      // }));
+                      _key.currentState.save();
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            Widget center = CircularProgressIndicator();
+                            // add some zing to it, you're a writer what the hell
+                            String text = "Logging you in";
+                            return Dialog(
+                              child: Consumer<User>(
+                                  builder: (context, user, child) {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 35, horizontal: 15),
+                                      child: FutureBuilder(
+                                          future: AuthService.login(
+                                              email, password),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              http.Response response =
+                                                  snapshot.data;
+                                              if (response.statusCode == 200) {
+                                                print(response
+                                                    .headers['set-cookie']);
+                                                user.populateUserLogin(
+                                                    response.body);
+                                                center = Icon(
+                                                  Icons.check,
+                                                  color: Colors.green,
+                                                );
+                                                text = "Login Succesful";
+                                                Timer timer = new Timer(
+                                                    Duration(seconds: 2), () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomeScreen()));
+                                                });
+                                              }
+                                            }
+                                            return Column(
+                                              children: [
+                                                center,
+                                                Text(text),
+                                              ],
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                );
+                              }),
+                            );
+                          });
                     },
                     color: Color(0xffb8e6f5),
                     child: Text(

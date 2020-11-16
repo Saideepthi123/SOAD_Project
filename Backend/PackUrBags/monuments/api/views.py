@@ -6,9 +6,12 @@ from .serializers import MonumentDataSerializer, MonumentInfoDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from .serializers import CityDataSerializer, MonumentInfoDataSerializer
-
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class MonumentList(APIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             data = Monument.objects.all()
@@ -28,6 +31,8 @@ class MonumentList(APIView):
 
 
 class MonumentDetail(APIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request, slug):
         try:
             hdata = Monument.objects.get(monument_id=slug)
@@ -55,6 +60,8 @@ class MonumentDetail(APIView):
 
 
 class MonumentInfoList(APIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             data = MonumentInfo.objects.all()
@@ -74,6 +81,8 @@ class MonumentInfoList(APIView):
 
 
 class MonumentInfoDetail(APIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             place = request.GET['monument']
@@ -92,6 +101,8 @@ class MonumentInfoDetail(APIView):
 
 
 class CityList(APIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             data = City.objects.all()
@@ -116,6 +127,8 @@ class CityList(APIView):
 
 
 class CityDetail(APIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated]
     def get(self, request, slug):
         try:
             hdata = City.objects.get(city_id=slug)
