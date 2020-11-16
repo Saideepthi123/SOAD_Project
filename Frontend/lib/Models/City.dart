@@ -1,4 +1,8 @@
-class City{
+import 'package:flutter/cupertino.dart';
+import 'package:travel/Models/Guides.dart';
+
+//change Notifier class
+class City {
   String cityName;
   String state;
   String country;
@@ -6,20 +10,60 @@ class City{
   String cityID;
   String basicInfo;
   String imageURL;
+  // list of id's of monuments
+  List<int> monumentIDs;
+  // either retrieve and save once, or retrieve with ID's every time
+  // List<BasicMonument> monuments
 
-  City({this.cityName,this.state,this.country,this.pinCode,this.cityID,this.imageURL});
+  // list of id's of guides
+  List<int> guideIDs;
+  // either retrieve and save once, or retrieve with ID's every time
+  // List<Guide> guides;
 
-  factory City.fromJSON(Map<String,dynamic> json){
+  City({
+    this.cityName,
+    this.state,
+    this.country,
+    this.pinCode,
+    this.cityID,
+    this.basicInfo,
+    this.imageURL,
+    this.monumentIDs,
+    this.guideIDs,
+  });
+
+  factory City.fromJSON(Map<String, dynamic> json) {
     return City(
       cityName: json["city_name"],
       state: json["state"],
       country: json["country"],
       pinCode: json["pin_code"],
       cityID: json["city_id"],
+      //if ID's, retrieve them with future builder/stream builder
+      monumentIDs: json["monument_ids"],
+      guideIDs: json["guide_ids"],
+
+    //  if not
+    //   monuments: populate from ids
+    //  cities: populate from ids
     );
   }
 }
 
+// 2 monument classes: 1 for displaying data on City's tab, 1 with ChangeNotifier for Monument's screen
+class BasicMonument{
+  int monumentID;
+  String monumentName;
+  String basicInfo;
+
+  BasicMonument({
+   this.monumentID,
+   this.monumentName,
+   this.basicInfo,
+});
+}
+
+//ChangeNotifier class
 class Monument{
   String monumentID;
   String monumentName;
@@ -29,11 +73,19 @@ class Monument{
   String info;
   String cityID;
   String imageURL;
+  List<int> guideIDs;
+  // List<Guide> guides;
+  Monument(
+      {this.monumentID,
+      this.monumentName,
+      this.city,
+      this.state,
+      this.country,
+      this.info,
+      this.cityID,
+      this.imageURL});
 
-  Monument({this.monumentID,this.monumentName,
-  this.city,this.state,this.country,this.info,this.cityID,this.imageURL});
-
-  factory Monument.fromJSON(Map<String,dynamic> json){
+  factory Monument.fromJSON(Map<String, dynamic> json) {
     return Monument(
       monumentName: json["monument_name"],
       city: json["city_name"],

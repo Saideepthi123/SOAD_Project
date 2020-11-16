@@ -168,6 +168,7 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                                               http.Response response =
                                                   snapshot.data;
                                               if (response.statusCode == 200) {
+                                                print(response.body);
                                                 print(response
                                                     .headers['set-cookie']);
                                                 user.populateUserLogin(
