@@ -23,7 +23,7 @@ class Guide{
   }
 }
 
-class BookGuide extends ChangeNotifier{
+class BookGuide extends ChangeNotifier {
   DateTime startDate=DateTime.now();
   DateTime endDate=DateTime.now();
   String type="Pay by hour";

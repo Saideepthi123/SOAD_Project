@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Models/User.dart';
-import 'package:travel/Screens/SearchScreen.dart';
+import 'package:travel/Screens/HomePage.dart';
 
 class AuthScreenLogin extends StatefulWidget {
   final Function signin;
@@ -168,6 +168,7 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                                               http.Response response =
                                                   snapshot.data;
                                               if (response.statusCode == 200) {
+                                                print(response.body);
                                                 print(response
                                                     .headers['set-cookie']);
                                                 user.populateUserLogin(

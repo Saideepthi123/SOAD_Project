@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:travel/Models/City.dart';
+import 'package:travel/Models/Monument.dart';
 import 'package:travel/Screens/guidesTab.dart';
 import 'package:travel/Screens/monumentInfoTabb.dart';
 import 'package:travel/Tools/Global%20tools.dart';
@@ -12,15 +14,6 @@ class MonumentPage extends StatefulWidget {
 
 class _MonumentPageState extends State<MonumentPage> with SingleTickerProviderStateMixin{
   TabController _tabController;
-  Monument monument = Monument.fromJSON({
-    "monument_name": "Gateway Of India",
-    "city_name": "Mumbai",
-    "state": "Maharashtra",
-    "country": "India",
-    "city_id": "3",
-    "basic_info": "The Gateway of India is an arch-monument built in the early twentieth century in the city of Mumbai, in the Indian state of Maharashtra. It was erected to commemorate the landing in December 1911 at Apollo Bunder, Mumbai of King-Emperor George V and Queen-Empress Mary, the first British monarch to visit India.",
-    "imageURL": "https://www.travelogyindia.com/images/mumbai/gateway-of-india-tipl-1.jpg"
-  });
 
   @override
   void initState() {
@@ -32,6 +25,7 @@ class _MonumentPageState extends State<MonumentPage> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final _tabKey= UniqueKey();
     var _screenSize = MediaQuery.of(context).size;
+    final monument=Provider.of<Monument>(context);
     return Scaffold(
       appBar: TopAppBar(context),
       body: Container(

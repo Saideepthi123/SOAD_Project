@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:travel/Models/Monument.dart';
 import 'package:travel/Models/User.dart';
+import 'Models/City.dart';
 import 'Screens/LandingPage.dart';
 import 'Tools/ImageShifter.dart';
 import 'Models/Image.dart';
@@ -10,7 +12,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

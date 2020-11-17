@@ -45,6 +45,6 @@ class AuthService {
   }
 
   static Future<Response> logout() {
-    return get(url + 'auth/logout');
+    return get(url + 'auth/logout/');
   }
 }
