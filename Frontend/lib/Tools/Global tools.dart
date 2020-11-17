@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Screens/City.dart';
-import 'package:travel/Screens/SearchScreen.dart';
+import 'package:travel/Screens/HomePage.dart';
 import 'package:travel/Screens/loginSign.dart';
 
 class TopAppBar extends AppBar {
@@ -22,7 +22,7 @@ class TopAppBar extends AppBar {
   Widget get title => InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CityPage()));
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
       },
       child: Text("Hello"));
 

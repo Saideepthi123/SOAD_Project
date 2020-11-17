@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/ServerCalls.dart';
+import 'package:travel/Models/City.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/guidesTab.dart';
 import 'package:travel/Screens/visitTab.dart';
@@ -27,6 +28,7 @@ class _CityPageState extends State<CityPage> with SingleTickerProviderStateMixin
     final _tabKey= UniqueKey();
     var _screenSize = MediaQuery.of(context).size;
     final userModel=Provider.of<User>(context);
+    final cityModel=Provider.of<City>(context);
     print(userModel.token);
     return Scaffold(
       appBar: TopAppBar(context),
@@ -38,7 +40,7 @@ class _CityPageState extends State<CityPage> with SingleTickerProviderStateMixin
               future: DataService.getCities(userModel.token),
               builder: (context, snapshot) {
                 Response response=snapshot.data;
-                print(response.body);
+                // print(response.body);
                 return Material(
                   elevation: 10,
                   child: Container(
