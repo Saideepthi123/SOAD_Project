@@ -7,7 +7,6 @@ matrix:
       install:
         - pip install -r ./Backend/PackUrBags/requirements.txt
       script:
-        - export DJANGO_SETTINGS_MODULE=PackUrBags.settings
         - pytest
     
     - language: dart

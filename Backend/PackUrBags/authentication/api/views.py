@@ -14,11 +14,14 @@ from authentication.api.utils import Util
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
+
+
 # Create your views here.
 
 
 class HomeView(generics.GenericAPIView):
     permission_classes = [AllowAny]
+
     def get(self, request):
         return Response({'message': 'Welcome to PackUrBags'}, status=status.HTTP_200_OK)
 
@@ -26,6 +29,7 @@ class HomeView(generics.GenericAPIView):
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
+
     def post(self, request):
         user = request.data
         serializer = self.serializer_class(data=user)
@@ -51,6 +55,7 @@ class RegisterView(generics.GenericAPIView):
 
 class VerifyEmail(generics.GenericAPIView):
     permission_classes = [AllowAny]
+
     def get(self, request, uidb64):
         user_id = smart_str(urlsafe_base64_decode(uidb64))
         user = UserData.objects.get(user_id=user_id)
@@ -70,6 +75,7 @@ class VerifyEmail(generics.GenericAPIView):
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
+
     def post(self, request):
         if request.session.session_key:
             return Response({'error': 'Already another user is logged in'}, status=status.HTTP_400_BAD_REQUEST)
@@ -88,8 +94,9 @@ class LoginAPIView(generics.GenericAPIView):
 
 
 class LogoutView(generics.GenericAPIView):
-    authentication_classes = (TokenAuthentication, )
+    authentication_classes = (TokenAuthentication,)
     permission_classes = [AllowAny]
+
     def get(self, request):
         if request.session.session_key:
             logout(request)
@@ -101,6 +108,7 @@ class LogoutView(generics.GenericAPIView):
 class RequestPasswordResetEmail(generics.GenericAPIView):
     serializer_class = ResetPasswordEmailRequestSerializer
     permission_classes = [AllowAny]
+
     def post(self, request):
         user = request.data
         serializer = self.serializer_class(data=user)
@@ -123,6 +131,7 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
 class PasswordReset(generics.GenericAPIView):
     serializer_class = ResetPasswordSerializer
     permission_classes = [AllowAny]
+
     def post(self, request, user_id):
         data = request.data
         serializer = self.serializer_class(data=data)
@@ -136,6 +145,7 @@ class PasswordReset(generics.GenericAPIView):
 
 class PasswordTokenCheckAPI(generics.GenericAPIView):
     permission_classes = [AllowAny]
+
     def get(self, request, uidb64, token):
 
         try:
@@ -156,8 +166,10 @@ class PasswordTokenCheckAPI(generics.GenericAPIView):
 
 class GoogleAuthentication(generics.GenericAPIView):
     permission_classes = [AllowAny]
+
     def get(self, request):
         if request.session.session_key:
-            return Response({'error': 'You are already logged in. Please logout first.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'You are already logged in. Please logout first.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         else:
             return redirect('/api/auth/accounts/google/login/?process=login')
