@@ -6,6 +6,7 @@ import 'package:travel/APIcalls/ServerCalls.dart';
 import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Monument.dart';
 import 'package:travel/Models/User.dart';
+import 'package:travel/Screens/City.dart';
 import 'package:travel/Screens/Monument.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 
@@ -19,18 +20,6 @@ class VisitTab extends StatelessWidget {
         "https://www.travelogyindia.com/images/mumbai/gateway-of-india-tipl-1.jpg"
   });
 
-  Map<String,dynamic> json = {
-    "monument_id": 1,
-    "monument_name": "Gateway Of India",
-    "state": "Maharashtra",
-    "city_name": "Mumbai",
-    "country": "India",
-    "city_id": "3",
-    "basic_info":
-        "The Gateway of India is an arch-monument built in the early twentieth century in the city of Mumbai, in the Indian state of Maharashtra. It was erected to commemorate the landing in December 1911 at Apollo Bunder, Mumbai of King-Emperor George V and Queen-Empress Mary, the first British monarch to visit India.",
-    "imageURL":
-        "https://www.travelogyindia.com/images/mumbai/gateway-of-india-tipl-1.jpg"
-  };
   @override
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
@@ -67,32 +56,7 @@ class VisitTab extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FutureBuilder<Object>(
-                                  future: DataService.getMonuments(userModel.token),
-                                  builder: (context, snapshot) {
-                                    if(snapshot.connectionState==ConnectionState.done){
-                                      if(snapshot.hasData){
-                                        Response response=snapshot.data;
-                                        print(response.body);
-                                        return ChangeNotifierProvider<Monument>(
-                                            create: (_) => Monument.fromJSON(json),
-                                            child: MonumentPage());
-                                      }
-                                      if(snapshot.hasError){
-                                        return Container(
-                                          child: Text("404 Page Not Found"),
-                                        );
-                                      }
-                                    }
-                                    return Center(
-                                        child: Image.asset(
-                                          "pageLoading.gif",
-                                          height: _screenSize.height*0.9,
-                                          width: _screenSize.height*0.9,
-                                        )
-                                    );
-                                  }
-                                )
+                                builder: (context) => MonumentPage()
                             )
                         );
                       },

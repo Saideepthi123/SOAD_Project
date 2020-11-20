@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:travel/APIcalls/ServerCalls.dart';
-import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Image.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/City.dart';
@@ -21,15 +18,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     begin: const Offset(0.0, -1.0),
     end: Offset.zero,
   );
-  Map<String,dynamic> json={
-    "city_name": "Mumbai",
-    "state": "Maharashtra",
-    "country": "India",
-    "pin_code": "400001",
-    "city_id": 1,
-    "imageURL": "abc.png",
-    "monuments": [ ]
-  };
   @override
   Widget build(BuildContext context) {
     final _screensize = MediaQuery.of(context).size;
@@ -56,32 +44,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                           yOffset: -1.0,
                         ),
                         onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => FutureBuilder<Object>(
-                              future: DataService.getCity(userModel.token,"Mumbai"),
-                              builder: (context, snapshot) {
-                                if(snapshot.connectionState==ConnectionState.done){
-                                  if(snapshot.hasData){
-                                    Response response=snapshot.data;
-                                    print(response.body);
-                                    return ChangeNotifierProvider(
-                                        create: (context) => City.fromJSON(json),
-                                        child: CityPage());
-                                  }
-                                  if(snapshot.hasError){
-                                    return Container(
-                                      child: Text("404 Page Not Found"),
-                                    );
-                                  }
-                                }
-                                return Center(
-                                    child: Image.asset(
-                                      "pageLoading.gif",
-                                      height: _screensize.height*0.9,
-                                      width: _screensize.height*0.9,
-                                    )
-                                );
-                              }
-                          )));
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => CityPage()));
                         },
                       ),
                       Container(
