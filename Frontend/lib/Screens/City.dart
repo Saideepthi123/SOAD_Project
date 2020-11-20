@@ -17,6 +17,17 @@ class CityPage extends StatefulWidget {
 class _CityPageState extends State<CityPage> with SingleTickerProviderStateMixin{
   TabController _tabController;
 
+
+  Map<String,dynamic> json={
+    "city_name": "Mumbai",
+    "state": "Maharashtra",
+    "country": "India",
+    "pin_code": "400001",
+    "city_id": 1,
+    "imageURL": "abc.png",
+    "monuments": [ ]
+  };
+
   @override
   void initState() {
     super.initState();
@@ -28,79 +39,104 @@ class _CityPageState extends State<CityPage> with SingleTickerProviderStateMixin
     final _tabKey= UniqueKey();
     var _screenSize = MediaQuery.of(context).size;
     final userModel=Provider.of<User>(context);
-    final cityModel=Provider.of<City>(context);
+    // final cityModel=Provider.of<City>(context);
     print(userModel.token);
     return Scaffold(
       appBar: TopAppBar(context),
-      body: Container(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FutureBuilder(
-              future: DataService.getCities(userModel.token),
-              builder: (context, snapshot) {
-                Response response=snapshot.data;
-                // print(response.body);
-                return Material(
-                  elevation: 10,
+      body: FutureBuilder(
+        future: DataService.getCities(userModel.token),
+        builder: (context,snapshot){
+          if(snapshot.connectionState==ConnectionState.done){
+            if(snapshot.hasData){
+              Response response=snapshot.data;
+              print(response.body);
+              return ChangeNotifierProvider(
+                  create: (context) => City.fromJSON(json),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        image: DecorationImage(
-                            image: AssetImage("img/ImageDelhi.jpg"),
-                            fit: BoxFit.fill)),
-                    width: _screenSize.width * 0.4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [Text("City Name",style: GoogleFonts.raleway(
-                        fontSize: 30,color: Colors.white
-                      ),), Text("City Info",style: GoogleFonts.raleway(
-                          fontSize: 30,color: Colors.white
-                      ),),
-                      Padding(padding: EdgeInsets.all(20),)],
-                    ),
-                  ),
-                );
-              }
-            ),
-            DefaultTabController(
-              length: 5,
-              child: Column(
+              child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    color: Colors.orangeAccent,
-                    width: _screenSize.width * 0.6,
-                    child: TabBar(
-                      controller: _tabController,
-                      indicatorColor: Colors.white,
-                      tabs: [
-                        Tab(text: "Visit"),
-                        Tab(text: "Guides"),
-                        Tab(text: "Food"),
-                        Tab(text: "Travel"),
-                        Tab(text: "Stay"),
+                  FutureBuilder(
+                      future: DataService.getCities(userModel.token),
+                      builder: (context, snapshot) {
+                        Response response=snapshot.data;
+                        // print(response.body);
+                        return Material(
+                          elevation: 10,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.blueAccent,
+                                image: DecorationImage(
+                                    image: AssetImage("img/ImageDelhi.jpg"),
+                                    fit: BoxFit.fill)),
+                            width: _screenSize.width * 0.4,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [Text("City Name",style: GoogleFonts.raleway(
+                                  fontSize: 30,color: Colors.white
+                              ),), Text("City Info",style: GoogleFonts.raleway(
+                                  fontSize: 30,color: Colors.white
+                              ),),
+                                Padding(padding: EdgeInsets.all(20),)],
+                            ),
+                          ),
+                        );
+                      }
+                  ),
+                  DefaultTabController(
+                    length: 5,
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.orangeAccent,
+                          width: _screenSize.width * 0.6,
+                          child: TabBar(
+                            controller: _tabController,
+                            indicatorColor: Colors.white,
+                            tabs: [
+                              Tab(text: "Visit"),
+                              Tab(text: "Guides"),
+                              Tab(text: "Food"),
+                              Tab(text: "Travel"),
+                              Tab(text: "Stay"),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: _screenSize.height*0.8,
+                          width: _screenSize.width*0.6,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              VisitTab(),
+                              GuidesTab(),
+                              Icon(Icons.fastfood,size: 80,),
+                              Icon(Icons.emoji_transportation,size: 80,),
+                              Icon(Icons.hotel,size: 80,)
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),
-                  Container(
-                    height: _screenSize.height*0.8,
-                    width: _screenSize.width*0.6,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        VisitTab(),
-                        GuidesTab(),
-                        Icon(Icons.fastfood,size: 80,),
-                        Icon(Icons.emoji_transportation,size: 80,),
-                        Icon(Icons.hotel,size: 80,)
-                      ],
-                    ),
-                  )
                 ],
               ),
-            ),
-          ],
-        ),
+          ));
+            }
+            if(snapshot.hasError){
+              return Container(
+                child: Text("404 Page Not Found"),
+              );
+            }
+          }
+          return Center(
+              child: Image.asset(
+                "pageLoading.gif",
+                height: _screenSize.height*0.9,
+                width: _screenSize.height*0.9,
+              )
+          );
+        },
       ),
     );
   }
