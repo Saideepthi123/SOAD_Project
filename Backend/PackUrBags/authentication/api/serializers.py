@@ -15,6 +15,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         email = attrs.get('email', '')
         username = attrs.get('username', '')
         username = username.lower()
+        first_name = attrs.get('first_name')
+        last_name = attrs.get('last_name')
+        first_name = first_name.capitalize()
+        last_name = last_name.capitalize()
         phone_number = attrs.get('phone_number', '')
         password = attrs.get('password', '')
         if not phone_number.isnumeric():
@@ -23,7 +27,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('The username should only consists of alphanumeric characters')
         if len(password) < 6:
             raise serializers.ValidationError('Make sure your password is at least 6 letters')
-        return attrs
+        return {'email': email, 'username': username, 'first_name': first_name, 'last_name': last_name, 'phone_number': phone_number, 'password': password}
 
     def create(self, validated_data):
         return UserData.objects.create_user(**validated_data)

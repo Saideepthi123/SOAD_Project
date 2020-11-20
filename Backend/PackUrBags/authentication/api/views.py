@@ -1,8 +1,11 @@
+import jwt
+from django.conf import settings
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from authentication.models import UserData
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 from authentication.api.serializers import RegisterSerializer, LoginSerializer, ResetPasswordEmailRequestSerializer, \
     ResetPasswordSerializer
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -11,7 +14,6 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from authentication.api.utils import Util
-from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny
 
@@ -39,15 +41,14 @@ class RegisterView(generics.GenericAPIView):
         user_data = serializer.data
         user = UserData.objects.get(email=user_data['email'])
         user.id = user.user_id
-        token = Token.objects.get(user=user)
-        uidb64 = urlsafe_base64_encode(smart_bytes(token.user_id))
+        access = RefreshToken.for_user(user).access_token
         current_site = get_current_site(request).domain
-        relative_link = reverse('email-verify', kwargs={'uidb64': uidb64})
-        absurl = 'http://' + current_site + relative_link + "?token=" + str(token)
+        relative_link = reverse('email-verify')
+        absurl = 'http://' + current_site + relative_link + "?token=" + str(access)
         email_body = 'Hi ' + user.username + ', click the link below to verify your email\n' + absurl
         message = {'email_body': email_body, 'email_subject': 'Verify your email', 'to_email': (user.email,)}
         Util.send_email(message)
-        user_data['token'] = token.key
+        user_data['access'] = str(access)
         user_data['user_id'] = user.id
         user_data['is_verified'] = user.is_verified
         return Response(user_data, status=status.HTTP_201_CREATED)
@@ -56,10 +57,12 @@ class RegisterView(generics.GenericAPIView):
 class VerifyEmail(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, uidb64):
-        user_id = smart_str(urlsafe_base64_decode(uidb64))
-        user = UserData.objects.get(user_id=user_id)
-        if user:
+    def get(self, request):
+        token = request.GET.get('token')
+        secret_key = settings.SECRET_KEY
+        try:
+            payload = jwt.decode(token, secret_key)
+            user = UserData.objects.get(user_id=payload['user_id'])
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
@@ -68,8 +71,10 @@ class VerifyEmail(generics.GenericAPIView):
                            'to_email': (user.email,)}
                 Util.send_email(message)
                 return Response({'status': 'Successfully verified'}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Token authentication failed'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.ExpiredSignatureError:
+            return Response({'error': 'Activation link expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.exceptions.DecodeError:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginAPIView(generics.GenericAPIView):
@@ -85,9 +90,10 @@ class LoginAPIView(generics.GenericAPIView):
             serializer.is_valid(raise_exception=True)
             account = authenticate(email=user['email'], password=user['password'])
             account.id = account.user_id
-            token = Token.objects.get(user=account)
+            refresh = RefreshToken.for_user(account)
+            access = RefreshToken.for_user(account).access_token
             login(request, account)
-            return Response({'success': 'Login successful', 'token': token.key, 'user_id': account.user_id,
+            return Response({'success': 'Login successful', 'refresh': str(refresh), 'access': str(access), 'user_id': account.user_id,
                              'username': account.username, 'email': account.email, 'first_name': account.first_name,
                              'last_name': account.last_name, 'phone_number': account.phone_number,
                              'is_verified': account.is_verified}, status=status.HTTP_200_OK)
