@@ -2,6 +2,8 @@ from rest_framework import serializers
 from authentication.models import UserData
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from datetime import timedelta
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -51,6 +53,23 @@ class LoginSerializer(serializers.ModelSerializer):
         if not user:
             raise AuthenticationFailed('Invalid credentials, try again')
         return attrs
+
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+    default_error_messages = {
+        'bad_token': 'Token is expired or invalid'
+    }
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail('bad_token')
 
 
 class ResetPasswordEmailRequestSerializer(serializers.ModelSerializer):

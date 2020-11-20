@@ -47,16 +47,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'guide',
     'monuments',
-    'rest_framework.authtoken',
-
 ]
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'UPDATE_LAST_LOGIN': False,
 }
 
 CORS_ALLOW_HEADERS = [
@@ -123,9 +118,9 @@ AUTH_USER_MODEL = 'authentication.UserData'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'PackUrBags',
+        'NAME': 'PackUrBagsDB',
         'CLIENT': {
-            'host': 'mongodb+srv://soad:subu@cluster0.rllki.mongodb.net/PackUrBags?retryWrites=true&w=majority',
+            'host': 'mongodb+srv://soad:subu@cluster0.rllki.mongodb.net/PackUrBagsDB?retryWrites=true&w=majority',
             'username': 'soad',
             'password': 'subu',
             'authMechanism': 'SCRAM-SHA-1'
@@ -141,8 +136,8 @@ AUTHENTICATION_BACKENDS = [
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
