@@ -1,7 +1,6 @@
 import jwt
 from django.conf import settings
 from django.shortcuts import redirect
-from django.contrib.auth import authenticate, login, logout
 from authentication.models import UserData
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -14,7 +13,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from authentication.api.utils import Util
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
@@ -97,12 +96,12 @@ class LoginAPIView(generics.GenericAPIView):
 
 class LogoutView(generics.GenericAPIView):
     serializer_class = LogoutSerializer
-    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
         return Response({'success': 'Logout successful'}, status=status.HTTP_200_OK)
 
 
@@ -168,8 +167,4 @@ class GoogleAuthentication(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        if request.session.session_key:
-            return Response({'error': 'You are already logged in. Please logout first.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return redirect('/api/auth/accounts/google/login/?process=login')
+        return redirect('/api/auth/accounts/google/login/?process=login')

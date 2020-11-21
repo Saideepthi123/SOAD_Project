@@ -6,13 +6,14 @@ from Tourism.models import Booking, Payment, UserHistory
 from .serializers import UserDataSerializer, BookingDataSerializer, PaymentDataSerializer, UserHistoryDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
 class UserList(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             data = UserData.objects.all()
@@ -32,8 +33,9 @@ class UserList(APIView):
 
 
 class UserDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = UserData.objects.get(user_id=slug)
@@ -67,8 +69,9 @@ class UserDetail(APIView):
 
 
 class BookingList(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             data = Booking.objects.all()
@@ -88,8 +91,9 @@ class BookingList(APIView):
 
 
 class BookingDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = Booking.objects.get(booking_id=slug)
@@ -124,8 +128,9 @@ class BookingDetail(APIView):
 
 
 class BookingDetailUser(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = Booking.objects.filter(user_email=slug)
@@ -136,8 +141,9 @@ class BookingDetailUser(APIView):
 
 
 class BookingDetailGuide(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = Booking.objects.filter(guide_email=slug)
@@ -148,8 +154,9 @@ class BookingDetailGuide(APIView):
 
 
 class PaymentList(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             data = Payment.objects.all()
@@ -169,8 +176,9 @@ class PaymentList(APIView):
 
 
 class PaymentDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = Payment.objects.get(payment_id=slug)
@@ -202,8 +210,9 @@ class PaymentDetail(APIView):
 
 
 class PaymentDetailUser(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = Payment.objects.filter(user_email=slug)
@@ -214,8 +223,9 @@ class PaymentDetailUser(APIView):
 
 
 class PaymentDetailGuide(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = Payment.objects.filter(guide_email=slug)
@@ -226,8 +236,9 @@ class PaymentDetailGuide(APIView):
 
 
 class UserHistoryList(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             data = UserHistory.objects.all()
@@ -247,8 +258,9 @@ class UserHistoryList(APIView):
 
 
 class UserHistoryDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = UserHistory.objects.get(payment_id=slug)
@@ -280,8 +292,9 @@ class UserHistoryDetail(APIView):
 
 
 class UserHistoryDetailUser(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = UserHistory.objects.filter(user_email=slug)

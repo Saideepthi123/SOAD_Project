@@ -2,17 +2,17 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from monuments.models import Monument, MonumentInfo, City
-from .serializers import MonumentDataSerializer, MonumentInfoDataSerializer
+from .serializers import MonumentDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from .serializers import CityDataSerializer, MonumentInfoDataSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
 
 
 class MonumentList(APIView):
     permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request):
         try:
@@ -85,7 +85,7 @@ class MonumentInfoList(APIView):
 
 
 class MonumentInfoDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -106,7 +106,7 @@ class MonumentInfoDetail(APIView):
 
 
 class CityList(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -133,7 +133,7 @@ class CityList(APIView):
 
 
 class CityDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
