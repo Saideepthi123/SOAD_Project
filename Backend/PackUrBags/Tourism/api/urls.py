@@ -17,9 +17,9 @@ urlpatterns = [
     path('payment/guide/<slug:slug>', views.PaymentDetailGuide.as_view(), name="PaymentDetailGuide"),
     path('payment/<slug:slug>', views.PaymentDetail.as_view(), name="PaymentDetail"),
     path('payment/cancel/<slug:slug>', views.PaymentDetail.as_view(), name="PaymentDetail"),
-    path('payment', views.PaymentList.as_view(), name="PaymentList"),   
+    path('payment', views.PaymentList.as_view(), name="PaymentList"),
 
     path('userhistory/user/<slug:slug>', views.UserHistoryDetailUser.as_view(), name="UserHistoryDetailUser"),
-    path('userhistory', views.UserHistoryList.as_view(), name="UserHistoryList"), 
+    path('userhistory', views.UserHistoryList.as_view(), name="UserHistoryList"),
     path('userhistory/<slug:slug>', views.UserHistoryDetail.as_view(), name="UserHistoryDetail"),
 ]

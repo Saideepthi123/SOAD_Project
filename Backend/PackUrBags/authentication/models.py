@@ -1,10 +1,10 @@
 from djongo import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from datetime import datetime
-from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from rest_framework.authtoken.models import Token
+# from django.conf import settings
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from rest_framework.authtoken.models import Token
 
 # Create your models here.
 
@@ -45,7 +45,6 @@ class UserAccountManager(BaseUserManager):
 
 
 class UserData(AbstractBaseUser):
-    user_id = models.AutoField(primary_key=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     first_name = models.CharField(max_length=100, default="first_name")
     last_name = models.CharField(max_length=100, default="last_name")
@@ -77,7 +76,7 @@ class UserData(AbstractBaseUser):
         return True
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender=settings.AUTH_USER_MODEL, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_auth_token(sender=settings.AUTH_USER_MODEL, instance=None, created=False, **kwargs):
+#     if created:
+#         Token.objects.create(user=instance)

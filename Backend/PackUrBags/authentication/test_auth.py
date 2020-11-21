@@ -4,7 +4,7 @@ from authentication.api.views import RegisterView, LoginAPIView, LogoutView, Ver
     RequestPasswordResetEmail, PasswordTokenCheckAPI, PasswordReset, GoogleAuthentication, HomeView
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import smart_bytes
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth import authenticate
 from django.test import TestCase
@@ -66,7 +66,7 @@ class TestAuthenticationUrls(APITestCase):
         self.assertEqual(found.func.__name__, LogoutView.as_view().__name__)
 
     def test_email_verify_url_is_resolved(self):
-        path = reverse('email-verify', args=['some-uidb'])
+        path = reverse('email-verify')
         found = resolve(path)
         self.assertEqual(found.func.__name__, VerifyEmail.as_view().__name__)
 
@@ -81,7 +81,7 @@ class TestAuthenticationUrls(APITestCase):
         self.assertEqual(found.func.__name__, PasswordTokenCheckAPI.as_view().__name__)
 
     def test_reset_password_url_is_resolved(self):
-        path = reverse('reset-password', args=['1'])
+        path = reverse('reset-password', args=[1])
         found = resolve(path)
         self.assertEqual(found.func.__name__, PasswordReset.as_view().__name__)
 
@@ -144,44 +144,27 @@ class TestAuthenticationViews(APITestCase):
         response = self.client.post(self.login_url, self.login_user_data, format="json")
         self.assertEqual(response.status_code, 200)
 
-    def test_login_view_post_data_when_user_session_exists(self):
-        self.client.post(self.register_url, self.register_user_data, format="json")
-        self.client.post(self.login_url, self.login_user_data, format="json")
-        response = self.client.post(self.login_url, self.login_user_data, format="json")
-        self.assertEqual(response.status_code, 400)
-
     def test_home_view_get(self):
         response = self.client.get(self.home_url)
         self.assertEqual(response.status_code, 200)
 
-    def test_google_auth_view_get_when_user_logged_in(self):
-        self.client.post(self.register_url, self.register_user_data, format="json")
-        self.client.post(self.login_url, self.login_user_data, format="json")
-        response = self.client.get(self.google_auth_url)
-        self.assertEqual(response.status_code, 400)
-
-    def test_google_auth_view_get_when_user_not_logged_in(self):
+    def test_google_auth_view_get(self):
         response = self.client.get(self.google_auth_url)
         self.assertEqual(response.status_code, 302)
 
-    def test_logout_view_get_when_user_logged_in(self):
+    def test_logout_view_get(self):
         self.client.post(self.register_url, self.register_user_data, format="json")
         self.client.post(self.login_url, self.login_user_data, format="json")
         response = self.client.get(self.logout_url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_logout_view_get_when_user_not_logged_in(self):
-        response = self.client.get(self.logout_url)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 401)
 
     def test_verify_email_get(self):
         self.client.post(self.register_url, self.register_user_data, format="json")
-        email = self.register_user_data['email']
-        user = UserData.objects.get(email=email)
-        self.token = Token.objects.get(user=user)
-        uidb64 = urlsafe_base64_encode(smart_bytes(user.user_id))
-        verify_email_url = reverse('email-verify', kwargs={'uidb64': uidb64})
-        response = self.client.get(verify_email_url)
+        user = UserData.objects.get(email=self.register_user_data['email'])
+        access = RefreshToken.for_user(user).access_token
+        self.token = access
+        verify_email = reverse('email-verify')
+        response = self.client.get(verify_email, {'token': str(access)})
         self.test_api_authentication()
         self.assertEqual(response.status_code, 200)
 
@@ -202,8 +185,7 @@ class TestAuthenticationViews(APITestCase):
         self.client.post(self.register_url, self.register_user_data, format="json")
         email = self.register_user_data['email']
         user = UserData.objects.get(email=email)
-        user_id = user.user_id
-        password_reset_url = reverse('reset-password', kwargs={'user_id': user_id})
+        password_reset_url = reverse('reset-password', kwargs={'user_id': user.id})
         response = self.client.post(password_reset_url)
         self.assertEqual(response.status_code, 400)
 
@@ -211,8 +193,7 @@ class TestAuthenticationViews(APITestCase):
         self.client.post(self.register_url, self.register_user_data, format="json")
         email = self.register_user_data['email']
         user = UserData.objects.get(email=email)
-        user_id = user.user_id
-        password_reset_url = reverse('reset-password', kwargs={'user_id': user_id})
+        password_reset_url = reverse('reset-password', kwargs={'user_id': user.id})
         response = self.client.post(password_reset_url, self.password_reset_data, format="json")
         self.assertEqual(response.status_code, 302)
 
@@ -220,7 +201,6 @@ class TestAuthenticationViews(APITestCase):
         self.client.post(self.register_url, self.register_user_data, format="json")
         email = self.register_user_data['email']
         user = UserData.objects.get(email=email)
-        user.id = user.user_id
         uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
         token = PasswordResetTokenGenerator().make_token(user)
         password_token_check_url = reverse('password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})

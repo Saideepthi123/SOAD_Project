@@ -2,16 +2,18 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from monuments.models import Monument, MonumentInfo, City
-from .serializers import MonumentDataSerializer, MonumentInfoDataSerializer
+from .serializers import MonumentDataSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from .serializers import CityDataSerializer, MonumentInfoDataSerializer
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+
 class MonumentList(APIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JWTAuthentication]
+
     def get(self, request):
         try:
             data = Monument.objects.all()
@@ -31,8 +33,9 @@ class MonumentList(APIView):
 
 
 class MonumentDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication, ]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = Monument.objects.get(monument_id=slug)
@@ -60,8 +63,9 @@ class MonumentDetail(APIView):
 
 
 class MonumentInfoList(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication, ]
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             data = MonumentInfo.objects.all()
@@ -81,8 +85,9 @@ class MonumentInfoList(APIView):
 
 
 class MonumentInfoDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             place = request.GET['monument']
@@ -101,8 +106,9 @@ class MonumentInfoDetail(APIView):
 
 
 class CityList(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request):
         try:
             data = City.objects.all()
@@ -127,8 +133,9 @@ class CityList(APIView):
 
 
 class CityDetail(APIView):
-    authentication_classes = [TokenAuthentication, ]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
     def get(self, request, slug):
         try:
             hdata = City.objects.get(city_id=slug)
