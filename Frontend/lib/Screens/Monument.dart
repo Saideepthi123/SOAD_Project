@@ -128,6 +128,7 @@ class _MonumentPageState extends State<MonumentPage> with SingleTickerProviderSt
                 "pageLoading.gif",
                 height: _screenSize.height*0.9,
                 width: _screenSize.height*0.9,
+                // fit: BoxFit.cover,
               )
           );
         }
