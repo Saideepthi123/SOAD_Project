@@ -11,7 +11,7 @@ class DataService{
     return get(
       "$url/city",
       headers: {
-        "Authorization": 'Token $token',
+        "Authorization": 'Bearer $token',
       }
     );
   }
@@ -22,7 +22,7 @@ class DataService{
     return get(
         "$url/monument",
         headers: {
-          "Authorization": 'Token $token',
+          "Authorization": 'Bearer $token',
         }
     );
   }
@@ -33,7 +33,7 @@ class DataService{
     return get(
         "$url/city?q={\"name\":$city}",
         headers: {
-          "Authorization": 'Token $token',
+          "Authorization": 'Bearer $token',
         }
     );
   }
@@ -44,7 +44,7 @@ class DataService{
     return get(
         "$url/monument?q={\"name\":$monument}",
         headers: {
-          "Authorization": 'Token $token',
+          "Authorization": 'Bearer $token',
         }
     );
   }

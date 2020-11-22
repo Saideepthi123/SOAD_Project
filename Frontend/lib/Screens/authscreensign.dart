@@ -245,6 +245,8 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                                                 Response response = snapshot.data;
                                                 print(response.body);
                                                 if (response.statusCode == 201) {
+                                                  user.populateUserLogin(
+                                                      response.body);
                                                     center = Icon(
                                                       Icons.check,
                                                       color: Colors.green,
