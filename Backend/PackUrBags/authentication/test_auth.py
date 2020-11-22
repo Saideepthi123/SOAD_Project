@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse, resolve
-from authentication.api.views import RegisterView, LoginAPIView, LogoutView, VerifyEmail, \
+from authentication.api.views import RegisterView, LoginView, LogoutView, VerifyEmail, \
     RequestPasswordResetEmail, PasswordTokenCheckAPI, PasswordReset, GoogleAuthentication, HomeView
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import smart_bytes
@@ -58,7 +58,7 @@ class TestAuthenticationUrls(APITestCase):
     def test_login_url_is_resolved(self):
         path = reverse('login')
         found = resolve(path)
-        self.assertEqual(found.func.__name__, LoginAPIView.as_view().__name__)
+        self.assertEqual(found.func.__name__, LoginView.as_view().__name__)
 
     def test_logout_url_is_resolved(self):
         path = reverse('logout')
