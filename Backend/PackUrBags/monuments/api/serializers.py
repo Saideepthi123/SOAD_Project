@@ -49,7 +49,6 @@ class MonumentInfoDataSerializer(serializers.ModelSerializer):
 
 
 class CityDataSerializer(serializers.ModelSerializer):
-    monuments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = City
         fields = ('city_name', 'state', 'country', 'pin_code','imageURL','city_info','monuments')
