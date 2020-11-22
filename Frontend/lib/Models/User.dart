@@ -9,6 +9,7 @@ class User extends ChangeNotifier{
   String _lastName;
   String _phoneNumber;
   String _token;
+  String _refreshToken;
   int _uid;
 
   get uid => _uid;
@@ -18,6 +19,7 @@ class User extends ChangeNotifier{
   get lastName => _lastName;
   get phoneNumber => _phoneNumber;
   get token => _token;
+  get refreshToken => _refreshToken;
 
   populateUserRegister(String data){
       Map json=jsonDecode(data);
@@ -27,7 +29,9 @@ class User extends ChangeNotifier{
       _firstName=json["first_name"];
       _lastName=json["last_name"];
       _phoneNumber=json["phone_number"];
-      _token=json["token"];
+      _token=json["access"];
+      _refreshToken=json["refresh"];
+      notifyListeners();
   }
 
   populateUserLogin(String data){
@@ -38,7 +42,9 @@ class User extends ChangeNotifier{
     _firstName=json["first_name"];
     _lastName=json["last_name"];
     _phoneNumber=json["phone_number"];
-    _token=json["token"];
+    _token=json["access"];
+    _refreshToken=json["refresh"];
+    notifyListeners();
   }
 
 

@@ -5,7 +5,11 @@ from monuments.models import Monument, MonumentInfo, City
 class MonumentDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Monument
+<<<<<<< HEAD
         fields = ('monument_id', 'monument_name', 'country', 'basic_info', 'imageURL', 'pin_code')
+=======
+        fields = ('monument_id', 'monument_name', 'country', 'basic_info','imageURL','pin_code')
+>>>>>>> 0036f54c50da3e1876bf6334512d82970dd69528
 
     def create(self, validated_data):
         try:
@@ -13,11 +17,10 @@ class MonumentDataSerializer(serializers.ModelSerializer):
             return p
         except:
             return {'message': 'Error during creation'}
-
     def update(self, instance, validated_data):
         instance.monument_id = validated_data.get('monument_id', instance.monument_id)
         instance.monument_name = validated_data.get('monument_name ', instance.monument_name)
-        instance.in_city = validated_data.get('in_city', instance.in_city)
+        # instance.in_city = validated_data.get('in_city', instance.in_city)
         instance.country = validated_data.get('country', instance.country)
         instance.basic_info = validated_data.get('basic_info', instance.basic_info)
         instance.pin_code = validated_data.get('pin_code', instance.pin_code)
