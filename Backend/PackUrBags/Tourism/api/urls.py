@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -22,4 +22,8 @@ urlpatterns = [
     path('userhistory/user/<slug:slug>', views.UserHistoryDetailUser.as_view(), name="UserHistoryDetailUser"),
     path('userhistory', views.UserHistoryList.as_view(), name="UserHistoryList"),
     path('userhistory/<slug:slug>', views.UserHistoryDetail.as_view(), name="UserHistoryDetail"),
+
+    path('skyscanner/list-places', views.SkyScannerListPlaces.as_view(), name="list-places"),
+    path('skyscanner/browse-quotes', views.SkyScannerBrowseQuotes.as_view(), name="browse-quotes"),
+    path('skyscanner/browse-routes', views.SkyScannerBrowseRoutes.as_view(), name="browse-routes"),
 ]

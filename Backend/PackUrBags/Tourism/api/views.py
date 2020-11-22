@@ -1,3 +1,4 @@
+import requests
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
@@ -302,3 +303,78 @@ class UserHistoryDetailUser(APIView):
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
+
+
+class SkyScannerListPlaces(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request):
+        query = request.GET.get('query', '')
+        country = request.GET.get('country', '')
+        currency = request.GET.get('currency', '')
+        locale = request.GET.get('locale', '')
+        url = f"https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/{country}/{currency}/{locale}/"
+
+        querystring = {"query": f"{query}"}
+
+        headers = {
+            'x-rapidapi-key': "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5",
+            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+        }
+
+        response = requests.request("GET", url, headers=headers, params=querystring)
+
+        return Response(data=response.json())
+
+
+class SkyScannerBrowseQuotes(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request):
+        country = request.GET.get('country', '')
+        currency = request.GET.get('currency', '')
+        locale = request.GET.get('locale', '')
+        originplace = request.GET.get('originplace', '')
+        destinationplace = request.GET.get('destinationplace', '')
+        outboundpartialdate = request.GET.get('outboundpartialdate', '')
+
+        url = f'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/{country}/{currency}/{locale}/{originplace}/{destinationplace}/{outboundpartialdate}'
+
+        querystring = {"inboundpartialdate": f"{outboundpartialdate}"}
+
+        headers = {
+            'x-rapidapi-key': "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5",
+            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+        }
+
+        response = requests.request("GET", url, headers=headers, params=querystring)
+
+        return Response(data=response.json())
+
+
+class SkyScannerBrowseRoutes(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request):
+        country = request.GET.get('country', '')
+        currency = request.GET.get('currency', '')
+        locale = request.GET.get('locale', '')
+        originplace = request.GET.get('originplace', '')
+        destinationplace = request.GET.get('destinationplace', '')
+        outboundpartialdate = request.GET.get('outboundpartialdate', '')
+
+        url = f"https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/{country}/{currency}/{locale}/{originplace}/{destinationplace}/{outboundpartialdate}"
+
+        querystring = {"inboundpartialdate": f"{outboundpartialdate}"}
+
+        headers = {
+            'x-rapidapi-key': "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5",
+            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+        }
+
+        response = requests.request("GET", url, headers=headers, params=querystring)
+
+        return Response(data=response.json())

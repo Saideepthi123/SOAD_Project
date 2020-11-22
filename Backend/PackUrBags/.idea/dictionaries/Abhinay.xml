@@ -5,8 +5,10 @@
       <w>authtoken</w>
       <w>cors</w>
       <w>corsheaders</w>
+      <w>skyscanner</w>
       <w>socialaccount</w>
       <w>uidb</w>
+      <w>userhistory</w>
     </words>
   </dictionary>
 </component>
