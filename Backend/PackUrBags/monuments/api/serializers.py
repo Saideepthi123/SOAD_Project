@@ -17,7 +17,7 @@ class MonumentDataSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.monument_id = validated_data.get('monument_id', instance.monument_id)
         instance.monument_name = validated_data.get('monument_name ', instance.monument_name)
-        instance.city = validated_data.get('in_city', instance.city)
+        instance.in_city = validated_data.get('in_city', instance.in_city)
         instance.country = validated_data.get('country', instance.country)
         instance.basic_info = validated_data.get('basic_info', instance.basic_info)
         instance.pin_code = validated_data.get('pin_code', instance.pin_code)
@@ -49,6 +49,7 @@ class MonumentInfoDataSerializer(serializers.ModelSerializer):
 
 
 class CityDataSerializer(serializers.ModelSerializer):
+    monuments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = City
         fields = ('city_name', 'state', 'country', 'pin_code','imageURL','city_info','monuments')
