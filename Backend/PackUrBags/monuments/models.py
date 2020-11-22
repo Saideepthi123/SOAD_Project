@@ -19,7 +19,6 @@ class City(models.Model):
 class Monument(models.Model):
     monument_id = models.AutoField(primary_key=True)
     monument_name = models.CharField(max_length=100)
-    # place = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     basic_info = models.TextField()
     pin_code = models.CharField(max_length=6)
