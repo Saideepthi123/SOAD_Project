@@ -23,7 +23,7 @@ urlpatterns = [
     path('userhistory', views.UserHistoryList.as_view(), name="UserHistoryList"),
     path('userhistory/<slug:slug>', views.UserHistoryDetail.as_view(), name="UserHistoryDetail"),
 
-    path('skyscanner/list-places', views.SkyScannerListPlaces.as_view(), name="list-places"),
-    path('skyscanner/browse-quotes', views.SkyScannerBrowseQuotes.as_view(), name="browse-quotes"),
-    path('skyscanner/browse-routes', views.SkyScannerBrowseRoutes.as_view(), name="browse-routes"),
+    path('skyscanner/list-places', views.sky_scanner_list_places, name="list-places"),
+    path('skyscanner/search-flights', views.SkyScannerSearchFlights.as_view(), name="search-flights"),
+    path('skyscanner/flight-routes', views.SkyScannerFlightRoutes.as_view(), name="browse-routes"),
 ]

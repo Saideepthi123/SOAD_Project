@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.conf import settings
 
 
 class UserList(APIView):
@@ -305,76 +306,105 @@ class UserHistoryDetailUser(APIView):
             return Response(status.HTTP_404_NOT_FOUND)
 
 
-class SkyScannerListPlaces(APIView):
+def sky_scanner_list_places(request, query, country, currency, locale):
+    url = f"https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/{country}/{currency}/{locale}/"
+
+    querystring = {"query": f"{query}"}
+
+    headers = {
+        'x-rapidapi-key': settings.SKYSCANNER_KEY,
+        'x-rapidapi-host': settings.SKYSCANNER_HOST
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+
+    data = response.json()
+    places = data['Places']
+
+    place_ids = []
+    for i in range(len(places)):
+        place_ids.append(places[i]['PlaceId'])
+
+    return place_ids
+
+
+class SkyScannerSearchFlights(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
-    def get(self, request):
-        query = request.GET.get('query', '')
-        country = request.GET.get('country', '')
-        currency = request.GET.get('currency', '')
-        locale = request.GET.get('locale', '')
-        url = f"https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/{country}/{currency}/{locale}/"
+    def post(self, request):
+        country = request.data['country']
+        currency = request.data['currency']
+        locale = request.data['locale']
+        originplace = request.data['originplace']
+        destinationplace = request.data['destinationplace']
+        outboundpartialdate = request.data['outboundpartialdate']
+        originplace_ids = []
+        destinationplace_ids = []
+        search_flights = []
 
-        querystring = {"query": f"{query}"}
+        originplace = sky_scanner_list_places(request, originplace, country, currency, locale)
+        destinationplace = sky_scanner_list_places(request, destinationplace, country, currency, locale)
+        for i in range(len(originplace)):
+            originplace_ids.append(originplace[i])
+            originplace_ids = list(set(originplace_ids))
 
-        headers = {
-            'x-rapidapi-key': "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5",
-            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
-        }
+        for j in range(len(destinationplace)):
+            destinationplace_ids.append(destinationplace[j])
+            destinationplace_ids = list(set(destinationplace_ids))
+        for i in range(len(originplace_ids)):
+            for j in range(len(destinationplace_ids)):
+                url = f'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/{country}/{currency}/{locale}/{originplace_ids[i]}/{destinationplace[j]}/{outboundpartialdate}'
+                querystring = {"inboundpartialdate": f"{outboundpartialdate}"}
+                headers = {
+                    'x-rapidapi-key': settings.SKYSCANNER_KEY,
+                    'x-rapidapi-host': settings.SKYSCANNER_HOST
+                }
+                response = requests.request("GET", url, headers=headers, params=querystring)
+                response = response.json()
+                quotes = response['Quotes']
+                carriers = response['Carriers']
+                flights_details = {}
+                for k in range(len(quotes)):
+                    if not quotes[k] and carriers[k]:
+                        continue
+                    else:
+                        flights_details['CarrierName'] = carriers[k]['Name']
+                        flights_details['MinPrice'] = quotes[k]['MinPrice']
+                        flights_details['Direct'] = quotes[k]['Direct']
+                        flights_details['DepartureDate'] = quotes[k]['OutboundLeg']['DepartureDate']
+                search_flights.append(flights_details) if flights_details else None
+        return Response(data=search_flights)
 
-        response = requests.request("GET", url, headers=headers, params=querystring)
 
-        return Response(data=response.json())
-
-
-class SkyScannerBrowseQuotes(APIView):
+class SkyScannerFlightRoutes(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
-    def get(self, request):
-        country = request.GET.get('country', '')
-        currency = request.GET.get('currency', '')
-        locale = request.GET.get('locale', '')
-        originplace = request.GET.get('originplace', '')
-        destinationplace = request.GET.get('destinationplace', '')
-        outboundpartialdate = request.GET.get('outboundpartialdate', '')
+    def post(self, request):
+        country = request.data['country']
+        currency = request.data['currency']
+        locale = request.data['locale']
+        originplace = request.data['originplace']
+        destinationplace = request.data['destinationplace']
+        outboundpartialdate = request.data['outboundpartialdate']
+        originplace_ids = []
+        destinationplace_ids = []
+        flight_routes = []
 
-        url = f'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/{country}/{currency}/{locale}/{originplace}/{destinationplace}/{outboundpartialdate}'
+        originplace = sky_scanner_list_places(request, originplace, country, currency, locale)
+        destinationplace = sky_scanner_list_places(request, destinationplace, country, currency, locale)
 
-        querystring = {"inboundpartialdate": f"{outboundpartialdate}"}
-
-        headers = {
-            'x-rapidapi-key': "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5",
-            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
-        }
-
-        response = requests.request("GET", url, headers=headers, params=querystring)
-
-        return Response(data=response.json())
-
-
-class SkyScannerBrowseRoutes(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
-
-    def get(self, request):
-        country = request.GET.get('country', '')
-        currency = request.GET.get('currency', '')
-        locale = request.GET.get('locale', '')
-        originplace = request.GET.get('originplace', '')
-        destinationplace = request.GET.get('destinationplace', '')
-        outboundpartialdate = request.GET.get('outboundpartialdate', '')
-
-        url = f"https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/{country}/{currency}/{locale}/{originplace}/{destinationplace}/{outboundpartialdate}"
-
-        querystring = {"inboundpartialdate": f"{outboundpartialdate}"}
-
-        headers = {
-            'x-rapidapi-key': "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5",
-            'x-rapidapi-host': "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
-        }
-
-        response = requests.request("GET", url, headers=headers, params=querystring)
-
-        return Response(data=response.json())
+        for i in range(len(originplace)):
+            for j in range(len(destinationplace)):
+                originplace_ids.append(originplace[i])
+                destinationplace_ids.append(destinationplace[j])
+                url = f'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/{country}/{currency}/{locale}/{originplace_ids[i]}/{destinationplace[j]}/{outboundpartialdate}'
+                querystring = {"inboundpartialdate": f"{outboundpartialdate}"}
+                headers = {
+                    'x-rapidapi-key': settings.SKYSCANNER_KEY,
+                    'x-rapidapi-host': settings.SKYSCANNER_HOST
+                }
+                response = requests.request("GET", url, headers=headers, params=querystring)
+                flight_routes.append(response.json())
+        return Response(data=flight_routes)

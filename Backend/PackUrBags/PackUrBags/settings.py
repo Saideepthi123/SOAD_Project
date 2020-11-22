@@ -192,3 +192,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'tourism.packurbags@gmail.com'
 EMAIL_HOST_PASSWORD = 'packurbags@123'
+SKYSCANNER_KEY = "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5"
+SKYSCANNER_HOST = "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"

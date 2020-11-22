@@ -1,11 +1,11 @@
 from django.urls import path, include
-from authentication.api.views import RegisterView, VerifyEmail, LoginAPIView, PasswordTokenCheckAPI, PasswordReset, \
+from authentication.api.views import RegisterView, VerifyEmail, LoginView, PasswordTokenCheckAPI, PasswordReset, \
     RequestPasswordResetEmail, LogoutView, GoogleAuthentication
 
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('register/', RegisterView.as_view(), name="register"),
-    path('login/', LoginAPIView.as_view(), name="login"),
+    path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('google-auth/', GoogleAuthentication.as_view(), name="google-auth"),
     path('email-verify/', VerifyEmail.as_view(), name="email-verify"),

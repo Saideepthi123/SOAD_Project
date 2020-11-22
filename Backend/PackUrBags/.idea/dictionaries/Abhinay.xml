@@ -5,6 +5,9 @@
       <w>authtoken</w>
       <w>cors</w>
       <w>corsheaders</w>
+      <w>destinationplace</w>
+      <w>originplace</w>
+      <w>outboundpartialdate</w>
       <w>skyscanner</w>
       <w>socialaccount</w>
       <w>uidb</w>
