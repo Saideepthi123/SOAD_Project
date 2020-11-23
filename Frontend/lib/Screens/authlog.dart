@@ -171,13 +171,13 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                                                 print(response.body);
                                                 print(response
                                                     .headers['set-cookie']);
-                                                user.populateUserLogin(
-                                                    response.body);
                                                 center = Icon(
                                                   Icons.check,
                                                   color: Colors.green,
                                                 );
                                                 text = "Login Succesful";
+                                                user.populateUserLogin(
+                                                    response.body);
                                                 Timer timer = new Timer(
                                                     Duration(seconds: 2), () {
                                                   Navigator.push(

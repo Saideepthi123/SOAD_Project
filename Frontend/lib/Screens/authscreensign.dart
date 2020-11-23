@@ -245,12 +245,12 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                                                 Response response = snapshot.data;
                                                 print(response.body);
                                                 if (response.statusCode == 201) {
-                                                  user.populateUserLogin(
-                                                      response.body);
                                                     center = Icon(
                                                       Icons.check,
                                                       color: Colors.green,
                                                     );
+                                                    user.populateUserLogin(
+                                                        response.body);
                                                   Timer timer =
                                                       new Timer(Duration(seconds: 2), () {
                                                     Navigator.push(

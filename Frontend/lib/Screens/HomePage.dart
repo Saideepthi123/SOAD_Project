@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen>
       });
     }
   }
-
   Widget selectWidget() {
     switch (prevVal) {
       case 0:
