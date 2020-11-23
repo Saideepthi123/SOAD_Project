@@ -5,11 +5,7 @@ from monuments.models import Monument, MonumentInfo, City
 class MonumentDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Monument
-<<<<<<< HEAD
-        fields = ('monument_id', 'monument_name', 'country', 'basic_info', 'imageURL', 'pin_code')
-=======
         fields = ('monument_id', 'monument_name', 'country', 'basic_info','imageURL','pin_code')
->>>>>>> 0036f54c50da3e1876bf6334512d82970dd69528
 
     def create(self, validated_data):
         try:
