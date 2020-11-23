@@ -18,6 +18,17 @@ class DataService{
     );
   }
 
+  static Future<Response> getMonumentFromCity(String token,int cityID){
+    print("In call "+ token);
+    print("$url/city/$cityID/monuments");
+    return get(
+        "$url/city/$cityID/monuments",
+        headers: {
+          "Authorization": 'Bearer $token',
+        }
+    );
+  }
+
   static Future<Response> getMonuments(String token){
     print("In call "+ token);
     print("$url/monument");
@@ -29,22 +40,22 @@ class DataService{
     );
   }
 
-  static Future<Response> getCity(String token,String city){
+  static Future<Response> getCity(String token,int idx){
     print("In call "+ token);
-    print("$url/city?q={\"name\":$city}");
+    print("$url/city/$idx");
     return get(
-        "$url/city?q={\"name\":$city}",
+        "$url/city/$idx",
         headers: {
           "Authorization": 'Bearer $token',
         }
     );
   }
 
-  static Future<Response> getMonument(String token, String monument){
+  static Future<Response> getMonument(String token, int idx){
     print("In call "+ token);
-    print("$url/monument?q={\"name\":$monument}");
+    print("$url/monument/$idx");
     return get(
-        "$url/monument?q={\"name\":$monument}",
+        "$url/monument/$idx",
         headers: {
           "Authorization": 'Bearer $token',
         }

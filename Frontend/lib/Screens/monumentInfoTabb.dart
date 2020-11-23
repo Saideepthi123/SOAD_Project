@@ -8,6 +8,9 @@ class MonumentInfoTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final _screenSize=MediaQuery.of(context).size;
     final monument=Provider.of<Monument>(context);
+    print(monument.monumentName);
+    print(monument.country);
+    print(monument.info);
     return Container(
       padding: EdgeInsets.all(20),
       child: Card(
@@ -28,7 +31,9 @@ class MonumentInfoTab extends StatelessWidget {
                     fontSize: 30
                   )
                       )),
-                      Text(monument.city+ ", "+monument.state,overflow: TextOverflow.ellipsis,style: GoogleFonts.raleway(
+                      Text(monument.country
+                          // + ", "+monument.state
+                          ,overflow: TextOverflow.ellipsis,style: GoogleFonts.raleway(
                           fontSize: 20
                       )),
                       Flexible(child: Text(monument.info,style: GoogleFonts.raleway(fontSize: 15),)),

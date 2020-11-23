@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/ServerCalls.dart';
+import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Travel.dart';
 import 'package:travel/Models/User.dart';
 
@@ -20,6 +21,7 @@ class _CityTravelTabState extends State<CityTravelTab> {
   @override
   Widget build(BuildContext context) {
     final user=Provider.of<User>(context);
+    final cityModel=Provider.of<City>(context);
     final _screenSize=MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(10),

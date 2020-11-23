@@ -44,7 +44,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                           yOffset: -1.0,
                         ),
                         onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => CityPage()));
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => CityPage(cityIdx: 1)));
                         },
                       ),
                       Container(
