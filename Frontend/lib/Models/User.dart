@@ -31,7 +31,7 @@ class User extends ChangeNotifier{
       _phoneNumber=json["phone_number"];
       _token=json["access"];
       _refreshToken=json["refresh"];
-      notifyListeners();
+      // notifyListeners();
   }
 
   populateUserLogin(String data){
@@ -44,7 +44,7 @@ class User extends ChangeNotifier{
     _phoneNumber=json["phone_number"];
     _token=json["access"];
     _refreshToken=json["refresh"];
-    notifyListeners();
+    // notifyListeners();
   }
 
 

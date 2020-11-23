@@ -44,7 +44,15 @@ class AuthService {
     return get(url + 'auth/google-auth');
   }
 
-  static Future<Response> logout() {
-    return get(url + 'auth/logout/');
+  static Future<Response> logout(String token,String refreshToken) {
+    return post(url + 'auth/logout/',
+        headers: <String, String> {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer $token',
+        },
+        body: jsonEncode(<String, String>{
+          "refresh": refreshToken,
+        })
+    );
   }
 }

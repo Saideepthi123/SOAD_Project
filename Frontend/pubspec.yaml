@@ -32,7 +32,7 @@ dependencies:
   google_fonts:
   font_awesome_flutter:
   http:
-  syncfusion_flutter_datepicker: ^18.3.47-beta
+  intl:
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +54,7 @@ flutter:
     - assets/img/
     - assets/pageLoading.gif
     - assets/loading.gif
+    - assets/flightLoading.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

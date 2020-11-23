@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/Auth.dart';
+import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/City.dart';
 import 'package:travel/Screens/HomePage.dart';
 import 'package:travel/Screens/loginSign.dart';
@@ -27,20 +29,23 @@ class TopAppBar extends AppBar {
       child: Text("Hello"));
 
   @override
-  List<Widget> get actions => [
-        RaisedButton(
-          child: Text("Logout"),
-          onPressed: () {
-            AuthService.logout().then((value) {
-              print(value.body);
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => LogIn()),
-                      (route) => false);
-                });
-          },
-        )
-      ];
+  List<Widget> get actions {
+    User user=Provider.of<User>(context);
+   return  [
+      RaisedButton(
+        child: Text("Logout"),
+        onPressed: () {
+          AuthService.logout(user.token,user.refreshToken).then((value) {
+            print(value.body);
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LogIn()),
+                    (route) => false);
+          });
+        },
+      )
+    ];
+  }
   TopAppBar(this.context);
 }
 
