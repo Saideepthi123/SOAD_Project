@@ -15,5 +15,6 @@ urlpatterns = [
     path('city/<slug:slug>', views.CityDetail.as_view(), name="CityDetail"),
     path('city/modify/<slug:slug>', views.CityDetail.as_view(), name="CityDetail"),
     path('city/delete/<slug:slug>', views.CityDetail.as_view(), name="CityDetail"),
+    path('city/<slug:slug>/monuments', views.MonumentInfoWithCityID.as_view(), name="MonumentsListofACity"),
 
 ]

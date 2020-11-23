@@ -160,3 +160,20 @@ class CityDetail(APIView):
         if delresult[0] == 1:
             data = {'message': 'Successfully deleted'}
         return Response(data)
+
+
+class MonumentInfoWithCityID(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, slug):
+        try:
+            hdata = City.objects.get(city_id=slug)
+            res = []
+            for i in hdata.monuments.all():
+                k = Monument.objects.filter(monument_name=str(i))
+                res.append(k[0])
+            serializer = MonumentDataSerializer(res, many=True)
+            return Response(serializer.data)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
