@@ -408,3 +408,88 @@ class SkyScannerFlightRoutes(APIView):
                 response = requests.request("GET", url, headers=headers, params=querystring)
                 flight_routes.append(response.json())
         return Response(data=flight_routes)
+
+
+class ZomatoRestaurantsCity(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request, slug):
+        restaurants=[]
+        # get city name from query
+        url="https://developers.zomato.com/api/v2.1/cities"
+        headers = {
+            'user-key': settings.ZOMATO_API_KEY,
+        }
+        parameters={"q": f"{slug}"}
+        response = requests.request("GET",url,headers= headers,params=parameters)
+        locationJSON= response.json()
+        city_id=locationJSON["location_suggestions"][0]["id"]
+        print(city_id)
+        searchURL="https://developers.zomato.com/api/v2.1/search"
+        parametersCity={
+            "entity_id": city_id,
+            "entity_type": "city",
+        }
+        responseReq= requests.request("GET",searchURL,headers= headers,params=parametersCity)
+        cityrest=responseReq.json()
+        for rest in cityrest["restaurants"]:
+            mapRest={}
+            irest=rest["restaurant"]
+            mapRest["id"]=irest["id"]
+            mapRest["name"]=irest["name"]
+            mapRest["visitUrl"]=irest["url"]
+            mapRest["location"]={
+                "address": irest["location"]["address"],
+                "locality": irest["location"]["locality"],
+                "city": irest["location"]["city"],
+            }
+            mapRest["cuisines"]= irest["cuisines"]
+            mapRest["timings"]=irest["timings"]
+            mapRest["cost_for_2"]=irest["average_cost_for_two"]
+            mapRest["thumb"]=irest["thumb"]
+            mapRest["rating"]=irest["user_rating"]["aggregate_rating"]
+            restaurants.append(mapRest)
+        return Response(data=restaurants)
+
+class ZomatoRestaurantsLocality(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request, slug):
+        restaurants=[]
+        # get city name from query
+        url="https://developers.zomato.com/api/v2.1/locations"
+        headers = {
+            'user-key': settings.ZOMATO_API_KEY,
+        }
+        parameters={"q": f"{slug}"}
+        response = requests.request("GET",url,headers= headers,params=parameters)
+        locationJSON= response.json()
+        city_id=locationJSON["location_suggestions"][0]["entity_id"]
+        print(city_id)
+        searchURL="https://developers.zomato.com/api/v2.1/search"
+        parametersCity={
+            "entity_id": city_id,
+            "entity_type": "subzone",
+        }
+        responseReq= requests.request("GET",searchURL,headers= headers,params=parametersCity)
+        cityrest=responseReq.json()
+        for rest in cityrest["restaurants"]:
+            mapRest={}
+            irest=rest["restaurant"]
+            mapRest["id"]=irest["id"]
+            mapRest["name"]=irest["name"]
+            mapRest["visitUrl"]=irest["url"]
+            mapRest["location"]={
+                "address": irest["location"]["address"],
+                "locality": irest["location"]["locality"],
+                "city": irest["location"]["city"],
+            }
+            mapRest["cuisines"]= irest["cuisines"]
+            mapRest["timings"]=irest["timings"]
+            mapRest["cost_for_2"]=irest["average_cost_for_two"]
+            mapRest["thumb"]=irest["thumb"]
+            mapRest["rating"]=irest["user_rating"]["aggregate_rating"]
+            restaurants.append(mapRest)
+        return Response(data=restaurants)

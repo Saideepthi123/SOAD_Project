@@ -26,4 +26,8 @@ urlpatterns = [
     path('skyscanner/list-places', views.sky_scanner_list_places, name="list-places"),
     path('skyscanner/search-flights', views.SkyScannerSearchFlights.as_view(), name="search-flights"),
     path('skyscanner/flight-routes', views.SkyScannerFlightRoutes.as_view(), name="browse-routes"),
+
+    path('zomato/search-city/<slug:slug>',views.ZomatoRestaurantsCity.as_view(),name="search-restaurants-city"),
+    path('zomato/search-locality/<slug:slug>',views.ZomatoRestaurantsLocality.as_view(),name="search-locality")
+    
 ]
