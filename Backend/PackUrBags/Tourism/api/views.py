@@ -414,14 +414,14 @@ class ZomatoRestaurantsCity(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
-    def get(self, request, slug):
+    def get(self, request):
         restaurants=[]
         # get city name from query
         url="https://developers.zomato.com/api/v2.1/cities"
         headers = {
             'user-key': settings.ZOMATO_API_KEY,
         }
-        parameters={"q": f"{slug}"}
+        parameters={"q": f"{request.query_params.get('city')}"}
         response = requests.request("GET",url,headers= headers,params=parameters)
         locationJSON= response.json()
         city_id=locationJSON["location_suggestions"][0]["id"]
@@ -456,26 +456,25 @@ class ZomatoRestaurantsLocality(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
-    def get(self, request, slug):
+    def get(self, request):
         restaurants=[]
         # get city name from query
         url="https://developers.zomato.com/api/v2.1/locations"
         headers = {
             'user-key': settings.ZOMATO_API_KEY,
         }
-        parameters={"q": f"{slug}"}
+        parameters={"query": f"{request.query_params.get('q')}"}
         response = requests.request("GET",url,headers= headers,params=parameters)
         locationJSON= response.json()
-        city_id=locationJSON["location_suggestions"][0]["entity_id"]
-        print(city_id)
+        loc_id=locationJSON["location_suggestions"][0]["entity_id"]
         searchURL="https://developers.zomato.com/api/v2.1/search"
         parametersCity={
-            "entity_id": city_id,
+            "entity_id": loc_id,
             "entity_type": "subzone",
         }
         responseReq= requests.request("GET",searchURL,headers= headers,params=parametersCity)
-        cityrest=responseReq.json()
-        for rest in cityrest["restaurants"]:
+        locrest=responseReq.json()
+        for rest in locrest["restaurants"]:
             mapRest={}
             irest=rest["restaurant"]
             mapRest["id"]=irest["id"]
