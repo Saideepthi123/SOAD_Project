@@ -493,33 +493,34 @@ class ZomatoRestaurantsLocality(APIView):
             restaurants.append(mapRest)
         return Response(data=restaurants)
 
-def hotel_list_places(request, query, locale):
+def hotel_list_places(query, locale):
     url = "https://hotels4.p.rapidapi.com/locations/search"
 
-    querystring = {"query":f"{query}","locale":f"{locale}"}
+    querystring = {"query": query, "locale": locale}
 
     headers = {
         'x-rapidapi-key': settings.HOTEL_KEY,
         'x-rapidapi-host': settings.HOTEL_HOST
-        }
+    }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
 
     data = response.json()
-    suggestions = data['suggestions'][0]['entitites']
 
-    desination_ids = []
+    suggestions = data['suggestions'][0]['entities']
+
+    destination_ids = []
     for i in range(len(suggestions)):
         destination_ids.append(suggestions[i]['destinationId'])
 
     return destination_ids
+
 
 class SearchHotels(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
     def post(self, request):
-        
         place = request.data['place']
         locale = request.data['locale']
         pageNumber = request.data['pageNumber']
@@ -527,46 +528,35 @@ class SearchHotels(APIView):
         checkOut = request.data['checkOut']
         pageSize = request.data['pageSize']
         adults1 = request.data['adults1']
-    
-        destination_ids = []
 
-        destination = hotel_list_places(request, place, locale)
-        for i in range(len(destination)):
-            destination_ids.append(destination[i])
-            destination_ids = list(set(destination_ids))
+        destination_ids = hotel_list_places(place, locale)
 
-        for j in range(len(destination_ids)):
+        for destination in destination_ids:
             url = "https://hotels4.p.rapidapi.com/properties/list"
 
-            querystring = {"destinationId":f"{destination_ids}","pageNumber":f"{pageNumber}","checkIn":f"{checkIn}","checkOut":f"{checkOut}","pageSize":f"{pageSize}","adults1":f"{adults1}"}
+            querystring = {"destinationId": destination, "pageNumber": pageNumber,
+                           "checkIn": checkIn, "checkOut": checkOut, "pageSize": pageSize,
+                           "adults1": adults1}
 
             headers = {
                 'x-rapidapi-key': settings.HOTEL_KEY,
                 'x-rapidapi-host': settings.HOTEL_HOST
-                }
-
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        response = response.json()
-
-        Hotels_list = []
-
-        for hotels in response['data']['body']['searchResults']:
-            maphotl={}
-            ihotl=hotels["results"]
-            maphotl["id"]=ihotl["id"]
-            maphotl["name"]=ihotl["name"]
-            maphotl["visitUrl"]=ihotl["thumbnailUrl"]
-            maphotl["Ratings"]=ihotl["starRating"]
-            maphotl["address"]={
-                "address": ihotl["address"]["streetAddress"],
-                "locality": ihotl["address"]["locality"],
-                "countryName": ihotl["address"]["countryName"],
             }
-            maphotl["cost"] = ihotl["ratePlan"]["price"]["current"]
-            
-            Hotels_list.append(maphotl)
-        return Response(data=Hotels_list)
 
+            response = requests.request("GET", url, headers=headers, params=querystring)
+            response = response.json()
+            Hotels_list = []
+            results = response['data']['body']['searchResults']['results']
+
+            for i in range(len(results)):
+                hotels = {"id": results[i]["id"], "name": results[i]["name"], "visitUrl": results[i]["thumbnailUrl"],
+                          "Ratings": results[i]["starRating"], "address": {
+                        "address": results[i]["address"]["streetAddress"],
+                        "locality": results[i]["address"]["locality"],
+                        "countryName": results[i]["address"]["countryName"],
+                    }, "cost": results[i]["ratePlan"]["price"]["current"]}
+                Hotels_list.append(hotels)
+            return Response(data=Hotels_list)
 
 
 
