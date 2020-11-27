@@ -8,7 +8,7 @@ import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Monument.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/guidesTab.dart';
-import 'package:travel/Screens/monumentInfoTabb.dart';
+import 'package:travel/Screens/monumentTabs/monumentInfoTabb.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 
 

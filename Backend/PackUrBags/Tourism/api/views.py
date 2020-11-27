@@ -415,6 +415,7 @@ class ZomatoRestaurantsCity(APIView):
     authentication_classes = [JWTAuthentication]
 
     def get(self, request):
+        jsonResponse={}
         restaurants=[]
         # get city name from query
         url="https://developers.zomato.com/api/v2.1/cities"
@@ -450,13 +451,15 @@ class ZomatoRestaurantsCity(APIView):
             mapRest["thumb"]=irest["thumb"]
             mapRest["rating"]=irest["user_rating"]["aggregate_rating"]
             restaurants.append(mapRest)
-        return Response(data=restaurants)
+        jsonResponse["restaurants"]=restaurants
+        return Response(data=jsonResponse)
 
 class ZomatoRestaurantsLocality(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
     def get(self, request):
+        jsonResponse={}
         restaurants=[]
         # get city name from query
         url="https://developers.zomato.com/api/v2.1/locations"
@@ -491,7 +494,8 @@ class ZomatoRestaurantsLocality(APIView):
             mapRest["thumb"]=irest["thumb"]
             mapRest["rating"]=irest["user_rating"]["aggregate_rating"]
             restaurants.append(mapRest)
-        return Response(data=restaurants)
+        jsonResponse["restaurants"]=restaurants
+        return Response(data=jsonResponse)
 
 def hotel_list_places(query, locale):
     url = "https://hotels4.p.rapidapi.com/locations/search"
@@ -560,6 +564,4 @@ class SearchHotels(APIView):
                     }, "cost": cost}
                 Hotels_list.append(hotels)
         return Response(data=Hotels_list)
-
-
 

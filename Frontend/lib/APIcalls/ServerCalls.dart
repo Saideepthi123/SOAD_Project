@@ -47,7 +47,8 @@ class DataService{
         "$url/city/$idx",
         headers: {
           "Authorization": 'Bearer $token',
-        }
+        },
+
     );
   }
 
@@ -83,4 +84,31 @@ class DataService{
         ));
   }
 
+  static Future<Response> getFood(String token, String city){
+    Map<String, String> queryParams={
+      "city": city,
+    };
+    print("In call "+ token);
+
+    return get(
+      "$url/zomato/search-city?city=$city",
+        headers: {
+          "Authorization": 'Bearer $token',
+        },
+    );
+  }
+
+  static Future<Response> getFoodLocality(String token, String locality){
+    Map<String, String> queryParams={
+      "q": locality,
+    };
+    print("In call "+ token);
+
+    return get(
+      "$url/zomato/search-locality?q=$locality",
+      headers: {
+        "Authorization": 'Bearer $token',
+      },
+    );
+  }
 }
