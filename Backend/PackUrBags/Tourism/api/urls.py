@@ -28,6 +28,8 @@ urlpatterns = [
     path('skyscanner/flight-routes', views.SkyScannerFlightRoutes.as_view(), name="browse-routes"),
 
     path('zomato/search-city',views.ZomatoRestaurantsCity.as_view(),name="search-restaurants-city"),
-    path('zomato/search-locality',views.ZomatoRestaurantsLocality.as_view(),name="search-locality")
+    path('zomato/search-locality',views.ZomatoRestaurantsLocality.as_view(),name="search-locality"),
     
+    path('hotels/list-places', views.hotel_list_places, name="hotel-list-places"),
+    path('hotels/search-hotels', views.SearchHotels.as_view(), name="search-hotels"),
 ]
