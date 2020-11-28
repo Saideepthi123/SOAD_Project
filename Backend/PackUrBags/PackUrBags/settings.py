@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'guide',
     'monuments',
-    'pwa',
 ]
 
 SIMPLE_JWT = {
@@ -112,7 +111,6 @@ TEMPLATES = [
     },
 ]
 
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'templates', 'flutter_service_worker.js') 
 
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
 AUTH_USER_MODEL = 'authentication.UserData'
@@ -187,7 +185,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-STATIC_URL = '/static/'
+STATIC_URL = '/static/' 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
