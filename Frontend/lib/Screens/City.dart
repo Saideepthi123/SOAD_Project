@@ -8,6 +8,7 @@ import 'package:travel/APIcalls/ServerCalls.dart';
 import 'package:travel/Models/City.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/cityTabs/cityFoodTab.dart';
+import 'package:travel/Screens/cityTabs/cityHotelsTab.dart';
 import 'package:travel/Screens/cityTabs/cityTravelTab.dart';
 import 'package:travel/Screens/guidesTab.dart';
 import 'package:travel/Screens/cityTabs/visitTab.dart';
@@ -131,7 +132,7 @@ class _CityPageState extends State<CityPage> with SingleTickerProviderStateMixin
                                           GuidesTab(),
                                           CityFoodTab(),
                                           CityTravelTab(),
-                                          Icon(Icons.hotel, size: 80,)
+                                          CityHotelTab(),
                                         ],
                                       ),
                                     )

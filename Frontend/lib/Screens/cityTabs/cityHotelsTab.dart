@@ -7,15 +7,16 @@ import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/ServerCalls.dart';
 import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Food.dart';
+import 'package:travel/Models/Hotels.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 
-class CityFoodTab extends StatefulWidget {
+class CityHotelTab extends StatefulWidget {
   @override
-  _CityFoodTabState createState() => _CityFoodTabState();
+  _CityHotelTabState createState() => _CityHotelTabState();
 }
 
-class _CityFoodTabState extends State<CityFoodTab> {
+class _CityHotelTabState extends State<CityHotelTab> {
   String cityName;
 
   _onChanged(String val) {
@@ -34,7 +35,7 @@ class _CityFoodTabState extends State<CityFoodTab> {
         children: [
           SearchBar(
             width: _screenSize.width * 0.3,
-            // onChange: _onChanged,
+            onChange: _onChanged,
           ),
           FutureBuilder(
             future: DataService.getHotels(userModel.token, cityModel.cityName),
@@ -42,18 +43,18 @@ class _CityFoodTabState extends State<CityFoodTab> {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   Response response = snapshot.data;
+                  print(response.statusCode.toString()+"He is here now");
                   if (response.statusCode == 200) {
-                    var jsonRest = jsonDecode(response.body);
-                    List rests = jsonRest["Hotels"];
+                    List jsonRest = jsonDecode(response.body);
                     return Container(
                       height: _screenSize.height * 0.7,
                       width: _screenSize.width * 0.4,
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: rests.length,
+                        itemCount: jsonRest.length,
                         physics: ClampingScrollPhysics(),
                         itemBuilder: (context, idx) {
-                          Restaurant rest = Restaurant.fromJSON(rests[idx]);
+                          Hotels rest = Hotels.fromJson(jsonRest[idx]);
                           return Card(
                             elevation: 10,
                             shape: RoundedRectangleBorder(
@@ -68,8 +69,8 @@ class _CityFoodTabState extends State<CityFoodTab> {
                                   children: [
                                     FadeInImage.assetNetwork(
                                       placeholder: "assets/loading.gif",
-                                      image: rest.thumbImg != null
-                                          ? rest.thumbImg
+                                      image: rest.visitUrl != null
+                                          ? rest.visitUrl
                                           : "No image",
                                       width: _screenSize.width * 0.3,
                                       height: _screenSize.width * 0.3,
@@ -92,50 +93,6 @@ class _CityFoodTabState extends State<CityFoodTab> {
                                                       .primaryColor),
                                               softWrap: false,
                                             ),
-                                            RichText(
-                                              text: TextSpan(
-                                                text: 'Cuisines :',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: rest.cuisines,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColor),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            // Row(
-                                            //   children: [
-                                            //     Text("Direct Flight : ",style: TextStyle(
-                                            //         color: Theme.of(context).primaryColor
-                                            //     ),),
-                                            //     flight.direct? Icon(Icons.check,color: Colors.green,size: 20,) : Icon(Icons.wrong_location,color: Colors.red,size: 20,)
-                                            //   ],
-                                            // ),
-                                            // RichText(
-                                            //   text: TextSpan(
-                                            //     text: 'Departure Date : ',
-                                            //     style: TextStyle(
-                                            //         color: Theme.of(context).primaryColor
-                                            //     ),
-                                            //     children: <TextSpan>[
-                                            //       TextSpan(text: flight.departureDate.day.toString() + ' / ',style: TextStyle(
-                                            //           color: Theme.of(context).primaryColor
-                                            //       ),),
-                                            //       TextSpan(text: flight.departureDate.month.toString() + ' / ',style: TextStyle(
-                                            //           color: Theme.of(context).primaryColor
-                                            //       ),),
-                                            //       TextSpan(text: flight.departureDate.year.toString(),style: TextStyle(
-                                            //           color: Theme.of(context).primaryColor
-                                            //       ),),
-                                            //     ],
-                                            //   ),
-                                            // )
                                           ],
                                         ),
                                       ),
