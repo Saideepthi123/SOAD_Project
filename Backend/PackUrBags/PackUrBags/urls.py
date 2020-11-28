@@ -16,12 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from authentication.api.views import HomeView
+from . import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
 urlpatterns = [
+    # path('',views.index,name='home'),
+    # path('',include('pwa.urls')),
     path('admin/', admin.site.urls),
     path('api/auth/', include('authentication.api.urls')),
     path('api/guide/', include('guide.api.urls')),

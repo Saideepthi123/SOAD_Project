@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'guide',
     'monuments',
+    'pwa',
 ]
 
 SIMPLE_JWT = {
@@ -96,7 +97,9 @@ ROOT_URLCONF = 'PackUrBags.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,6 +111,8 @@ TEMPLATES = [
         },
     },
 ]
+
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'templates', 'flutter_service_worker.js') 
 
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
 AUTH_USER_MODEL = 'authentication.UserData'
