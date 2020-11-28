@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class DataService {
   static final url =
-      "https://cors-anywhere.herokuapp.com/https://packurbags.azurewebsites.net/api";
+      "https://packurbags.azurewebsites.net/api";
 
   static Future<Response> getCities(String token) {
     // print("In call "+ token);
