@@ -2,8 +2,6 @@ from rest_framework import serializers
 from authentication.models import UserData
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-from datetime import timedelta
 
 
 class RegisterSerializer(serializers.ModelSerializer):

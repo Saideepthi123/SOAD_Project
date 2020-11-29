@@ -1,13 +1,37 @@
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from guide.models import GuideData
-from monuments.models import Monument
-from .serializers import GuideDataSerializer
+from monuments.models import Monument, City
+from .serializers import GuideDataSerializer, SearchGuideSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from datetime import datetime
+
+
+class SearchGuides(generics.GenericAPIView):
+    serializer_class = SearchGuideSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        serializer = self.serializer_class(data)
+        data = serializer.data
+        city = City.objects.get(city_name=data['city'])
+        monuments = city.monuments.all()
+        self.queryset = GuideData.objects.filter(place__in=monuments)
+        date = datetime.strptime(data['start_date'], '%Y-%m-%d')
+        start_date = datetime(date.year, date.month, date.day).date()
+        available_guides = []
+        for i in range(len(self.queryset)):
+            guide = self.queryset[i]
+            if GuideData.is_available(guide, start_date) is True:
+                available_guides.append(guide)
+        serializer = GuideDataSerializer(available_guides, many=True)
+        return Response(serializer.data)
 
 
 class GuideList(APIView):
