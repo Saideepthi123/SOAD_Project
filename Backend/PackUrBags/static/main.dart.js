@@ -63421,7 +63421,7 @@ s.p(0,"countryName",this.c)
 return s}}
 R.lK.prototype={
 Jf:function(a){var s=null
-this.a=M.L(s,s,C.h,s,s,new S.bo(s,X.of(C.fK,new L.fU("./img/Image"+a+".jpg",s,s)),s,new K.cv(C.K,new P.bu(20,20),C.K,new P.bu(20,20)),s,s,C.w),s,s,new D.cc(a,t.kK),s,s,s,s,s)
+this.a=M.L(s,s,C.h,s,s,new S.bo(s,X.of(C.fK,new L.fU("assets/img/Image"+a+".jpg",s,s)),s,new K.cv(C.K,new P.bu(20,20),C.K,new P.bu(20,20)),s,s,C.w),s,s,new D.cc(a,t.kK),s,s,s,s,s)
 this.aS()},
 $ia6:1}
 R.I0.prototype={}
@@ -63602,7 +63602,7 @@ s=this.b
 r=K.d8(20)
 q=K.d8(20)
 p=s.c[b]
-o=X.of(C.i9,new L.fU("./img/CardImage"+p+".jpg",m,m))
+o=X.of(C.i9,new L.fU("assets/img/CardImage"+p+".jpg",m,m))
 n=this.c
 return K.n8(R.et(!1,!0,V.fW(M.L(m,T.be(H.b([L.ao(p,m,m,m,m,B.mg(C.l,32,C.aI),m),T.c2(m,10,m)],t.t),C.p,C.hu,C.m),C.h,m,m,new S.bo(m,o,m,q,m,m,C.w),m,n.b*0.45,m,m,m,m,m,n.a*0.15),C.l,30,new V.P(20,0,20,0),new X.cG(r,C.v)),m,!0,m,m,m,m,m,m,m,m,m,m,new K.a6n(s,b),m,m,m),new R.av(c,l,l.$ti.j("av<a5.T>")),m,!0)},
 $C:"$3",

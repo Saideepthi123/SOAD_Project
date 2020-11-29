@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   bool isexpand = false;
-  Animation<double> animation;
+  Animation<double>  animation;
   AnimationController _controller;
 
   @override

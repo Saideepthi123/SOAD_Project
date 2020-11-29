@@ -69,6 +69,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOWED_ORIGINS = [
     "https://packurbags.azurewebsites.net",
     "http://127.0.0.1:8000",
+    "http://localhost:8000"
 ]
 CSRF_TRUSTED_ORIGINS = [
     '*',
@@ -186,7 +187,8 @@ USE_TZ = False
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 STATIC_URL = '/static/' 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

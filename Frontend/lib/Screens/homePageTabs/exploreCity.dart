@@ -136,7 +136,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          image: AssetImage('img/CardImage' +
+                                          image: AssetImage('assets/img/CardImage' +
                                               change.cities[index] +
                                               '.jpg'),
                                           fit: BoxFit.cover)),

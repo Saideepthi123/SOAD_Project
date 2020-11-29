@@ -52,10 +52,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/img/
-    - assets/pageLoading.gif
-    - assets/loading.gif
-    - assets/flightLoading.gif
-    - assets/monumentLoading.gif
+    - pageLoading.gif
+    - loading.gif
+    - flightLoading.gif
+    - monumentLoading.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

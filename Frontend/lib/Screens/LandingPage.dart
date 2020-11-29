@@ -150,7 +150,7 @@ class _HomeShelfState extends State<HomeShelf> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(
-                                      image: AssetImage('./img/CardImage' +
+                                      image: AssetImage('assets/img/CardImage' +
                                           change.cities[index] +
                                           '.jpg'),
                                       fit: BoxFit.cover)),
