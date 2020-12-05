@@ -8,12 +8,13 @@ from .serializers import UserDataSerializer, BookingDataSerializer, PaymentDataS
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 
 
 class UserList(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -35,7 +36,7 @@ class UserList(APIView):
 
 
 class UserDetail(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -71,7 +72,7 @@ class UserDetail(APIView):
 
 
 class BookingList(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -93,7 +94,7 @@ class BookingList(APIView):
 
 
 class BookingDetail(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -130,7 +131,7 @@ class BookingDetail(APIView):
 
 
 class BookingDetailUser(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -156,7 +157,7 @@ class BookingDetailGuide(APIView):
 
 
 class PaymentList(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -178,7 +179,7 @@ class PaymentList(APIView):
 
 
 class PaymentDetail(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -212,7 +213,7 @@ class PaymentDetail(APIView):
 
 
 class PaymentDetailUser(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -225,7 +226,7 @@ class PaymentDetailUser(APIView):
 
 
 class PaymentDetailGuide(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -238,7 +239,7 @@ class PaymentDetailGuide(APIView):
 
 
 class UserHistoryList(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -260,7 +261,7 @@ class UserHistoryList(APIView):
 
 
 class UserHistoryDetail(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -294,7 +295,7 @@ class UserHistoryDetail(APIView):
 
 
 class UserHistoryDetailUser(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -330,7 +331,7 @@ def sky_scanner_list_places(request, query, country, currency, locale):
 
 class SkyScannerSearchFlights(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
 
     def post(self, request):
         country = request.data['country']
@@ -379,7 +380,7 @@ class SkyScannerSearchFlights(APIView):
 
 class SkyScannerFlightRoutes(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
 
     def post(self, request):
         country = request.data['country']
@@ -412,90 +413,92 @@ class SkyScannerFlightRoutes(APIView):
 
 class ZomatoRestaurantsCity(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
 
     def get(self, request):
-        jsonResponse={}
-        restaurants=[]
+        jsonResponse = {}
+        restaurants = []
         # get city name from query
-        url="https://developers.zomato.com/api/v2.1/cities"
+        url = "https://developers.zomato.com/api/v2.1/cities"
         headers = {
             'user-key': settings.ZOMATO_API_KEY,
         }
-        parameters={"q": f"{request.query_params.get('city')}"}
-        response = requests.request("GET",url,headers= headers,params=parameters)
-        locationJSON= response.json()
-        city_id=locationJSON["location_suggestions"][0]["id"]
+        parameters = {"q": f"{request.query_params.get('city')}"}
+        response = requests.request("GET", url, headers=headers, params=parameters)
+        locationJSON = response.json()
+        city_id = locationJSON["location_suggestions"][0]["id"]
         print(city_id)
-        searchURL="https://developers.zomato.com/api/v2.1/search"
-        parametersCity={
+        searchURL = "https://developers.zomato.com/api/v2.1/search"
+        parametersCity = {
             "entity_id": city_id,
             "entity_type": "city",
         }
-        responseReq= requests.request("GET",searchURL,headers= headers,params=parametersCity)
-        cityrest=responseReq.json()
+        responseReq = requests.request("GET", searchURL, headers=headers, params=parametersCity)
+        cityrest = responseReq.json()
         for rest in cityrest["restaurants"]:
-            mapRest={}
-            irest=rest["restaurant"]
-            mapRest["id"]=irest["id"]
-            mapRest["name"]=irest["name"]
-            mapRest["visitUrl"]=irest["url"]
-            mapRest["location"]={
+            mapRest = {}
+            irest = rest["restaurant"]
+            mapRest["id"] = irest["id"]
+            mapRest["name"] = irest["name"]
+            mapRest["visitUrl"] = irest["url"]
+            mapRest["location"] = {
                 "address": irest["location"]["address"],
                 "locality": irest["location"]["locality"],
                 "city": irest["location"]["city"],
             }
-            mapRest["cuisines"]= irest["cuisines"]
-            mapRest["timings"]=irest["timings"]
-            mapRest["cost_for_2"]=irest["average_cost_for_two"]
-            mapRest["thumb"]=irest["thumb"]
-            mapRest["rating"]=irest["user_rating"]["aggregate_rating"]
+            mapRest["cuisines"] = irest["cuisines"]
+            mapRest["timings"] = irest["timings"]
+            mapRest["cost_for_2"] = irest["average_cost_for_two"]
+            mapRest["thumb"] = irest["thumb"]
+            mapRest["rating"] = irest["user_rating"]["aggregate_rating"]
             restaurants.append(mapRest)
-        jsonResponse["restaurants"]=restaurants
+        jsonResponse["restaurants"] = restaurants
         return Response(data=jsonResponse)
+
 
 class ZomatoRestaurantsLocality(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
 
     def get(self, request):
-        jsonResponse={}
-        restaurants=[]
+        jsonResponse = {}
+        restaurants = []
         # get city name from query
-        url="https://developers.zomato.com/api/v2.1/locations"
+        url = "https://developers.zomato.com/api/v2.1/locations"
         headers = {
             'user-key': settings.ZOMATO_API_KEY,
         }
-        parameters={"query": f"{request.query_params.get('q')}"}
-        response = requests.request("GET",url,headers= headers,params=parameters)
-        locationJSON= response.json()
-        loc_id=locationJSON["location_suggestions"][0]["entity_id"]
-        searchURL="https://developers.zomato.com/api/v2.1/search"
-        parametersCity={
+        parameters = {"query": f"{request.query_params.get('q')}"}
+        response = requests.request("GET", url, headers=headers, params=parameters)
+        locationJSON = response.json()
+        loc_id = locationJSON["location_suggestions"][0]["entity_id"]
+        searchURL = "https://developers.zomato.com/api/v2.1/search"
+        parametersCity = {
             "entity_id": loc_id,
             "entity_type": "subzone",
         }
-        responseReq= requests.request("GET",searchURL,headers= headers,params=parametersCity)
-        locrest=responseReq.json()
+        responseReq = requests.request("GET", searchURL, headers=headers, params=parametersCity)
+        locrest = responseReq.json()
         for rest in locrest["restaurants"]:
-            mapRest={}
-            irest=rest["restaurant"]
-            mapRest["id"]=irest["id"]
-            mapRest["name"]=irest["name"]
-            mapRest["visitUrl"]=irest["url"]
-            mapRest["location"]={
+            mapRest = {}
+            irest = rest["restaurant"]
+            mapRest["id"] = irest["id"]
+            mapRest["name"] = irest["name"]
+            mapRest["visitUrl"] = irest["url"]
+            mapRest["location"] = {
                 "address": irest["location"]["address"],
                 "locality": irest["location"]["locality"],
                 "city": irest["location"]["city"],
             }
-            mapRest["cuisines"]= irest["cuisines"]
-            mapRest["timings"]=irest["timings"]
-            mapRest["cost_for_2"]=irest["average_cost_for_two"]
-            mapRest["thumb"]=irest["thumb"]
-            mapRest["rating"]=irest["user_rating"]["aggregate_rating"]
+            mapRest["cuisines"] = irest["cuisines"]
+            mapRest["timings"] = irest["timings"]
+            mapRest["cost_for_2"] = irest["average_cost_for_two"]
+            mapRest["thumb"] = irest["thumb"]
+            mapRest["rating"] = irest["user_rating"]["aggregate_rating"]
             restaurants.append(mapRest)
-        jsonResponse["restaurants"]=restaurants
+        jsonResponse["restaurants"] = restaurants
         return Response(data=jsonResponse)
+
 
 def hotel_list_places(query, locale):
     url = "https://hotels4.p.rapidapi.com/locations/search"
@@ -519,9 +522,10 @@ def hotel_list_places(query, locale):
 
     return destination_ids
 
+
 class SearchHotels(APIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
 
     def post(self, request):
         place = request.data['place']
@@ -564,4 +568,3 @@ class SearchHotels(APIView):
                     }, "cost": cost}
                 Hotels_list.append(hotels)
         return Response(data=Hotels_list)
-
