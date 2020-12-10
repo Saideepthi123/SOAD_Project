@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/HomePage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AuthScreenLogin extends StatefulWidget {
   final Function signin;
@@ -75,12 +76,14 @@ class _AuthScreenLoginState extends State<AuthScreenLogin> {
                   ],
                 ),
                 color: Colors.blue,
-                onPressed: () {
+                onPressed: () async {
+                  await AuthService.launchGoogleAuth();
                   print("Daba mat na");
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => HomeScreen()));
                 }),
           ),
+          // 
           SizedBox(
             height: _screenSize.height * 0.05,
           ),

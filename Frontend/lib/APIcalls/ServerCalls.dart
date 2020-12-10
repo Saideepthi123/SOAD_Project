@@ -6,11 +6,11 @@ import 'package:intl/intl.dart';
 
 class DataService {
   static final url =
-      "https://packurbags.azurewebsites.net/api";
+      "https://cors-anywhere.herokuapp.com/https://packurbags.azurewebsites.net/api";
 
   static Future<Response> getCities(String token) {
     // print("In call "+ token);
-    // print("$url city");
+    print("$url/city");
     return get("$url/city", headers: {
       "Authorization": 'Bearer $token',
     });
@@ -34,7 +34,7 @@ class DataService {
 
   static Future<Response> getCity(String token, int idx) {
     // print("In call "+ token);
-    // print("$url/city/$idx");
+    print("$url/city/$idx");
     return get(
       "$url/city/$idx",
       headers: {
@@ -45,7 +45,7 @@ class DataService {
 
   static Future<Response> getMonument(String token, int idx) {
     // print("In call "+ token);
-    // print("$url/monument/$idx");
+    print("$url/monument/$idx");
     return get("$url/monument/$idx", headers: {
       "Authorization": 'Bearer $token',
     });
@@ -55,7 +55,7 @@ class DataService {
       String token, String origin, String dest, DateTime depDate) {
     var dateFormat = DateFormat('yyyy-MM-dd');
     // print("In call "+ token);
-    // print("$url/skyscanner/search-flights");
+    print("$url/skyscanner/search-flights");
     return post("$url/skyscanner/search-flights",
         headers: <String, String>{
           'Content-Type': 'application/json',

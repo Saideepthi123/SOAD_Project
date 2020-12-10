@@ -9,6 +9,7 @@ import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Food.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Tools/Global%20tools.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CityFoodTab extends StatefulWidget {
   @override
@@ -23,6 +24,18 @@ class _CityFoodTabState extends State<CityFoodTab> {
       cityName = val;
     });
   }
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,24 +43,47 @@ class _CityFoodTabState extends State<CityFoodTab> {
     final cityModel = Provider.of<City>(context);
     final userModel = Provider.of<User>(context);
     return Container(
+      padding: EdgeInsets.all(10),
       child: Column(
         children: [
-          SearchBar(
-            width: _screenSize.width * 0.3,
-            // onChange: _onChanged,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SearchBar(
+                width: _screenSize.width * 0.5,
+                onChange: _onChanged,
+              ),
+              FlatButton(
+                onPressed: ()async {
+                  String zomatoURL='https://www.zomato.com';
+                  await _launchInBrowser(zomatoURL);
+                },
+                child: Image.asset(
+                  'img/zomato.png',
+                  width: _screenSize.width * 0.1,
+                  height: _screenSize.height*0.1,
+                  fit: BoxFit.contain,
+                ),
+              )
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(_screenSize.height * 0.01),
           ),
           FutureBuilder(
-            future: DataService.getHotels(userModel.token, cityModel.cityName),
+            future: DataService.getFood(userModel.token, cityModel.cityName),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   Response response = snapshot.data;
                   if (response.statusCode == 200) {
                     var jsonRest = jsonDecode(response.body);
-                    List rests = jsonRest["Hotels"];
+                    List rests = jsonRest["restaurants"];
+                    print(rests);
                     return Container(
-                      height: _screenSize.height * 0.7,
-                      width: _screenSize.width * 0.4,
+                      height: _screenSize.height * 0.6,
+                      width: _screenSize.width*0.5,
+                      // width: _screenSize.width * 0.4,
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: rests.length,
@@ -62,7 +98,7 @@ class _CityFoodTabState extends State<CityFoodTab> {
                                 height: _screenSize.height * 0.2,
                                 padding: EdgeInsets.all(20),
                                 child: Row(
-                                  // mainAxisSize: MainAxisSize.min,
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -71,8 +107,8 @@ class _CityFoodTabState extends State<CityFoodTab> {
                                       image: rest.thumbImg != null
                                           ? rest.thumbImg
                                           : "No image",
-                                      width: _screenSize.width * 0.3,
-                                      height: _screenSize.width * 0.3,
+                                      width: _screenSize.width * 0.1,
+                                      height: _screenSize.width * 0.1,
                                     ),
                                     Flexible(
                                       child: Container(
@@ -82,7 +118,6 @@ class _CityFoodTabState extends State<CityFoodTab> {
                                               MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.max,
                                           children: [
                                             Text(
                                               rest.name,
@@ -92,50 +127,68 @@ class _CityFoodTabState extends State<CityFoodTab> {
                                                       .primaryColor),
                                               softWrap: false,
                                             ),
-                                            RichText(
-                                              text: TextSpan(
-                                                text: 'Cuisines :',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                ),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: rest.cuisines,
+                                            Flexible(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Cuisines : "
+                                                  ),
+                                                  Text(
+                                                    rest.cuisines,
+                                                    // overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         color: Theme.of(context)
                                                             .primaryColor),
+                                                    softWrap: false,
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            // Row(
-                                            //   children: [
-                                            //     Text("Direct Flight : ",style: TextStyle(
-                                            //         color: Theme.of(context).primaryColor
-                                            //     ),),
-                                            //     flight.direct? Icon(Icons.check,color: Colors.green,size: 20,) : Icon(Icons.wrong_location,color: Colors.red,size: 20,)
-                                            //   ],
-                                            // ),
-                                            // RichText(
-                                            //   text: TextSpan(
-                                            //     text: 'Departure Date : ',
-                                            //     style: TextStyle(
-                                            //         color: Theme.of(context).primaryColor
-                                            //     ),
-                                            //     children: <TextSpan>[
-                                            //       TextSpan(text: flight.departureDate.day.toString() + ' / ',style: TextStyle(
-                                            //           color: Theme.of(context).primaryColor
-                                            //       ),),
-                                            //       TextSpan(text: flight.departureDate.month.toString() + ' / ',style: TextStyle(
-                                            //           color: Theme.of(context).primaryColor
-                                            //       ),),
-                                            //       TextSpan(text: flight.departureDate.year.toString(),style: TextStyle(
-                                            //           color: Theme.of(context).primaryColor
-                                            //       ),),
-                                            //     ],
-                                            //   ),
-                                            // )
+                                            Flexible(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                      "Cost for two : "
+                                                  ),
+                                                  Text(
+                                                    rest.cost2.toString(),
+                                                    // overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    softWrap: false,
+                                                  ),
+                                                  Text(
+                                                      " INR",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    softWrap: false,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Flexible(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                      "Order Now at "
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      await _launchInBrowser(rest.visitUrl);
+                                                    },
+                                                    child: Text(
+                                                      'Zomato',
+                                                      // overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                      softWrap: false,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),

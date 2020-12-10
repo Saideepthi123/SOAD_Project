@@ -77,7 +77,7 @@ class _AuthScreenSignState extends State<AuthScreenSign> {
                 ),
                 color: Colors.blue,
                 onPressed: () {
-                  AuthService.googleAuth().then((value){
+                  AuthService.launchGoogleAuth().then((value){
                     print(value.toString()+"google");
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) => HomePage()));
