@@ -8,12 +8,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 from datetime import datetime
 
 
 class SearchGuides(generics.GenericAPIView):
     serializer_class = SearchGuideSerializer
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -35,7 +36,7 @@ class SearchGuides(generics.GenericAPIView):
 
 
 class GuideList(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -57,7 +58,7 @@ class GuideList(APIView):
 
 
 class GuideDetail(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -84,7 +85,7 @@ class GuideDetail(APIView):
 
 
 class GuidePlace(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
