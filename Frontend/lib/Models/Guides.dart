@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Guide{
   int guideID;
@@ -19,6 +20,30 @@ class Guide{
       city: json["place"],
       monumentNames: json["monumentNames"],
       imageURL: json["imageURL"],
+    );
+  }
+}
+
+class Guide1{
+  int guideID;
+  String email;
+  String name;
+  String username;
+  String phoneNum;
+  String imageURL;
+  List place;
+
+  Guide1({this.guideID,this.email,this.name,this.phoneNum,this.username,this.place,this.imageURL});
+
+  factory Guide1.fromJSON(Map<String,dynamic> json){
+    return Guide1(
+      guideID: json["guide_id"],
+      email: json["email"],
+      name: json["first_name"]+ " "+json["last_name"],
+      username: json["username"],
+      phoneNum: json["phone_number"],
+      place: json["place"],
+      imageURL: "https://image.shutterstock.com/image-vector/young-man-face-cartoon-260nw-1224888760.jpg",
     );
   }
 }

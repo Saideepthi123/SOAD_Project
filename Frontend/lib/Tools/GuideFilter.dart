@@ -5,7 +5,10 @@ import 'package:travel/Models/Guides.dart';
 class GuideFilter extends StatelessWidget {
   double width;
   String dropdownValue = "Pay by hour";
-  GuideFilter({this.width});
+  Function onDone;
+  GuideFilter({this.width,this.onDone});
+
+  bool ed=false,sd=false,type=false;
   @override
   Widget build(BuildContext context) {
     final bookGuide=Provider.of<BookGuide>(context);
@@ -29,6 +32,7 @@ class GuideFilter extends StatelessWidget {
                 ).then((date) {
                   if(date!=null){
                     bookGuide.updateStartDate(date);
+                    sd=true;
                   }
                 });
               },
@@ -45,6 +49,7 @@ class GuideFilter extends StatelessWidget {
                 ).then((date) {
                   if(date!=null){
                     bookGuide.updateEndDate(date);
+                    ed=true;
                   }
                 });
               },
@@ -55,6 +60,7 @@ class GuideFilter extends StatelessWidget {
               icon: Icon(Icons.arrow_drop_down_circle_outlined),
               onChanged: (val){
                 bookGuide.updateType(val);
+
               },
               items: <String>[
                 'Pay by hour','Pay by day','Pay per call'
@@ -64,6 +70,10 @@ class GuideFilter extends StatelessWidget {
                   child: Text(value),
                 );
               }).toList(),
+            ),
+            IconButton(
+              icon: Icon(Icons.search,size: 30,),
+              onPressed: onDone,
             )
           ],
         ),

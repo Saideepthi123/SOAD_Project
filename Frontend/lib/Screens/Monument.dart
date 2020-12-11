@@ -108,7 +108,7 @@ class _MonumentPageState extends State<MonumentPage> with SingleTickerProviderSt
                                         controller: _tabController,
                                         children: [
                                           MonumentInfoTab(),
-                                          GuidesTab(),
+                                          Icon(Icons.people, size: 80,),
                                           Icon(Icons.fastfood, size: 80,),
                                           Icon(Icons.emoji_transportation,
                                             size: 80,),

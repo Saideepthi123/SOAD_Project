@@ -105,4 +105,25 @@ class DataService {
           "currency": "INR"
         });
   }
+
+  static Future<Response> getGuides(String token) {
+    // print("In call "+ token);
+    print("$url/guide");
+    return get("$url/guide", headers: {
+      "Authorization": 'Bearer $token',
+    });
+  }
+
+  static Future<Response> searchGuides(String token, String city,DateTime startDate) {
+    var dateFormat = DateFormat('yyyy-MM-dd');
+    print("insearch+ $city "+ startDate.toString());
+    return post("$url/guide/search/available-guides",
+        headers: {
+          "Authorization": 'Bearer $token',
+        },
+        body: {
+          "start_date": dateFormat.format(startDate),
+          "city": city
+        });
+  }
 }

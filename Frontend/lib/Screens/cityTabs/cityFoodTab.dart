@@ -47,7 +47,7 @@ class _CityFoodTabState extends State<CityFoodTab> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SearchBar(
                 width: _screenSize.width * 0.5,
