@@ -14,14 +14,6 @@ import 'package:travel/Screens/Monument.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 
 class VisitTab extends StatelessWidget {
-  // BasicMonument basicMonument = BasicMonument.fromJSON({
-  //   "monument_id": 1,
-  //   "monument_name": "Gateway Of India",
-  //   "basic_info":
-  //       "The Gateway of India is an arch-monument built in the early twentieth century in the city of Mumbai, in the Indian state of Maharashtra.",
-  //   "imageURL":
-  //       "https://www.travelogyindia.com/images/mumbai/gateway-of-india-tipl-1.jpg"
-  // });
 
   @override
   Widget build(BuildContext context) {

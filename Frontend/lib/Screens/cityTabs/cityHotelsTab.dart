@@ -10,6 +10,7 @@ import 'package:travel/Models/Food.dart';
 import 'package:travel/Models/Hotels.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Tools/Global%20tools.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CityHotelTab extends StatefulWidget {
   @override
@@ -23,6 +24,18 @@ class _CityHotelTabState extends State<CityHotelTab> {
     setState(() {
       cityName = val;
     });
+  }
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -63,27 +76,29 @@ class _CityHotelTabState extends State<CityHotelTab> {
                                 height: _screenSize.height * 0.2,
                                 padding: EdgeInsets.all(20),
                                 child: Row(
-                                  // mainAxisSize: MainAxisSize.min,
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    FadeInImage.assetNetwork(
-                                      placeholder: "assets/loading.gif",
-                                      image: rest.visitUrl != null
-                                          ? rest.visitUrl
-                                          : "No image",
-                                      width: _screenSize.width * 0.3,
-                                      height: _screenSize.width * 0.3,
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: "assets/loading.gif",
+                                        image: rest.visitUrl != null
+                                            ? rest.visitUrl
+                                            : "No image",
+                                        width: _screenSize.width * 0.1,
+                                        height: _screenSize.width * 0.1,
+                                      ),
                                     ),
                                     Flexible(
                                       child: Container(
                                         width: _screenSize.width * 0.6,
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.max,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               rest.name,
@@ -92,6 +107,68 @@ class _CityHotelTabState extends State<CityHotelTab> {
                                                   color: Theme.of(context)
                                                       .primaryColor),
                                               softWrap: false,
+                                            ),
+                                            Flexible(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                      "Rating : "
+                                                  ),
+                                                  Text(
+                                                    rest.ratings.toString(),
+                                                    // overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    softWrap: false,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Flexible(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                      "Cost for two : "
+                                                  ),
+                                                  Text(
+                                                    rest.cost,
+                                                    // overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    softWrap: false,
+                                                  ),
+                                                  Text(
+                                                    " INR",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    softWrap: false,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Flexible(
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                      "Order Now at "
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      await _launchInBrowser(rest.visitUrl);
+                                                    },
+                                                    child: Text(
+                                                      'Hotels',
+                                                      // overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                      softWrap: false,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),

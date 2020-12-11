@@ -17,8 +17,6 @@ class DataService {
   }
 
   static Future<Response> getMonumentFromCity(String token, int cityID) {
-    // print("In call "+ token);
-    // print("$url/city/$cityID/monuments");
     return get("$url/city/$cityID/monuments", headers: {
       "Authorization": 'Bearer $token',
     });
@@ -97,7 +95,7 @@ class DataService {
           "Authorization": 'Bearer $token',
         },
         body: {
-          "place": "Vijayawada",
+          "place": "$City",
           "locale": "en_IN",
           "pageNumber": "1",
           "checkIn": "2020-01-08",
