@@ -26,4 +26,6 @@ urlpatterns = [
     path('skyscanner/list-places', views.sky_scanner_list_places, name="list-places"),
     path('skyscanner/search-flights', views.SkyScannerSearchFlights.as_view(), name="search-flights"),
     path('skyscanner/flight-routes', views.SkyScannerFlightRoutes.as_view(), name="browse-routes"),
+
+    path('checkout/', views.Stripe.as_view(), name='payment-stripe'),
 ]

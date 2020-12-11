@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
+import stripe
 
 
 class UserList(APIView):
