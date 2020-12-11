@@ -50,7 +50,7 @@ class MonumentInfoDataSerializer(serializers.ModelSerializer):
 class CityDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = City
-        fields = ('city_name', 'state', 'country', 'pin_code', 'imageURL', 'city_info', 'monuments')
+        fields = ('city_id','city_name', 'state', 'country', 'pin_code', 'imageURL', 'city_info', 'monuments')
 
     def create(self, validated_data):
         try:

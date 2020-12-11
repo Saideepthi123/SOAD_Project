@@ -26,7 +26,7 @@ class BackImage with ChangeNotifier{
             topRight: Radius.circular(20),
             bottomRight: Radius.circular(20),
           ),
-        image: DecorationImage(image: AssetImage('./img/Image'+image+".jpg"),fit: BoxFit.fill )
+        image: DecorationImage(image: AssetImage('assets/img/Image'+image+".jpg"),fit: BoxFit.fill )
       ),
     );
     notifyListeners();

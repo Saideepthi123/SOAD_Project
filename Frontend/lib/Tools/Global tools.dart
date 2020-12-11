@@ -5,7 +5,7 @@ import 'package:travel/APIcalls/Auth.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Screens/City.dart';
 import 'package:travel/Screens/HomePage.dart';
-import 'package:travel/Screens/loginSign.dart';
+import 'package:travel/Screens/onboarding/loginSign.dart';
 
 class TopAppBar extends AppBar {
   BuildContext context;
@@ -79,6 +79,7 @@ class SearchBar extends StatelessWidget {
                   border: InputBorder.none,
                 ),
                 onTap: () {},
+                // onEditingComplete: onChange,
                 onChanged: onChange,
               ),
             )

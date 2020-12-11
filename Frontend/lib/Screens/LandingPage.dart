@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/Models/Image.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:travel/Screens/loginSign.dart';
+import 'package:travel/Screens/onboarding/loginSign.dart';
 
 class HomeShelf extends StatefulWidget {
   @override
@@ -150,7 +150,7 @@ class _HomeShelfState extends State<HomeShelf> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(
-                                      image: AssetImage('./img/CardImage' +
+                                      image: AssetImage('assets/img/CardImage' +
                                           change.cities[index] +
                                           '.jpg'),
                                       fit: BoxFit.cover)),

@@ -36,6 +36,8 @@ class City extends ChangeNotifier {
         cityID: json["city_id"],
         monumentIDs : json["monument_ids"],
         guideIDs: json["guide_ids"],
+      basicInfo: json["city_info"],
+      imageURL: json["imageURL"],
     );
   }
 

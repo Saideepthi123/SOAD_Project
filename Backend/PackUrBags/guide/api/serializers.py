@@ -11,3 +11,11 @@ class GuideDataSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         return attrs
+
+
+class SearchGuideSerializer(serializers.Serializer):
+    start_date = serializers.DateField()
+    city = serializers.CharField(max_length=100)
+
+    class Meta:
+        fields = ['start_date', 'city']

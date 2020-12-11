@@ -69,6 +69,7 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOWED_ORIGINS = [
     "https://packurbags.azurewebsites.net",
     "http://127.0.0.1:8000",
+    "http://localhost:8000"
 ]
 CSRF_TRUSTED_ORIGINS = [
     '*',
@@ -96,7 +97,9 @@ ROOT_URLCONF = 'PackUrBags.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,6 +111,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
 AUTH_USER_MODEL = 'authentication.UserData'
@@ -137,6 +141,7 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -182,8 +187,9 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+STATIC_URL = '/static/' 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -194,3 +200,8 @@ EMAIL_HOST_USER = 'tourism.packurbags@gmail.com'
 EMAIL_HOST_PASSWORD = 'packurbags@123'
 SKYSCANNER_KEY = "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5"
 SKYSCANNER_HOST = "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
+
+ZOMATO_API_KEY = "46834a308c05c7cc9b75edf24118a0af"
+
+HOTEL_KEY = "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5"
+HOTEL_HOST = "hotels4.p.rapidapi.com"

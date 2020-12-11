@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
             primaryColorLight: Color(0xffBDD5EA),
             primaryColorDark: Color(0xff495867),
             backgroundColor: Color(0xffF7F7FF),
+            scaffoldBackgroundColor: Colors.white,
             fontFamily: 'Raleway'),
         home: Scaffold(
           backgroundColor: Colors.black,

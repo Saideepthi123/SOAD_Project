@@ -7,12 +7,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from .serializers import CityDataSerializer, MonumentInfoDataSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
 class MonumentList(APIView):
-    permission_classes = [IsAuthenticated, ]
-    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
 
     def get(self, request):
         try:
@@ -33,7 +34,7 @@ class MonumentList(APIView):
 
 
 class MonumentDetail(APIView):
-    authentication_classes = [JWTAuthentication, ]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -63,7 +64,7 @@ class MonumentDetail(APIView):
 
 
 class MonumentInfoList(APIView):
-    authentication_classes = [JWTAuthentication, ]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -85,7 +86,7 @@ class MonumentInfoList(APIView):
 
 
 class MonumentInfoDetail(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -106,7 +107,7 @@ class MonumentInfoDetail(APIView):
 
 
 class CityList(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -133,7 +134,7 @@ class CityList(APIView):
 
 
 class CityDetail(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):
@@ -163,7 +164,7 @@ class CityDetail(APIView):
 
 
 class MonumentInfoWithCityID(APIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, slug):

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/Models/Image.dart';
-import 'package:travel/Screens/exploreCity.dart';
+import 'package:travel/Screens/homePageTabs/exploreCity.dart';
 import 'package:travel/Tools/Global%20tools.dart';
 
 
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   bool isexpand = false;
-  Animation<double> animation;
+  Animation<double>  animation;
   AnimationController _controller;
 
   @override

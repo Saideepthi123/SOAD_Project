@@ -14,6 +14,11 @@ class GuideData(models.Model):
     profile_pic = models.ImageField(default='no_image.png', upload_to='guide_profile_pics/')
     dob = models.DateField(default=datetime.today)
     address = models.TextField()
+    last_booking_start_date = models.DateField(default=datetime.today, blank=True)
+    last_booking_end_date = models.DateField(default=datetime.today, blank=True)
+
+    def is_available(self, start_date):
+        return self.last_booking_end_date < start_date
 
     def __str__(self):
         return self.email

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AuthService {
   static final url =
@@ -40,10 +41,6 @@ class AuthService {
         }));
   }
 
-  static Future<Response> googleAuth() {
-    return get(url + 'auth/google-auth');
-  }
-
   static Future<Response> logout(String token,String refreshToken) {
     return post(url + 'auth/logout/',
         headers: <String, String> {
@@ -54,5 +51,22 @@ class AuthService {
           "refresh": refreshToken,
         })
     );
+  }
+
+
+  static launchGoogleAuth() async {
+    // cors anywhere is blocked by google
+    String gurl = url + 'auth/google-auth';
+    print(gurl);
+    if (await canLaunch(gurl)) {
+      await launch(gurl,
+        forceSafariVC: false,
+        forceWebView: false,
+        // headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+
+    } else {
+      throw 'Could not launch $gurl';
+    }
   }
 }

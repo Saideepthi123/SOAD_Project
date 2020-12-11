@@ -16,12 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from authentication.api.views import HomeView
+from django.conf import settings
+from django.conf.urls import url
+from django.views import static
+from . import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
 urlpatterns = [
+    url(r'^assets/assets/(?P<path>.*)$', static.serve, {'document_root': settings.BASE_DIR + "/assets/assets"}),
+    path('',views.index,name='home'),
     path('admin/', admin.site.urls),
     path('api/auth/', include('authentication.api.urls')),
     path('api/guide/', include('guide.api.urls')),
