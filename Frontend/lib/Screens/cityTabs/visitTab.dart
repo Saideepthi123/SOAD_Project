@@ -136,13 +136,7 @@ class VisitTab extends StatelessWidget {
                   }
                 }
                 return Center(
-                    child: Image.asset(
-                  "monumentLoading.gif",
-                  height: _screenSize.height * 0.3,
-                  width: _screenSize.height * 0.3,
-                  colorBlendMode: BlendMode.softLight,
-                  // color: Colors.white,
-                ));
+                    child: CircularProgressIndicator());
               })
         ],
       ),

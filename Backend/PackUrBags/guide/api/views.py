@@ -175,16 +175,13 @@ class getToken(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        user = request.user
-        # user = UserData.objects.get(pk=pk)
+        pk = request.GET.get('pk', '')
+        user = UserData.objects.get(pk=pk)
         token, created = Token.objects.get_or_create(user=user)
-
-        email_body = 'Hi ' + user.username + 'Your API KEY' + str(token)
-        message = {'email_body': email_body, 'email_subject': 'Token', 'to_email': (user.email,)}
-        Util.send_email(message)
-
+        # email_body = 'Hi ' + user.username + 'Your API KEY' + str(token)
+        # message = {'email_body': email_body, 'email_subject': 'Token', 'to_email': (user.email,)}
+        # Util.send_email(message)
         return JsonResponse({"API key": str(token)})
-
 
 class ExposeGuidesService(APIView):
     permission_classes = [AllowAny]
