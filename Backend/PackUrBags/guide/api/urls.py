@@ -7,6 +7,7 @@ urlpatterns = [
     path('<slug:slug>', views.GuideDetail.as_view(), name="GuideDetail"),
     path('search/available-guides', views.SearchGuides.as_view(), name="search-guides"),
     path('book-guides/<int:guide_id>/<int:user_id>/<int:no_of_days>', views.BookingGuide.as_view(), name="select-guide"),
+    path('payment/successful', views.PaymentSuccess.as_view(), name="payment-success"),
     path('checkout/complete', views.checkout, name="checkout"),
     path('expose/<slug:api_key>', views.ExposeGuidesService.as_view(), name="expose-guides"),
 ]

@@ -16,10 +16,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.authtoken.models import Token
 from authentication.models import UserData
-from authentication.api.utils import Util
 from django.http import JsonResponse
 from PackUrBags import settings
-stripe.api_key = settings.STRIPE_SECRET_KEY
+# stripe.api_key = settings.STRIPE_SECRET_KEY
 key = settings.STRIPE_PUBLIC_KEY
 
 
@@ -65,7 +64,7 @@ class BookingGuide(generics.GenericAPIView):
         end_date = request.GET.get('end_date', '')
         serializer = GuideDataSerializer(guide)
         data = serializer.data
-        data['cost'] = cost * 100
+        data['cost'] = cost
         data['user_id'] = user_id
         return render(request, 'payment_page.html', {'cost': cost, 'key': key, 'guide_id': guide_id,
                                                      'user_id': user_id, 'start_date': start_date,
@@ -89,6 +88,7 @@ def checkout(request):
         payment = Payment.objects.create(booking_id=booking, user_email=user, guide_email=guide, mode_of_payment='1')
         try:
             charge = stripe.Charge.create(
+                api_key=settings.STRIPE_SECRET_KEY,
                 amount=cost,
                 currency="inr",
                 source=token,
@@ -96,9 +96,15 @@ def checkout(request):
             )
             payment.charge_id = charge.id
             payment.save()
-            return redirect('home')
+            return redirect('payment-success')
         except stripe.error.CardError as ce:
             return False, ce
+
+
+class PaymentSuccess(generics.GenericAPIView):
+
+    def get(self, request):
+        return Response("Payment successful")
 
 
 class GuideList(APIView):
@@ -175,14 +181,12 @@ class getToken(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        user = request.user
-        # user = UserData.objects.get(pk=pk)
+        pk = request.GET.get('pk', '')
+        user = UserData.objects.get(pk=pk)
         token, created = Token.objects.get_or_create(user=user)
-
-        email_body = 'Hi ' + user.username + 'Your API KEY' + str(token)
-        message = {'email_body': email_body, 'email_subject': 'Token', 'to_email': (user.email,)}
-        Util.send_email(message)
-
+        # email_body = 'Hi ' + user.username + 'Your API KEY' + str(token)
+        # message = {'email_body': email_body, 'email_subject': 'Token', 'to_email': (user.email,)}
+        # Util.send_email(message)
         return JsonResponse({"API key": str(token)})
 
 
