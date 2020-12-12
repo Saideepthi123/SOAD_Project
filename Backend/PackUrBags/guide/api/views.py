@@ -4,30 +4,23 @@ from rest_framework.parsers import JSONParser
 from guide.models import GuideData
 from monuments.models import Monument, City
 from Tourism.models import Booking, Payment
-from authentication.models import UserData
 from .serializers import GuideDataSerializer, SearchGuideSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
-<<<<<<< HEAD
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import SessionAuthentication
 from datetime import datetime, date
 from django.views.decorators.csrf import csrf_exempt
 import stripe
 from django.shortcuts import render, redirect
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.authtoken.models import Token
+from authentication.models import UserData
+from authentication.api.utils import Util
+from django.http import JsonResponse
 from PackUrBags import settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
 key = settings.STRIPE_PUBLIC_KEY
-=======
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.authentication import SessionAuthentication
-from datetime import datetime
-from rest_framework.authtoken.models import Token 
-from authentication.models import UserData 
-from authentication.api.utils import Util
-from django.http import JsonResponse
->>>>>>> 7a19abb95a3ad893e9a321f5007323e9e5a21e4d
 
 
 class SearchGuides(generics.GenericAPIView):
@@ -75,7 +68,8 @@ class BookingGuide(generics.GenericAPIView):
         data['cost'] = cost * 100
         data['user_id'] = user_id
         return render(request, 'payment_page.html', {'cost': cost, 'key': key, 'guide_id': guide_id,
-                                                     'user_id': user_id, 'start_date': start_date, 'end_date': end_date})
+                                                     'user_id': user_id, 'start_date': start_date,
+                                                     'end_date': end_date})
 
 
 @csrf_exempt
@@ -90,7 +84,8 @@ def checkout(request):
         guide = GuideData.objects.get(guide_id=guide_id)
         user = UserData.objects.get(id=user_id)
         booking = Booking.objects.create(user_email=user, guide_email=guide).save()
-        GuideData.objects.filter(guide_id=guide_id).update(last_booking_start_date=start_date, last_booking_end_date=end_date)
+        GuideData.objects.filter(guide_id=guide_id).update(last_booking_start_date=start_date,
+                                                           last_booking_end_date=end_date)
         payment = Payment.objects.create(booking_id=booking, user_email=user, guide_email=guide, mode_of_payment='1')
         try:
             charge = stripe.Charge.create(
@@ -178,24 +173,27 @@ class GuidePlace(APIView):
 
 class getToken(APIView):
     permission_classes = [AllowAny]
+
     def get(self, request):
         data = request.data
         pk = data['pk']
         user = UserData.objects.get(pk=pk)
         token, created = Token.objects.get_or_create(user=user)
 
-        email_body = 'Hi ' + user.username + 'Your API KEY' + str(token)    
+        email_body = 'Hi ' + user.username + 'Your API KEY' + str(token)
         message = {'email_body': email_body, 'email_subject': 'Token', 'to_email': (user.email,)}
         Util.send_email(message)
 
         return JsonResponse({"Token": str(token)})
-        
+
+
 class ExposeGuidesService(APIView):
     permission_classes = [AllowAny]
+
     def get(self, request):
         data = request.data
         token = data['token']
-        if(token is None):
+        if token is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         else:
