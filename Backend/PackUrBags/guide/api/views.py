@@ -3,13 +3,21 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from guide.models import GuideData
 from monuments.models import Monument, City
+from Tourism.models import Booking, Payment
+from authentication.models import UserData
 from .serializers import GuideDataSerializer, SearchGuideSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import SessionAuthentication
-from datetime import datetime
+from datetime import datetime, date
+from django.views.decorators.csrf import csrf_exempt
+import stripe
+from django.shortcuts import render, redirect
+from PackUrBags import settings
+stripe.api_key = settings.STRIPE_SECRET_KEY
+key = settings.STRIPE_PUBLIC_KEY
 
 
 class SearchGuides(generics.GenericAPIView):
@@ -21,18 +29,71 @@ class SearchGuides(generics.GenericAPIView):
         data = request.data
         serializer = self.serializer_class(data)
         data = serializer.data
-        city = City.objects.get(city_name=data['city'])
+        try:
+            city = City.objects.get(city_name=data['city'])
+        except ObjectDoesNotExist:
+            return Response('Not found', status=status.HTTP_404_NOT_FOUND)
         monuments = city.monuments.all()
         self.queryset = GuideData.objects.filter(place__in=monuments)
-        date = datetime.strptime(data['start_date'], '%Y-%m-%d')
-        start_date = datetime(date.year, date.month, date.day).date()
+        start_date = datetime.strptime(data['start_date'], '%Y-%m-%d')
+        start_date = date(start_date.year, start_date.month, start_date.day)
+        end_date = datetime.strptime(data['end_date'], '%Y-%m-%d')
+        end_date = date(end_date.year, end_date.month, end_date.day)
+        no_of_days = end_date - start_date
         available_guides = []
         for i in range(len(self.queryset)):
             guide = self.queryset[i]
             if GuideData.is_available(guide, start_date) is True:
                 available_guides.append(guide)
         serializer = GuideDataSerializer(available_guides, many=True)
-        return Response(serializer.data)
+        data = serializer.data
+        for i in range(len(data)):
+            data[i]['no_of_days'] = no_of_days.days
+        return Response(data)
+
+
+class BookingGuide(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, guide_id, user_id, no_of_days):
+        guide = GuideData.objects.get(guide_id=guide_id)
+        cost = GuideData.get_cost(guide, no_of_days)
+        start_date = request.GET.get('start_date', '')
+        end_date = request.GET.get('end_date', '')
+        serializer = GuideDataSerializer(guide)
+        data = serializer.data
+        data['cost'] = cost * 100
+        data['user_id'] = user_id
+        return render(request, 'payment_page.html', {'cost': cost, 'key': key, 'guide_id': guide_id,
+                                                     'user_id': user_id, 'start_date': start_date, 'end_date': end_date})
+
+
+@csrf_exempt
+def checkout(request):
+    if request.method == 'POST':
+        token = request.POST.get("stripeToken")
+        cost = request.POST['cost']
+        guide_id = request.POST['guide_id']
+        user_id = request.POST['user_id']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        guide = GuideData.objects.get(guide_id=guide_id)
+        user = UserData.objects.get(id=user_id)
+        booking = Booking.objects.create(user_email=user, guide_email=guide).save()
+        GuideData.objects.filter(guide_id=guide_id).update(last_booking_start_date=start_date, last_booking_end_date=end_date)
+        payment = Payment.objects.create(booking_id=booking, user_email=user, guide_email=guide, mode_of_payment='1')
+        try:
+            charge = stripe.Charge.create(
+                amount=cost,
+                currency="inr",
+                source=token,
+                description="The product charged to the user"
+            )
+            payment.charge_id = charge.id
+            payment.save()
+            return redirect('home')
+        except stripe.error.CardError as ce:
+            return False, ce
 
 
 class GuideList(APIView):

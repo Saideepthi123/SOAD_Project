@@ -17,11 +17,9 @@ class TestGuideUrls(APITestCase):
         path = reverse('GuidePlace')
         found = resolve(path)
         self.assertEqual(found.func.__name__, GuidePlace.as_view().__name__)
-    
+
     def testForGuideDetail(self):
         path = reverse('GuideDetail', args={'slug':1})
         found = resolve(path)
         self.assertEqual(found.func.__name__, GuideDetail.as_view().__name__)
-
-
 

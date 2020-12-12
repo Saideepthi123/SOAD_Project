@@ -27,7 +27,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     url(r'^assets/assets/(?P<path>.*)$', static.serve, {'document_root': settings.BASE_DIR + "/assets/assets"}),
-    path('',views.index,name='home'),
+    path('', views.index, name='home'),
     path('admin/', admin.site.urls),
     path('api/auth/', include('authentication.api.urls')),
     path('api/guide/', include('guide.api.urls')),

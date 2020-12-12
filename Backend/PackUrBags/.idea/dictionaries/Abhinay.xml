@@ -6,6 +6,7 @@
       <w>cors</w>
       <w>corsheaders</w>
       <w>destinationplace</w>
+      <w>djstripe</w>
       <w>originplace</w>
       <w>outboundpartialdate</w>
       <w>skyscanner</w>

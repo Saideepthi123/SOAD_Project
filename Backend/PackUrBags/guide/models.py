@@ -20,5 +20,10 @@ class GuideData(models.Model):
     def is_available(self, start_date):
         return self.last_booking_end_date < start_date
 
+    def get_cost(self, no_of_days):
+        starting_cost = 1000
+        cost = starting_cost + (1500 * no_of_days)
+        return cost
+
     def __str__(self):
         return self.email

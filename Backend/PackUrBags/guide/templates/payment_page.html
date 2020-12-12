@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+</head>
+<body>
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="cost" value="{{cost}}">
+    <input type="hidden" name="guide_id" value="{{guide_id}}">
+    <input type="hidden" name="user_id" value="{{user_id}}">
+    <input type="hidden" name="start_date" value="{{start_date}}">
+    <input type="hidden" name="end_date" value="{{end_date}}">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-key="{{key}}"
+        data-name="Pay with card"
+        data-description="Enter your details here"
+        data-currency="inr">
+    </script>
+</form>
+</body>
+</html>

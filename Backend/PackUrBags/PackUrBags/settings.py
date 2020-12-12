@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -76,7 +75,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 if DEBUG is True:
-    INSTALLED_APPS += ('corsheaders', )
+    INSTALLED_APPS += ('corsheaders',)
 
 SITE_ID = 1
 SOCIALACCOUNT_QUERY_EMAIL = True
@@ -112,7 +111,6 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'PackUrBags.wsgi.application'
 AUTH_USER_MODEL = 'authentication.UserData'
 
@@ -142,7 +140,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -168,7 +165,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -182,12 +178,11 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-STATIC_URL = '/static/' 
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -205,3 +200,10 @@ ZOMATO_API_KEY = "46834a308c05c7cc9b75edf24118a0af"
 
 HOTEL_KEY = "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5"
 HOTEL_HOST = "hotels4.p.rapidapi.com"
+
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY",
+                                   'pk_test_51H5nmkAjnGipPjUd1lx3Vkm1TP2yOObpqO5R7HHfZFUo2pFLaal0V2TDoVqNFfPPrwj5e7f6c9r5liQ51YoGJjuF008QKJzDwq')
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY",
+                                   'sk_test_51H5nmkAjnGipPjUdCXdQBnuUf7r8LJ9V6GS3BF60G8DKD2Y5etEFiNsC1GjhduionCsESqYsROD8Rbo8TmuasK3A00AMvRnaRL')
+STRIPE_TEST_SECRET_KEY = 'sk_test_51H5nmkAjnGipPjUdCXdQBnuUf7r8LJ9V6GS3BF60G8DKD2Y5etEFiNsC1GjhduionCsESqYsROD8Rbo8TmuasK3A00AMvRnaRL'
+DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'

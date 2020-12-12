@@ -15,7 +15,8 @@ class GuideDataSerializer(serializers.ModelSerializer):
 
 class SearchGuideSerializer(serializers.Serializer):
     start_date = serializers.DateField()
+    end_date = serializers.DateField()
     city = serializers.CharField(max_length=100)
 
     class Meta:
-        fields = ['start_date', 'city']
+        fields = ['start_date', 'end_date', 'city']
