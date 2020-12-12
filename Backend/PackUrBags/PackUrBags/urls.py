@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.views import static
 from . import views
+from guide.api.views import getToken
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -34,6 +35,7 @@ urlpatterns = [
     path('api/guide/', include('guide.api.urls')),
     path('api/', include('Tourism.api.urls')),
     path('api/', include('monuments.api.urls')),
+    path('api/get-api-key/', getToken.as_view(), name="get-api-key"),
     path('accounts/profile/', HomeView.as_view(), name="home"),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -200,7 +200,7 @@ SKYSCANNER_HOST = "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"
 
 ZOMATO_API_KEY = "46834a308c05c7cc9b75edf24118a0af"
 
-HOTEL_KEY = "5c5035c1e7msh72f101263df16acp1caccdjsna75f7e1a26e5"
+HOTEL_KEY = "41ccddb09bmsh4f253d8221fb7f1p179032jsn767fe47684b8"
 HOTEL_HOST = "hotels4.p.rapidapi.com"
 
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY",

@@ -175,27 +175,23 @@ class getToken(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        data = request.data
-        pk = data['pk']
-        user = UserData.objects.get(pk=pk)
+        user = request.user
+        # user = UserData.objects.get(pk=pk)
         token, created = Token.objects.get_or_create(user=user)
 
         email_body = 'Hi ' + user.username + 'Your API KEY' + str(token)
         message = {'email_body': email_body, 'email_subject': 'Token', 'to_email': (user.email,)}
         Util.send_email(message)
 
-        return JsonResponse({"Token": str(token)})
+        return JsonResponse({"API key": str(token)})
 
 
 class ExposeGuidesService(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request):
-        data = request.data
-        token = data['token']
-        if token is None:
+    def get(self, request, api_key):
+        if api_key is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-
         else:
             try:
                 data = GuideData.objects.all()
