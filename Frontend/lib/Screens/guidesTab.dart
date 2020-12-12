@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 import 'package:travel/APIcalls/ServerCalls.dart';
 import 'package:travel/Models/City.dart';
 import 'package:travel/Models/Guides.dart';
@@ -19,8 +20,20 @@ class _GuidesTabState extends State<GuidesTab> {
   DateTime _startDate;
   DateTime _endDate;
   bool isSet = false;
+  Source _source;
+  PaymentMethod _paymentMethod;
+  String _error;
+  final String _currentSecret = null;
 
-  Guide guide = Guide.fromJSON({
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    StripePayment.setOptions(
+        StripeOptions(publishableKey: "pk_test_51Hs6R2DAfuv0xqE2CobhhssqYoz2lNgJw6Qs9jEhSMzM6QCOyUwS3Hx2U6wcVC8wZ5yuzjvSV3kpVZZSStyavwz700E5Brgvja", merchantId: "Test", androidPayMode: 'test'));
+  }
+
+  var guide = Guide.fromJSON({
     "guide_name": "Chandler Bing",
     "guide_id": 2,
     "rating": 3.0,
@@ -34,6 +47,67 @@ class _GuidesTabState extends State<GuidesTab> {
       isSet=true;
     });
   }
+
+  void setError(dynamic error) {
+    // _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(error.toString())));
+    setState(() {
+      _error = error.toString();
+    });
+    print(_error);
+  }
+
+  final CreditCard testCard = CreditCard(
+    number: '4000002760003184',
+    expMonth: 12,
+    expYear: 21,
+  );
+
+  _showPaymentDialog(Guide1 guide1){
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Book Guide : '+ guide1.name),
+          content: Text('Pay in INR: '+ guide1.cost.toString()),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Create Source'),
+              onPressed: () {
+                StripePayment.createSourceWithParams(SourceParams(
+                  type: 'ideal',
+                  amount: 2102,
+                  currency: 'eur',
+                  returnURL: 'example://stripe-redirect',
+                )).then((source) {
+                  // _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Received ${source.sourceId}')));
+                  setState(() {
+                    _source = source;
+                  });
+                }).catchError(setError);
+              },
+            ),
+            TextButton(
+              child: Text('Continue Payment'),
+              onPressed: () {
+        StripePayment.createPaymentMethod(
+        PaymentMethodRequest(
+        card: testCard,
+        ),
+        ).then((paymentMethod) {
+        // _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Received ${paymentMethod.id}')));
+        setState(() {
+        _paymentMethod = paymentMethod;
+        });
+        print("id : "+ _paymentMethod.id);
+        }).catchError(setError);
+        },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
@@ -78,79 +152,71 @@ class _GuidesTabState extends State<GuidesTab> {
                                 },
                                 itemBuilder: (context, idx) {
                                   Guide1 guide=Guide1.fromJSON(json[idx]);
-                                  return Card(
-                                    elevation: 10,
-                                    child: Container(
-                                      height: _screenSize.height * 0.3,
-                                      padding: EdgeInsets.all(10),
-                                      child: Row(
-                                        children: [
-                                          Image.network(
-                                            guide.imageURL,
-                                            fit: BoxFit.fill,
-                                            loadingBuilder: (BuildContext context, Widget child,
-                                                ImageChunkEvent loadingProgress) {
-                                              if (loadingProgress == null) return child;
-                                              return Center(
-                                                child: CircularProgressIndicator(
-                                                  value: loadingProgress.expectedTotalBytes !=
-                                                      null
-                                                      ? loadingProgress.cumulativeBytesLoaded /
-                                                      loadingProgress.expectedTotalBytes
-                                                      : null,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                          Flexible(
-                                            child: Container(
-                                              padding: EdgeInsets.all(8),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  Flexible(
-                                                      child: Text(
-                                                        guide.name,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: GoogleFonts.raleway(
-                                                            fontSize: 30,
-                                                        ),
-                                                      )),
-                                                  Flexible(
-                                                      child: Text(
-                                                        guide.username,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: GoogleFonts.raleway(
-                                                          fontSize: 20,
-                                                      ),
-                                                      )),
-                                                  Flexible(
-                                                      child: Text(
-                                                        guide.email,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: GoogleFonts.raleway(
+                                  return InkWell(
+                                    onTap: (){
+                                      _showPaymentDialog(guide);
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      child: Container(
+                                        height: _screenSize.height * 0.3,
+                                        padding: EdgeInsets.all(10),
+                                        child: Row(
+                                          children: [
+                                            Image.network(
+                                              guide.imageURL,
+                                              fit: BoxFit.fill,
+                                              loadingBuilder: (BuildContext context, Widget child,
+                                                  ImageChunkEvent loadingProgress) {
+                                                if (loadingProgress == null) return child;
+                                                return Center(
+                                                  child: CircularProgressIndicator(
+                                                    value: loadingProgress.expectedTotalBytes !=
+                                                        null
+                                                        ? loadingProgress.cumulativeBytesLoaded /
+                                                        loadingProgress.expectedTotalBytes
+                                                        : null,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            Flexible(
+                                              child: Container(
+                                                padding: EdgeInsets.all(8),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Flexible(
+                                                        child: Text(
+                                                          guide.name,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: GoogleFonts.raleway(
+                                                              fontSize: 30,
+                                                          ),
+                                                        )),
+                                                    Flexible(
+                                                        child: Text(
+                                                          guide.username,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: GoogleFonts.raleway(
                                                             fontSize: 20,
                                                         ),
-                                                      )),
-                                                  // Row(
-                                                  //   children: [
-                                                  //     Text(
-                                                  //       "Rating: " + guide.rating.toString(),
-                                                  //       overflow: TextOverflow.ellipsis,
-                                                  //       style: TextStyle(fontSize: 20),
-                                                  //     ),
-                                                  //
-                                                  //     Icon(
-                                                  //         Icons.star
-                                                  //     ),
-                                                  //   ],
-                                                  // )
-                                                ],
+                                                        )),
+                                                    Flexible(
+                                                        child: Text(
+                                                          guide.email,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: GoogleFonts.raleway(
+                                                              fontSize: 20,
+                                                          ),
+                                                        )),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );

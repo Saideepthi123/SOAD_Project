@@ -32,8 +32,9 @@ class Guide1{
   String phoneNum;
   String imageURL;
   List place;
+  int cost;
 
-  Guide1({this.guideID,this.email,this.name,this.phoneNum,this.username,this.place,this.imageURL});
+  Guide1({this.guideID,this.email,this.name,this.phoneNum,this.username,this.place,this.imageURL,this.cost});
 
   factory Guide1.fromJSON(Map<String,dynamic> json){
     return Guide1(
@@ -43,6 +44,7 @@ class Guide1{
       username: json["username"],
       phoneNum: json["phone_number"],
       place: json["place"],
+      cost: 1300,
       imageURL: "https://image.shutterstock.com/image-vector/young-man-face-cartoon-260nw-1224888760.jpg",
     );
   }
