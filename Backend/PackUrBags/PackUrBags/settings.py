@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'guide',
     'monuments',
+    'rest_framework.authtoken',
 ]
 
 SIMPLE_JWT = {
@@ -140,6 +141,7 @@ AUTHENTICATION_BACKENDS = [
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authtoken',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',

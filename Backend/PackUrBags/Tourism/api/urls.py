@@ -32,5 +32,9 @@ urlpatterns = [
     
     path('hotels/list-places', views.hotel_list_places, name="hotel-list-places"),
     path('hotels/search-hotels', views.SearchHotels.as_view(), name="search-hotels"),
+
+    path('payment/test_payment/', views.TestPayment.as_view(), name="test-payment"),
+    path('payment/confirm_intent/', views.ConfirmIntent.as_view(), name="confirm-intent"),
+    path('payment/savestripeinfo/', views.SavestripeInfo.as_view(), name="save-stripe-info"),
 ]
 

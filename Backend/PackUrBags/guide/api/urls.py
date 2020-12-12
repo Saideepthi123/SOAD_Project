@@ -6,4 +6,6 @@ urlpatterns = [
     path('info/', views.GuidePlace.as_view(), name="GuidePlace"),
     path('<slug:slug>', views.GuideDetail.as_view(), name="GuideDetail"),
     path('search/available-guides', views.SearchGuides.as_view(), name="search-guides"),
+    path('get-token/', views.getToken.as_view(), name="get-token"),
+    path('expose/', views.ExposeGuidesService.as_view(), name="expose-guides"),
 ]
