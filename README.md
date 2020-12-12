@@ -25,4 +25,6 @@ Ubuntu/Linux
 ```shell script
 source env/bin/activate
 ```
-
+Flow Chart of the Project
+![flowchart](https://user-images.githubusercontent.com/52497119/101986506-2952bc80-3cb4-11eb-99ba-006c6133a6e3.PNG)
+_
