@@ -114,16 +114,21 @@ class DataService {
     });
   }
 
-  static Future<Response> searchGuides(String token, String city,DateTime startDate) {
+  static Future<Response> searchGuides(String token, String city,DateTime startDate,DateTime endDate) {
     var dateFormat = DateFormat('yyyy-MM-dd');
-    print("insearch+ $city "+ startDate.toString());
     return post("$url/guide/search/available-guides",
         headers: {
           "Authorization": 'Bearer $token',
         },
         body: {
           "start_date": dateFormat.format(startDate),
+          "end_date": dateFormat.format(endDate),
           "city": city
         });
+  }
+
+  static Future<Response> launchPayment(int gid,int uid, int numDays){
+    final payUrl= '$url/book-guides/$gid/$uid/$numDays';
+    print(payUrl);
   }
 }

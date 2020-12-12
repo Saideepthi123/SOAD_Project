@@ -29,8 +29,6 @@ class _GuidesTabState extends State<GuidesTab> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    StripePayment.setOptions(
-        StripeOptions(publishableKey: "pk_test_51Hs6R2DAfuv0xqE2CobhhssqYoz2lNgJw6Qs9jEhSMzM6QCOyUwS3Hx2U6wcVC8wZ5yuzjvSV3kpVZZSStyavwz700E5Brgvja", merchantId: "Test", androidPayMode: 'test'));
   }
 
   var guide = Guide.fromJSON({
@@ -62,7 +60,7 @@ class _GuidesTabState extends State<GuidesTab> {
     expYear: 21,
   );
 
-  _showPaymentDialog(Guide1 guide1){
+  _showPaymentDialog(Guide1 guide1,int uid,int numDays){
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -70,36 +68,10 @@ class _GuidesTabState extends State<GuidesTab> {
           title: Text('Book Guide : '+ guide1.name),
           content: Text('Pay in INR: '+ guide1.cost.toString()),
           actions: <Widget>[
-            TextButton(
-              child: Text('Create Source'),
-              onPressed: () {
-                StripePayment.createSourceWithParams(SourceParams(
-                  type: 'ideal',
-                  amount: 2102,
-                  currency: 'eur',
-                  returnURL: 'example://stripe-redirect',
-                )).then((source) {
-                  // _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Received ${source.sourceId}')));
-                  setState(() {
-                    _source = source;
-                  });
-                }).catchError(setError);
-              },
-            ),
-            TextButton(
+            FlatButton(
               child: Text('Continue Payment'),
               onPressed: () {
-        StripePayment.createPaymentMethod(
-        PaymentMethodRequest(
-        card: testCard,
-        ),
-        ).then((paymentMethod) {
-        // _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Received ${paymentMethod.id}')));
-        setState(() {
-        _paymentMethod = paymentMethod;
-        });
-        print("id : "+ _paymentMethod.id);
-        }).catchError(setError);
+                DataService.launchPayment(guide1.guideID,uid,numDays);
         },
             ),
           ],
@@ -134,7 +106,7 @@ class _GuidesTabState extends State<GuidesTab> {
                   width: _screenSize.width*0.6,
                   height: _screenSize.height * 0.55,
                   child: FutureBuilder(
-                      future: isSet ? DataService.searchGuides(userModel.token,cityModel.cityName , bookGuide.startDate) :
+                      future: isSet ? DataService.searchGuides(userModel.token,cityModel.cityName , bookGuide.startDate,bookGuide.endDate) :
                       DataService.getGuides(userModel.token),
                       builder: (context, snapshot) {
                         if(snapshot.connectionState==ConnectionState.done){
@@ -154,7 +126,9 @@ class _GuidesTabState extends State<GuidesTab> {
                                   Guide1 guide=Guide1.fromJSON(json[idx]);
                                   return InkWell(
                                     onTap: (){
-                                      _showPaymentDialog(guide);
+                                      print(userModel.uid);
+                                      int numDays=bookGuide.startDate.difference(bookGuide.endDate).inDays;
+                                      _showPaymentDialog(guide,1,-numDays);
                                     },
                                     child: Card(
                                       elevation: 10,
