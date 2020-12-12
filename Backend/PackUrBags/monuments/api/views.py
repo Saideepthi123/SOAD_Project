@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from .serializers import CityDataSerializer, MonumentInfoDataSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
 class MonumentList(APIView):
@@ -178,3 +178,61 @@ class MonumentInfoWithCityID(APIView):
             return Response(serializer.data)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class ExposeMonumentInfo(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        data = request.data 
+        monument = data['monument']
+        api_key = data['token']
+        if api_key is None:
+            return Response(status = status.HTTP_401_UNAUTHORIZED)
+
+        else:
+            try:
+                place = str(monument).lower()
+                print(place)
+                place_id = 0
+                for m in MonumentInfo.objects.all():
+                    if str(m.monument_name).lower() == place:
+                        place_id = m.monument_info_id
+                        break
+
+                hdata = MonumentInfo.objects.filter(monument_info_id=place_id)
+                serializer = MonumentInfoDataSerializer(hdata, many=True)
+                return Response(data=serializer.data)
+            except ObjectDoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+class ExposeCityInfo(APIView):
+
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        data = request.data
+        api_key = data['token']
+        city = data['city']
+
+        if api_key is None:
+            return Response(status = status.HTTP_401_UNAUTHORIZED)
+
+        else:
+            try:
+                city = city.lower()
+                ID = 1
+                for c in City.objects.all():
+                    if str(c.city_name).lower() == city:
+                        ID = c.city_id
+                print(ID)
+                hdata = City.objects.get(city_id=ID)
+                res = []
+                for i in hdata.monuments.all():
+                    k = Monument.objects.filter(monument_name=str(i))
+                    res.append(k[0])
+                serializer = MonumentDataSerializer(res, many=True)
+                return Response(serializer.data)
+            except ObjectDoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
