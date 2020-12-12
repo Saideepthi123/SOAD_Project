@@ -6,7 +6,6 @@ import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:travel/APIcalls/ServerCalls.dart';
 import 'package:travel/Models/City.dart';
-import 'package:travel/Models/Food.dart';
 import 'package:travel/Models/Hotels.dart';
 import 'package:travel/Models/User.dart';
 import 'package:travel/Tools/Global%20tools.dart';
